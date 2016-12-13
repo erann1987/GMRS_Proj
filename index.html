@@ -1,0 +1,171 @@
+﻿<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link href="Styles/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
+    <link href="Styles/bootstrap-select.min.css" rel="stylesheet" />
+    <style>
+        td, th {
+            text-align: center;
+        }
+
+        div .chart {
+            float: right;
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+    <title>GMRS</title>
+</head>
+<body ng-app="GMRSapp">
+    <div style="text-align:center" class="jumbotron">
+        <h1 class="display-2">ברוך הבא ל - GMRS !</h1>
+        <p class="lead">כאן תוכל ליצור דוחות אינטרקטיבים בצורה מהירה ויעילה!</p>
+        <hr class="my-2">
+        <h6 style="text-align:right">פותח ע"י: ערן נחום וגור אריה יהודה</h6>
+        <button style="float:right" class="btn btn-info btn-xs">קרא עוד</button>
+    </div>
+    <div ng-controller="AppController">
+        <div style="text-align:center" dismiss-on-timeout="2000" uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>
+        <div class="container">
+            <p>לחץ על הפעולה שברצונך לבצע:</p>
+            <div style="margin-bottom:15px" class="btn-group">
+                <button type="button" class="btn btn-primary" ng-click="getAllData()">טען טבלת מידע</button>
+                <button ng-click="createReport()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#createReportModal">צור דוח</button>
+            </div>
+            <div style="height:400px; overflow:auto" ng-show="showDataTable" id="data_table">
+                <p>טבלת מידע:</p>
+                <table class="table table-inverse table-bordered table-hover table-fixed">
+                    <thead>
+                        <tr class="bg-primary">
+                            <th>#</th>
+                            <th>קטגוריה</th>
+                            <th>סוג</th>
+                            <th>ערך</th>
+                            <th>חודש</th>
+                            <th>שנה</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="data in dataList track by $index">
+                            <td>{{$index +1}}</td>
+                            <td>{{data.CategoryDesc}}</td>
+                            <td>{{data.ValueTypeName}}</td>
+                            <td>{{data.Value}}</td>
+                            <td>{{data.Month}}</td>
+                            <td>{{data.Year}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>טבלת מידע:</p>
+            <div id="report_table" ng-show="showReport">
+                <table datatable="ng" dt-options="dtOptions" class="table table-bordered table-inverse table-hover ">
+                    <thead>
+                        <tr class="bg-primary">
+                            <th>#</th>
+                            <th>{{report.cCategory.CategoryName}}</th>
+                            <th>שנה</th>
+                            <th>סכום</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="data in report.data track by $index">
+                            <td>{{$index +1}}</td>
+                            <td>{{data.name}}</td>
+                            <td>{{data.year}}</td>
+                            <td>{{data.y}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>גרף מותאם:</p>
+                <div class="chart" dir="ltr" id="lineChart"></div>
+            </div>
+        </div>
+
+
+        <!-- Create Report Modal -->
+        <div id="createReportModal" class="modal fade " role="dialog">
+            <div class="modal-dialog modal-sm">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button style="float:left" type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">יצירת דוח</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="recipient-name" class="form-control-label">סוג מידע:</label>
+                                <select class="selectpicker" multiple ng-model="report.cReportType">
+                                    <option ng-repeat="val in report.reportType" value="{{val.ValueTypeName}}">{{val.ValueTypeName}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="form-control-label">קטגוריה:</label>
+                                <select ng-options="category.CategoryName for category in report.categories track by category.CategoryID"
+                                        ng-model="report.cCategory"></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="form-control-label">משנה:</label>
+                                <select ng-options="year for year in report.years"
+                                        ng-model="report.cStartYear"></select>
+                                <label for="recipient-name" class="form-control-label">עד שנה:</label>
+                                <select ng-options="year for year in report.years"
+                                        ng-model="report.cEndYear"></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="message-text" class="form-control-label">Message:</label>
+                                <textarea class="form-control" id="message-text"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">ביטול</button>
+                        <button ng-click="loadRelevantData()" type="button" class="btn btn-success" data-dismiss="modal">אישור</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+
+    <script src="Scripts/jquery-3.1.1.min.js"></script>
+    <script src="Scripts/jquery.dataTables.min.js"></script>
+    <script src="Scripts/angular.min.js"></script>
+    <script src="Scripts/angular-datatables.min.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script src="Scripts/ui-bootstrap-tpls-2.3.1.min.js"></script>
+    <script src="Scripts/bootstrap-select.min.js"></script>
+    <script src="Scripts/highcharts.js"></script>
+    <script src="Scripts/dark-unica.js"></script>
+    <script src="/Scripts/src/app.js"></script>
+    <script src="/Scripts/src/app-service.js"></script>
+    <script src="/Scripts/src/app-controller.js"></script>
+    <link href="Styles/angular-datatables.css" rel="stylesheet" />
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

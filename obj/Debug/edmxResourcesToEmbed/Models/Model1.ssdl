@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="GMRSDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="CategoryID" />
+    </Key>
+    <Property Name="CategoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CategoryName" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Data">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Value" Type="float" Nullable="false" />
+    <Property Name="ValueTypeID" Type="int" Nullable="false" />
+    <Property Name="Year" Type="int" Nullable="false" />
+    <Property Name="Month" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DataCategory">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DataID" Type="int" Nullable="false" />
+    <Property Name="CategoryID" Type="int" Nullable="false" />
+    <Property Name="CategoryDesc" Type="varchar" MaxLength="120" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ValueType">
+    <Key>
+      <PropertyRef Name="ValueTypeID" />
+    </Key>
+    <Property Name="ValueTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ValueTypeName" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Data_ValueType">
+    <End Role="ValueType" Type="Self.ValueType" Multiplicity="1" />
+    <End Role="Data" Type="Self.Data" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ValueType">
+        <PropertyRef Name="ValueTypeID" />
+      </Principal>
+      <Dependent Role="Data">
+        <PropertyRef Name="ValueTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DataCategory_Category">
+    <End Role="Category" Type="Self.Category" Multiplicity="1" />
+    <End Role="DataCategory" Type="Self.DataCategory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="CategoryID" />
+      </Principal>
+      <Dependent Role="DataCategory">
+        <PropertyRef Name="CategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DataCategory_Data">
+    <End Role="Data" Type="Self.Data" Multiplicity="1" />
+    <End Role="DataCategory" Type="Self.DataCategory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Data">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DataCategory">
+        <PropertyRef Name="DataID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="GMRSDBModelStoreContainer">
+    <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Data" EntityType="Self.Data" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DataCategory" EntityType="Self.DataCategory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ValueType" EntityType="Self.ValueType" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Data_ValueType" Association="Self.FK_Data_ValueType">
+      <End Role="ValueType" EntitySet="ValueType" />
+      <End Role="Data" EntitySet="Data" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DataCategory_Category" Association="Self.FK_DataCategory_Category">
+      <End Role="Category" EntitySet="Category" />
+      <End Role="DataCategory" EntitySet="DataCategory" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DataCategory_Data" Association="Self.FK_DataCategory_Data">
+      <End Role="Data" EntitySet="Data" />
+      <End Role="DataCategory" EntitySet="DataCategory" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
