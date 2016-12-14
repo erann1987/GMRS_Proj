@@ -83,11 +83,15 @@
 	    }
 
 	    $scope.getAllData = function () {
+	        $.loader({
+	            className: "blue-with-image-2",
+	            content: ''
+	        });
 	        AppService.GetAllData().then(function (results) {
 	            $scope.dataList = results.data;
-	            //$scope.showDataTable = true;
-	            //$('#example').DataTable();
+	            $.loader('close');
 	        }, function (e) {
+	            $.loader('close');
 	            alert("getting categories failed");
 	        });
 	    }
