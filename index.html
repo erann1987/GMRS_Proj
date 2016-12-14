@@ -17,6 +17,7 @@
             height: 400px;
             width: 100%;
         }
+        
     </style>
     <title>GMRS</title>
 </head>
@@ -61,7 +62,7 @@
                     </tbody>
                 </table>
             </div>
-            <p>טבלת מידע:</p>
+            <p ng-show="showReport">טבלת מידע:</p>
             <div id="report_table" ng-show="showReport">
                 <table datatable="ng" dt-options="dtOptions" class="table table-bordered table-inverse table-hover ">
                     <thead>
@@ -81,7 +82,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <p>גרף מותאם:</p>
+                <p ng-show="showReport">גרף מותאם:</p>
                 <div class="chart" dir="ltr" id="lineChart"></div>
             </div>
         </div>
@@ -136,12 +137,9 @@
     </div>
 
 
-
-
-
-
     <script src="Scripts/jquery-3.1.1.min.js"></script>
     <script src="Scripts/jquery.dataTables.min.js"></script>
+    <script src="Scripts/jquery.loader.min.js"></script>
     <script src="Scripts/angular.min.js"></script>
     <script src="Scripts/angular-datatables.min.js"></script>
     <script src="Scripts/bootstrap.min.js"></script>
@@ -153,6 +151,7 @@
     <script src="/Scripts/src/app-service.js"></script>
     <script src="/Scripts/src/app-controller.js"></script>
     <link href="Styles/angular-datatables.css" rel="stylesheet" />
+    <link href="Styles/jquery.loader.min.css" rel="stylesheet" />
 
 
 </body>

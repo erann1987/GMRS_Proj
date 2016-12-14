@@ -74,6 +74,10 @@
 	    $scope.showDataTable = false;
 
 	    $scope.createReport = function () {
+	        $.loader({
+	            className: "blue-with-image-2",
+	            content: ''
+	        });
 	        $scope.getAllCategories();
 	        $scope.getAllValueType();
 	    }
@@ -91,7 +95,9 @@
 	    $scope.getAllCategories = function () {
 	        AppService.GetAllCategories().then(function (results) {
 	            $scope.report.categories = results.data;
+	            $.loader('close');
 	        }, function (e) {
+	            $.loader('close');
 	            alert("getting categories failed");
 	        });
 	    }
@@ -102,18 +108,26 @@
 	            $scope.$watch(function () {
 	                $('.selectpicker').selectpicker('refresh');
 	            });
+	            $.loader('close');
 	        }, function (e) {
+	            $.loader('close');
 	            alert("getting categories failed");
 	        });
 	    }
 
 	    $scope.loadRelevantData = function () {
+	        $.loader({
+	            className: "blue-with-image-2",
+	            content: ''
+	        });
 	        AppService.GetRelevantData($scope.report).then(function (results) {
 	            $scope.report.data = results.data;
 	            $scope.renderDataAreaChart();
 	            $scope.loadLineChart();
 	            $scope.showReport = true;
+	            $.loader('close');
 	        }, function (e) {
+	            $.loader('close');
 	            alert("getting categories failed");
 	        });
 	    }
@@ -147,7 +161,7 @@
 	    }
 
 	    $scope.loadLineChart = function () {
-	        Highcharts.chart('lineChart', {
+	        var chart = Highcharts.chart('lineChart', {
 	            credits: {
 	                text: 'ערן התותח',
 	                href: 'https://www.facebook.com/Eran.Math.teacher/'
@@ -182,7 +196,7 @@
 	            },
 	            legend: {
 	                layout: 'vertical',
-	                align: 'right',
+	                align: 'left',
 	                verticalAlign: 'middle',
 	                borderWidth: 0,
 	                rtl: true,
