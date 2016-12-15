@@ -4,17 +4,32 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <script src="Scripts/jquery-3.1.1.min.js"></script>
+    <script src="Scripts/jquery.dataTables.min.js"></script>
+    <script src="Scripts/jquery.loader.min.js"></script>
+    <script src="Scripts/angular.min.js"></script>
+    <script src="Scripts/angular-datatables.min.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script src="Scripts/ui-bootstrap-tpls-2.3.1.min.js"></script>
+    <script src="Scripts/bootstrap-select.min.js"></script>
+    <script src="Scripts/highcharts.js"></script>
+    <script src="Scripts/dark-unica.js"></script>
+    <script src="/Scripts/src/app.js"></script>
+    <script src="/Scripts/src/app-service.js"></script>
+    <script src="/Scripts/src/app-controller.js"></script>
     <link href="Styles/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
     <link href="Styles/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="Styles/angular-datatables.css" rel="stylesheet" />
+    <link href="Styles/jquery.loader.min.css" rel="stylesheet" />
     <style>
         td, th {
             text-align: center;
         }
 
         div .chart {
-            float: right;
-            height: 400px;
+            height: 100%;
             width: 100%;
         }
         
@@ -82,9 +97,9 @@
                         </tr>
                     </tbody>
                 </table>
-                <p ng-show="showReport">גרף מותאם:</p>
-                <div class="chart" dir="ltr" id="lineChart"></div>
+                <p ng-show="showReport">גרף מותאם:</p> 
             </div>
+            <div class="chart" dir="ltr" id="lineChart"></div>
         </div>
 
 
@@ -135,24 +150,6 @@
         </div>
 
     </div>
-
-
-    <script src="Scripts/jquery-3.1.1.min.js"></script>
-    <script src="Scripts/jquery.dataTables.min.js"></script>
-    <script src="Scripts/jquery.loader.min.js"></script>
-    <script src="Scripts/angular.min.js"></script>
-    <script src="Scripts/angular-datatables.min.js"></script>
-    <script src="Scripts/bootstrap.min.js"></script>
-    <script src="Scripts/ui-bootstrap-tpls-2.3.1.min.js"></script>
-    <script src="Scripts/bootstrap-select.min.js"></script>
-    <script src="Scripts/highcharts.js"></script>
-    <script src="Scripts/dark-unica.js"></script>
-    <script src="/Scripts/src/app.js"></script>
-    <script src="/Scripts/src/app-service.js"></script>
-    <script src="/Scripts/src/app-controller.js"></script>
-    <link href="Styles/angular-datatables.css" rel="stylesheet" />
-    <link href="Styles/jquery.loader.min.css" rel="stylesheet" />
-
 
 </body>
 </html>

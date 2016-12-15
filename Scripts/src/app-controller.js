@@ -1,6 +1,9 @@
 ﻿angular.module('GMRSapp')
 	.controller('AppController', ['$scope', 'AppService', 'DTOptionsBuilder', function ($scope, AppService, DTOptionsBuilder) {
 
+	    $scope.chart;
+
+
 	    $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withDisplayLength(10)
         .withLanguage({
@@ -165,7 +168,7 @@
 	    }
 
 	    $scope.loadLineChart = function () {
-	        var chart = Highcharts.chart('lineChart', {
+	         $scope.chart = Highcharts.chart('lineChart', {
 	            credits: {
 	                text: 'ערן התותח',
 	                href: 'https://www.facebook.com/Eran.Math.teacher/'
