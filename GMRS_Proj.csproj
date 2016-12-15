@@ -83,7 +83,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <Content Include="Styles\images\ajax-loader.gif" />
     <Content Include="index.html" />
     <Content Include="Models\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -111,8 +110,11 @@
     <Content Include="Styles\angular-datatables.css" />
     <Content Include="Styles\bootstrap-select.min.css" />
     <Content Include="Styles\bootstrap.min.css" />
+    <Content Include="Styles\images\ajax-loader.gif" />
     <Content Include="Styles\jquery.loader.min.css" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
