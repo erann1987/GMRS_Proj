@@ -99,6 +99,7 @@
 	        }
 	    }
 
+
 	    //get all the data form db
 	    $scope.getAllData = function () {
 	        $.loader({
