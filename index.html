@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
+
+    <script src="Scripts/linq.min.js"></script>
     <script src="Scripts/jquery-3.1.1.min.js"></script>
     <script src="Scripts/jquery.dataTables.min.js"></script>
     <script src="Scripts/jquery.loader.min.js"></script>
@@ -48,10 +50,9 @@
         <div style="text-align:center" dismiss-on-timeout="2000" uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>
         <div class="container">
             <p>לחץ על הפעולה שברצונך לבצע:</p>
-            <div style="margin-bottom:15px" class="btn-group">
-                <button type="button" class="btn btn-primary" ng-click="getAllData(); showDataTable = true;">טען את כל המידע</button>
-                <button ng-click="createReport()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#createReportModal">צור דוח</button>
-            </div>
+            <button type="button" class="btn btn-primary btn-block" ng-click="getAllData(); showDataTable = true;">טען את כל המידע</button>
+            <button ng-click="createReportButton()" type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#createReportModal">צור דוח</button>
+
             <div ng-show="showDataTable" id="data_table">
                 <p>טבלת מידע:</p>
                 <table datatable="ng" dt-options="dtOptions" class="table table-inverse table-bordered table-hover">
@@ -77,6 +78,7 @@
                     </tbody>
                 </table>
             </div>
+
             <p ng-show="showReport">טבלת מידע:</p>
             <div id="report_table" ng-show="showReport">
                 <table datatable="ng" dt-options="dtOptions" class="table table-bordered table-inverse table-hover ">
@@ -118,13 +120,23 @@
                             <div class="form-group">
                                 <label for="recipient-name" class="form-control-label">סוג מידע:</label>
                                 <select class="selectpicker" multiple ng-model="report.cReportType">
-                                    <option ng-repeat="val in report.reportType" value="{{val.ValueTypeName}}">{{val.ValueTypeName}}</option>
+                                    <option ng-repeat="val in report.reportType" value="{{val}}">{{val}}</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="recipient-name" class="form-control-label">קטגוריה:</label>
                                 <select ng-options="category.CategoryName for category in report.categories track by category.CategoryID"
                                         ng-model="report.cCategory"></select>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-info btn-xs" ng-click="getCatDesc(); catDescChoosed=true;">טען אפשרויות</button>
+                                <div ng-show="catDescChoosed" class="form-group">
+                                    <label for="recipient-name" class="form-control-label">בחר מהרשימה:</label>
+                                    <select class="selectpicker"  ng-model="report.cCategoryDesc">
+                                        <option ng-repeat="catDesc in report.categoryDesc" value="{{catDesc.CategoryDesc}}">{{catDesc.CategoryDesc}}</option>
+                                    </select>
+                                </div>
+                                
                             </div>
                             <div class="form-group">
                                 <label for="recipient-name" class="form-control-label">משנה:</label>
