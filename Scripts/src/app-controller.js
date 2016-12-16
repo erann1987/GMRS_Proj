@@ -27,6 +27,11 @@
         //get list of categories descriptions
 	    $scope.getCatDesc = function()
 	    {
+	        if ($scope.report.cCategory == null) {
+	            alert("אנא בחר תחילה קטגוריה");
+	            return;
+	        }
+	            
 	        $.loader({
 	            className: "blue-with-image-2",
 	            content: ''
@@ -34,6 +39,7 @@
 	        AppService.GetCategoriesDes($scope.report.cCategory.CategoryName).then(function (results) {
 	            $scope.report.categoryDesc = results.data;
 	            $.loader('close');
+	            $scope.catDescChoosed = true;
 	        }, function (e) {
 	            $.loader('close');
 	            alert("getting categories failed");
@@ -72,6 +78,7 @@
 	        AppService.GetRelevantData($scope.report).then(function (results) {
 	            $scope.report.data = results.data;
 	            $scope.renderDataForChart();
+	            $scope.renderDataForTable();
 	            $scope.loadLineChart();
 	            $scope.showReport = true;
 	            $.loader('close');
@@ -84,7 +91,6 @@
 	    //render data for chart
 	    $scope.renderDataForChart = function () {
 	        $scope.lineChart.categories = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'];
-	        var seriesSize = $scope.report.cEndYear - $scope.report.cStartYear + 1;
 	        for (i = $scope.report.cStartYear; i <= $scope.report.cEndYear; i++) {
 	            var valArray = Enumerable.From($scope.report.data)
                     .Where(function (x) { return x.Year == i })
@@ -99,6 +105,27 @@
 	        }
 	    }
 
+	    $scope.dTable = {
+	        month: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+	        years: [],
+            data:[]
+	    }
+	    //render data for table
+	    $scope.renderDataForTable = function()
+	    {
+	        for (i = 1; i < 13; i++) {
+	            var valArray = Enumerable.From($scope.report.data)
+                    .Where(function (x) { return x.Month == i })
+                    .OrderBy(function (x) { return x.Year })
+                    .Select(function (x) { return x.Value })
+                    .ToArray();
+	            $scope.dTable.data.push(valArray);
+	        }
+	        
+	        for (i = $scope.report.cStartYear; i <= $scope.report.cEndYear; i++) {
+	            $scope.dTable.years.push(i);
+	        }
+	    }
 
 	    //get all the data form db
 	    $scope.getAllData = function () {
@@ -258,7 +285,8 @@
 
 	    //data-tables configuration
 	    $scope.dtOptions = DTOptionsBuilder.newOptions()
-        .withDisplayLength(10)
+        .withDisplayLength(12)
+        .withPaginationType('full_numbers')
         .withLanguage({
             "processing": "מעבד...",
             "lengthMenu": "הצג _MENU_ פריטים",
