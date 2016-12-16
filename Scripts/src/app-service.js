@@ -1,11 +1,11 @@
 ﻿angular.module('GMRSapp').factory('AppService', function ($http) {
     var fac = {};
 
-    //get all data service
-    fac.GetAllData = function () {
+    //get data for create report modal
+    fac.GetCreateReportModalData = function () {
         req = {
             method: 'GET',
-            url: '/api/gmrs/data',
+            url: '/api/gmrs/reportmodal',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -14,10 +14,11 @@
         return $http(req);
     }
 
-    fac.GetAllCategories = function () {
+    //get list of category descripstions
+    fac.GetCategoriesDes = function (catName) {
         req = {
             method: 'GET',
-            url: '/api/gmrs/categories',
+            url: '/api/gmrs/categories/' + catName,
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -26,24 +27,14 @@
         return $http(req);
     }
 
-    fac.GetAllValueType = function () {
-        req = {
-            method: 'GET',
-            url: '/api/gmrs/valuetype',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        }
-        return $http(req);
-    }
-
+    //get relevant data for report
     fac.GetRelevantData = function (rep) {
         var report = {
             category: rep.cCategory.CategoryName,
             startYear: rep.cStartYear,
             endYear: rep.cEndYear,
-            reportType: rep.cReportType
+            reportType: rep.cReportType[0],
+            catDesc: rep.cCategoryDesc
         }
         req = {
             method: 'POST',
@@ -57,6 +48,18 @@
         return $http(req);
     }
 
+    //get all data service
+    fac.GetAllData = function () {
+        req = {
+            method: 'GET',
+            url: '/api/gmrs/data',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        }
+        return $http(req);
+    }
 
     return fac;
 });
