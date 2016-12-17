@@ -12,7 +12,7 @@
 	        reportType: [],
 	        categories: [],
             categoryDesc:[],
-	        years: ['2012', '2013', '2014', '2015', '2016'],
+	        years: [],
 	        cCategory: null,
             cCategoryDesc: '',
 	        cReportType: [],
@@ -20,31 +20,25 @@
 	        cEndYear: null,
 	        data: []
 	    }
+
+	    $scope.$watch('report.cCategory', function (newValue, oldValue) {
+	        if (newValue !== oldValue) {
+	            $.loader({
+	                className: "blue-with-image-2",
+	                content: ''
+	            });
+	            AppService.GetCategoriesDes($scope.report.cCategory.CategoryName).then(function (results) {
+	                $scope.report.categoryDesc = results.data;
+	                $.loader('close');
+	                $scope.catDescChoosed = true;
+	            }, function (e) {
+	                $.loader('close');
+	                alert("getting categories description list failed");
+	            });
+	        }
+	    });
 	    $scope.showReport = false;
 	    catDescChoosed = false;
-
-
-        //get list of categories descriptions
-	    $scope.getCatDesc = function()
-	    {
-	        if ($scope.report.cCategory == null) {
-	            alert("אנא בחר תחילה קטגוריה");
-	            return;
-	        }
-	            
-	        $.loader({
-	            className: "blue-with-image-2",
-	            content: ''
-	        });
-	        AppService.GetCategoriesDes($scope.report.cCategory.CategoryName).then(function (results) {
-	            $scope.report.categoryDesc = results.data;
-	            $.loader('close');
-	            $scope.catDescChoosed = true;
-	        }, function (e) {
-	            $.loader('close');
-	            alert("getting categories failed");
-	        });
-	    }
 
 	    $scope.dataList = [];
 	    $scope.showDataTable = false;
@@ -59,6 +53,7 @@
 	            $scope.report.reportType = results.data.valueTypes;
 	            $scope.report.categories = results.data.categories;
 	            $scope.report.years = results.data.years;
+	            $scope.report.years.sort();
 	            $scope.$watch(function () {
 	                $('.selectpicker').selectpicker('refresh');
 	            });
