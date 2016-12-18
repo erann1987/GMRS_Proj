@@ -2,6 +2,11 @@
 	.controller('AppController', ['$scope', 'AppService', 'DTOptionsBuilder', function ($scope, AppService, DTOptionsBuilder) {
 
 	    $scope.chart;
+	    $scope.showReport = false;
+	    catDescChoosed = false;
+
+	    $scope.dataList = [];
+	    $scope.showDataTable = false;
 
 	    $scope.lineChart = {
 	        categories: [],
@@ -20,7 +25,7 @@
 	        cEndYear: null,
 	        data: []
 	    }
-
+        //when user picked a category in create roport modal
 	    $scope.$watch('report.cCategory', function (newValue, oldValue) {
 	        if (newValue !== oldValue) {
 	            $.loader({
@@ -37,11 +42,6 @@
 	            });
 	        }
 	    });
-	    $scope.showReport = false;
-	    catDescChoosed = false;
-
-	    $scope.dataList = [];
-	    $scope.showDataTable = false;
 
 	    //get data for create report modal
 	    $scope.createReportButton = function () {
@@ -136,6 +136,7 @@
 	            alert("getting categories failed");
 	        });
 	    }
+
 
         //charts:
 
@@ -301,5 +302,7 @@
             }
         })
         .withOption('bLengthChange', false);
+
+
 
 	}]);
