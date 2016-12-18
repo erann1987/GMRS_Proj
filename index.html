@@ -145,7 +145,7 @@
                                 <label for="recipient-name" class="form-control-label">משנה:</label>
                                 <select ng-options="year for year in report.years" ng-model="report.cStartYear" required></select>
                                 <label for="recipient-name" class="form-control-label">עד שנה:</label>
-                                <select ng-options="year for year in report.years" ng-model="report.cEndYear" required></select>
+                                <select ng-disabled="(report.cStartYear==null)" ng-options="year for year in report.possibleEndYears" ng-model="report.cEndYear" required></select>
                             </div>
                         </form>
                     </div>

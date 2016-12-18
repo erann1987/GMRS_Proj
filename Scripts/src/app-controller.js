@@ -17,7 +17,8 @@
 	        reportType: [],
 	        categories: [],
             categoryDesc:[],
-	        years: [],
+            years: [],
+            possibleEndYears: [],
 	        cCategory: null,
             cCategoryDesc: '',
 	        cReportType: [],
@@ -42,7 +43,18 @@
 	            });
 	        }
 	    });
-
+	    //report.cStartYear
+	    $scope.$watch('report.cStartYear', function (newValue, oldValue) {
+	        if (newValue !== oldValue) {
+	            $scope.report.possibleEndYears = Enumerable.From($scope.report.years)
+                    .Where(function (x) { return x>= $scope.report.cStartYear })
+                    .OrderBy(function (x) { return x })
+                    .ToArray();
+                $scope.$watch(function () {
+	                $('.selectpicker').selectpicker('refresh');
+	            });
+	        }
+	    });
 	    //get data for create report modal
 	    $scope.createReportButton = function () {
 	        $.loader({
