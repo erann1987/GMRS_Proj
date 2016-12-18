@@ -136,7 +136,7 @@
                             <div class="form-group">
                                 <div ng-show="catDescChoosed" class="form-group">
                                     <label for="recipient-name" class="form-control-label">בחר מהרשימה:</label>
-                                    <select data-width="fit" data-live-search="true" class="selectpicker" ng-model="report.cCategoryDesc">
+                                    <select data-width="fit" data-live-search="true" class="selectpicker show-tick" title="בחר פה..." ng-model=" report.cCategoryDesc">
                                         <option style="text-align:right" ng-repeat="catDesc in report.categoryDesc" value="{{catDesc.CategoryDesc}}">{{catDesc.CategoryDesc}}</option>
                                     </select>
                                 </div>
