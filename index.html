@@ -16,6 +16,8 @@
     <script src="Scripts/ui-bootstrap-tpls-2.3.1.min.js"></script>
     <script src="Scripts/bootstrap-select.min.js"></script>
     <script src="Scripts/highcharts.js"></script>
+
+    <script src="https://code.highcharts.com/highcharts-more.js"></script>
     <script src="Scripts/dark-unica.js"></script>
     <script src="/Scripts/src/app.js"></script>
     <script src="/Scripts/src/app-service.js"></script>
@@ -34,25 +36,33 @@
             height: 100%;
             width: 100%;
         }
+        .black-background {background-color:#000000;}
+        .white {color:#ffffff;}
         
     </style>
     <title>GMRS</title>
 </head>
 <body ng-app="GMRSapp">
-    <div style="text-align:center" class="jumbotron">
-        <h1 class="display-2">ברוך הבא ל - GMRS !</h1>
-        <p class="lead">כאן תוכל ליצור דוחות אינטרקטיבים בצורה מהירה ויעילה!</p>
-        <hr class="my-2">
-        <h6 style="text-align:right">פותח ע"י: ערן נחום וגור אריה יהודה</h6>
-        <button style="float:right" class="btn btn-info btn-xs">קרא עוד</button>
-    </div>
-    <div ng-controller="AppController">
+    <div ng-controller="AppController" class="jumbotron">
+        <div style="text-align:center" class="jumbotron">
+            <div dir="ltr" id="container" style="width: 200px; height:200px; margin: 0 auto; float:left"></div>
+            <h1 class="display-2">ברוך הבא ל - GMRS !</h1>
+            <h2 class="display-12">(General Manger Report System)</h2>
+            <p class="lead">כאן תוכל ליצור ולנהל דוחות אינטרקטיבים בצורה מהירה ויעילה!</p>
+            <br /><br />
+            <hr class="my-2">
+            <h6 style="text-align:right">פותח ע"י: ערן נחום וגור אריה יהודה</h6>
+            <button style="float:right" class="btn btn-info btn-xs black-background white">קרא עוד</button>
+            <br /><br />
+            <p class="pull-right">לחץ על הפעולה שברצונך לבצע:</p>
+            <button type="button" class="btn btn-success btn-block black-background white" ng-click="getAllData(); showDataTable = true;">טען את כל המידע</button>
+            <button ng-click="createReportButton()" type="button" class="btn btn-success btn-block black-background white" data-toggle="modal" data-target="#createReportModal">צור דוח</button>
+        </div>
+
         <div style="text-align:center" dismiss-on-timeout="2000" uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>
         <div class="container">
-            <p>לחץ על הפעולה שברצונך לבצע:</p>
-            <button type="button" class="btn btn-primary btn-block" ng-click="getAllData(); showDataTable = true;">טען את כל המידע</button>
-            <button ng-click="createReportButton()" type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#createReportModal">צור דוח</button>
 
+            <!--all data table-->
             <div ng-show="showDataTable" id="data_table">
                 <p>טבלת מידע:</p>
                 <table datatable="ng" dt-options="dtOptions" class="table table-inverse table-bordered table-hover">
@@ -95,7 +105,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <p ng-show="showReport">גרף מותאם:</p> 
+                <p ng-show="showReport">גרף מותאם:</p>
             </div>
             <div class="chart" dir="ltr" id="lineChart"></div>
         </div>
@@ -127,11 +137,11 @@
                             <div class="form-group">
                                 <div ng-show="catDescChoosed" class="form-group">
                                     <label for="recipient-name" class="form-control-label">בחר מהרשימה:</label>
-                                    <select class="selectpicker"  ng-model="report.cCategoryDesc">
+                                    <select class="selectpicker" ng-model="report.cCategoryDesc">
                                         <option ng-repeat="catDesc in report.categoryDesc" value="{{catDesc.CategoryDesc}}">{{catDesc.CategoryDesc}}</option>
                                     </select>
                                 </div>
-                                
+
                             </div>
                             <div class="form-group">
                                 <label for="recipient-name" class="form-control-label">משנה:</label>
@@ -144,14 +154,198 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">ביטול</button>
-                        <button ng-click="loadRelevantData()" type="button" class="btn btn-success" data-dismiss="modal">אישור</button>
+                        <button type="button" class="btn btn-danger black-background white pull-left" data-dismiss="modal">ביטול</button>
+                        <button ng-click="loadRelevantData()" type="button" class="btn btn-success black-background white pull-right" data-dismiss="modal">אישור</button>
                     </div>
                 </div>
 
             </div>
         </div>
+        <script>
+            $(function () {
 
+                /**
+                 * Get the current time
+                 */
+                function getNow() {
+                    var now = new Date();
+
+                    return {
+                        hours: now.getHours() + now.getMinutes() / 60,
+                        minutes: now.getMinutes() * 12 / 60 + now.getSeconds() * 12 / 3600,
+                        seconds: now.getSeconds() * 12 / 60
+                    };
+                }
+
+                /**
+                 * Pad numbers
+                 */
+                function pad(number, length) {
+                    // Create an array of the remaining length + 1 and join it with 0's
+                    return new Array((length || 2) + 1 - String(number).length).join(0) + number;
+                }
+
+                var now = getNow();
+
+                // Create the chart
+                Highcharts.chart('container', {
+
+                    chart: {
+                        type: 'gauge',
+                        plotBackgroundColor: null,
+                        plotBackgroundImage: null,
+                        plotBorderWidth: 0,
+                        plotShadow: false,
+                        height: 200
+                    },
+                    title: {
+                        text: null
+                    },
+
+                    credits: {
+                        enabled: false
+                    },
+
+                    pane: {
+                        background: [{
+                            // default background
+                        }, {
+                            // reflex for supported browsers
+                            backgroundColor: Highcharts.svg ? {
+                                radialGradient: {
+                                    cx: 0.5,
+                                    cy: -0.4,
+                                    r: 1.9
+                                },
+                                stops: [
+                                    [0.5, 'rgba(255, 255, 255, 0.2)'],
+                                    [0.5, 'rgba(200, 200, 200, 0.2)']
+                                ]
+                            } : null
+                        }]
+                    },
+
+                    yAxis: {
+                        labels: {
+                            distance: -20
+                        },
+                        min: 0,
+                        max: 12,
+                        lineWidth: 0,
+                        showFirstLabel: false,
+
+                        minorTickInterval: 'auto',
+                        minorTickWidth: 1,
+                        minorTickLength: 5,
+                        minorTickPosition: 'inside',
+                        minorGridLineWidth: 0,
+                        minorTickColor: '#666',
+
+                        tickInterval: 1,
+                        tickWidth: 2,
+                        tickPosition: 'inside',
+                        tickLength: 10,
+                        tickColor: '#666',
+                        title: {
+                            text: 'Powered by<br/>GMRS',
+                            style: {
+                                color: '#BBB',
+                                fontWeight: 'normal',
+                                fontSize: '8px',
+                                lineHeight: '10px'
+                            },
+                            y: 10
+                        }
+                    },
+
+                    tooltip: {
+                        formatter: function () {
+                            return this.series.chart.tooltipText;
+                        }
+                    },
+
+                    series: [{
+                        data: [{
+                            id: 'hour',
+                            y: now.hours,
+                            dial: {
+                                radius: '60%',
+                                baseWidth: 4,
+                                baseLength: '95%',
+                                rearLength: 0
+                            }
+                        }, {
+                            id: 'minute',
+                            y: now.minutes,
+                            dial: {
+                                baseLength: '95%',
+                                rearLength: 0
+                            }
+                        }, {
+                            id: 'second',
+                            y: now.seconds,
+                            dial: {
+                                radius: '100%',
+                                baseWidth: 1,
+                                rearLength: '20%'
+                            }
+                        }],
+                        animation: false,
+                        dataLabels: {
+                            enabled: false
+                        }
+                    }]
+                },
+
+                    // Move
+                    function (chart) {
+                        setInterval(function () {
+
+                            now = getNow();
+
+                            if (chart.axes) { // not destroyed
+                                var hour = chart.get('hour'),
+                                    minute = chart.get('minute'),
+                                    second = chart.get('second'),
+                                    // run animation unless we're wrapping around from 59 to 0
+                                    animation = now.seconds === 0 ?
+                                        false : {
+                                            easing: 'easeOutBounce'
+                                        };
+
+                                // Cache the tooltip text
+                                chart.tooltipText =
+                                    pad(Math.floor(now.hours), 2) + ':' +
+                                    pad(Math.floor(now.minutes * 5), 2) + ':' +
+                                    pad(now.seconds * 5, 2);
+
+
+                                hour.update(now.hours, true, animation);
+                                minute.update(now.minutes, true, animation);
+                                second.update(now.seconds, true, animation);
+                            }
+
+                        }, 1000);
+
+                    });
+            });
+
+            /**
+             * Easing function from https://github.com/danro/easing-js/blob/master/easing.js
+             */
+            Math.easeOutBounce = function (pos) {
+                if ((pos) < (1 / 2.75)) {
+                    return (7.5625 * pos * pos);
+                }
+                if (pos < (2 / 2.75)) {
+                    return (7.5625 * (pos -= (1.5 / 2.75)) * pos + 0.75);
+                }
+                if (pos < (2.5 / 2.75)) {
+                    return (7.5625 * (pos -= (2.25 / 2.75)) * pos + 0.9375);
+                }
+                return (7.5625 * (pos -= (2.625 / 2.75)) * pos + 0.984375);
+            };
+        </script>
     </div>
 
 </body>
