@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-
     <script src="Scripts/linq.min.js"></script>
     <script src="Scripts/jquery-3.1.1.min.js"></script>
     <script src="Scripts/jquery.dataTables.min.js"></script>
@@ -16,12 +15,12 @@
     <script src="Scripts/ui-bootstrap-tpls-2.3.1.min.js"></script>
     <script src="Scripts/bootstrap-select.min.js"></script>
     <script src="Scripts/highcharts.js"></script>
-
-    <script src="https://code.highcharts.com/highcharts-more.js"></script>
+    <script src="Scripts/highcharts-more.js"></script>
     <script src="Scripts/dark-unica.js"></script>
     <script src="/Scripts/src/app.js"></script>
     <script src="/Scripts/src/app-service.js"></script>
     <script src="/Scripts/src/app-controller.js"></script>
+    
     <link href="Styles/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
     <link href="Styles/bootstrap-select.min.css" rel="stylesheet" />
@@ -125,8 +124,8 @@
                         <form>
                             <div class="form-group">
                                 <label for="recipient-name" class="form-control-label">סוג מידע:</label>
-                                <select class="selectpicker" multiple ng-model="report.cReportType">
-                                    <option ng-repeat="val in report.reportType" value="{{val}}">{{val}}</option>
+                                <select data-width="fit" data-live-search="true" class="selectpicker" multiple ng-model="report.cReportType">
+                                    <option style="text-align:right" ng-repeat="val in report.reportType" value="{{val}}">{{val}}</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -137,8 +136,8 @@
                             <div class="form-group">
                                 <div ng-show="catDescChoosed" class="form-group">
                                     <label for="recipient-name" class="form-control-label">בחר מהרשימה:</label>
-                                    <select class="selectpicker" ng-model="report.cCategoryDesc">
-                                        <option ng-repeat="catDesc in report.categoryDesc" value="{{catDesc.CategoryDesc}}">{{catDesc.CategoryDesc}}</option>
+                                    <select data-width="fit" data-live-search="true" class="selectpicker" ng-model="report.cCategoryDesc">
+                                        <option style="text-align:right" ng-repeat="catDesc in report.categoryDesc" value="{{catDesc.CategoryDesc}}">{{catDesc.CategoryDesc}}</option>
                                     </select>
                                 </div>
 
@@ -161,6 +160,8 @@
 
             </div>
         </div>
+
+        <!--script for the clock-->
         <script>
             $(function () {
 
