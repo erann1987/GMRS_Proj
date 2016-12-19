@@ -22,6 +22,7 @@ namespace GMRS_Proj.Models
     
         public int ValueTypeID { get; set; }
         public string ValueTypeName { get; set; }
+        public string ValueTypeDesc { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Data> Data { get; set; }

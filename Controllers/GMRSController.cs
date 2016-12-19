@@ -39,7 +39,7 @@ namespace GMRS_Proj.Controllers
         
         //get category descriptions
         [Route("api/gmrs/categories/{catName}")]
-        public IHttpActionResult getCategories(string catName)
+        public IHttpActionResult getCategoriesDesc(string catName)
         {
             IEnumerable<Category> res;
 
@@ -56,6 +56,32 @@ namespace GMRS_Proj.Controllers
                                     DataCategory.CategoryDesc
                                 }).Distinct().ToList();
                     return Ok(data);
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
+        }
+
+        //get value type descriptions
+        [Route("api/gmrs/valtype/{valtypename}")]
+        public IHttpActionResult getValTypeDesc(string valtypename)
+        {
+            using (var db = new GMRSDBEntities())
+            {
+                try
+                {
+                    db.Configuration.ProxyCreationEnabled = false;
+                    var valTypesDesc = (from ValueType in db.ValueType
+                                        where
+                                          ValueType.ValueTypeName == valtypename
+                                        select new
+                                        {
+                                            ValueType.ValueTypeID,
+                                            ValueType.ValueTypeDesc
+                                        }).Distinct().ToList();
+                    return Ok(valTypesDesc);
                 }
                 catch (Exception ex)
                 {
@@ -95,6 +121,7 @@ namespace GMRS_Proj.Controllers
                                     {
                                         ValueType.ValueTypeName
                                     }).Distinct().ToList();
+                    
                     for (int i = 0; i < valTypes.Count; i++)
                     {
                         rp.valueTypes.Add(valTypes[i].ValueTypeName);
@@ -133,21 +160,23 @@ namespace GMRS_Proj.Controllers
 
                     var data = (from DataCategory in db.DataCategory
                                 where
-                                  DataCategory.Data.Year >= report.startYear && DataCategory.Data.Year <= report.endYear &&
+                                  DataCategory.Data.Year >= 2013 && DataCategory.Data.Year <= 2014 &&
+                                  DataCategory.Data.ValueType.ValueTypeName == report.reportType &&
                                   DataCategory.Category.CategoryName == report.category &&
-                                  DataCategory.CategoryDesc == report.catDesc &&
-                                  DataCategory.Data.ValueType.ValueTypeName == report.reportType
+                                  DataCategory.CategoryDesc == report.catDesc
                                 group DataCategory.Data by new
                                 {
-                                    DataCategory.Data.Value,
-                                    DataCategory.Data.Month,
-                                    DataCategory.Data.Year
+                                    DataCategory.Data.Year,
+                                    DataCategory.Data.Month
                                 } into g
+                                orderby
+                                  g.Key.Year,
+                                  g.Key.Month
                                 select new
                                 {
+                                    g.Key.Year,
                                     g.Key.Month,
-                                    Value = (double?)g.Sum(p => p.Value),
-                                    g.Key.Year
+                                    value = (double?)g.Sum(p => p.Value)
                                 }).ToList();
                     return Ok(data);
                 }
@@ -160,6 +189,7 @@ namespace GMRS_Proj.Controllers
 
     }
 
+    //class Report
     public class Report
     {
         public String category;
@@ -169,9 +199,11 @@ namespace GMRS_Proj.Controllers
         public string reportType;
     }
 
+    //class ReportModal
     public class ReportModal
     {
         public List<string> valueTypes { get; set; }
+        public List<string> valueTypesDesc { get; set; }
         public List<Category> categories { get; set; }
         public List<int> years { get; set; }
 
@@ -179,6 +211,7 @@ namespace GMRS_Proj.Controllers
         {
             valueTypes = new List<string>();
             categories = new List<Category>();
+            valueTypesDesc = new List<string>();
             years = new List<int>();
         }
     }

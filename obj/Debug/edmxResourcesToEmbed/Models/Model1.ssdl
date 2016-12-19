@@ -32,6 +32,7 @@
     </Key>
     <Property Name="ValueTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ValueTypeName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="ValueTypeDesc" Type="varchar" MaxLength="50" />
   </EntityType>
   <Association Name="FK_Data_ValueType">
     <End Role="ValueType" Type="Self.ValueType" Multiplicity="1" />
