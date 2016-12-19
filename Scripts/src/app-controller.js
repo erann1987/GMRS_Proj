@@ -3,7 +3,8 @@
 
 	    $scope.chart;
 	    $scope.showReport = false;
-	    catDescChoosed = false;
+	    $scopecatDescChoosed = false;
+	    $scope.ReportTypeChoosed = false;
 
 	    $scope.dataList = [];
 	    $scope.showDataTable = false;
@@ -15,14 +16,16 @@
 
 	    $scope.report = {
 	        reportType: [],
+            valueTypeDesc: [],
 	        categories: [],
             categoryDesc:[],
             years: [],
             possibleEndYears: [],
 	        cCategory: null,
             cCategoryDesc: '',
-	        cReportType: [],
+	        cReportType: null,
 	        cStartYear: null,
+	        cValueTypeDesc: null,
 	        cEndYear: null,
 	        data: []
 	    }
@@ -33,10 +36,31 @@
 	                className: "blue-with-image-2",
 	                content: ''
 	            });
-	            AppService.GetCategoriesDes($scope.report.cCategory.CategoryName).then(function (results) {
+	            AppService.GetCategoriesDesc($scope.report.cCategory.CategoryName).then(function (results) {
 	                $scope.report.categoryDesc = results.data;
 	                $.loader('close');
 	                $scope.catDescChoosed = true;
+	            }, function (e) {
+	                $.loader('close');
+	                alert("getting categories description list failed");
+	            });
+	        }
+	    });
+
+	    //when user picked a value type in create roport modal
+	    $scope.$watch('report.cReportType', function (newValue, oldValue) {
+	        if (newValue !== oldValue) {
+	            $.loader({
+	                className: "blue-with-image-2",
+	                content: ''
+	            });
+	            AppService.GetValueTypeDesc($scope.report.cReportType).then(function (results) {
+	                $scope.report.valueTypeDesc = results.data;
+	                $.loader('close');
+	                $scope.$watch(function () {
+	                    $('.selectpicker').selectpicker('refresh');
+	                });
+	                $scope.ReportTypeChoosed = true;
 	            }, function (e) {
 	                $.loader('close');
 	                alert("getting categories description list failed");
@@ -102,7 +126,7 @@
 	            var valArray = Enumerable.From($scope.report.data)
                     .Where(function (x) { return x.Year == i })
                     .OrderBy(function (x) { return x.Month })
-                    .Select(function (x) { return x.Value })
+                    .Select(function (x) { return x.value })
                     .ToArray();
 	            var seria = {
 	                name: i,
@@ -124,7 +148,7 @@
 	            var valArray = Enumerable.From($scope.report.data)
                     .Where(function (x) { return x.Month == i })
                     .OrderBy(function (x) { return x.Year })
-                    .Select(function (x) { return x.Value })
+                    .Select(function (x) { return x.value })
                     .ToArray();
 	            $scope.dTable.data.push(valArray);
 	        }
@@ -160,7 +184,7 @@
 	            },
 	            title: {
 	                text: 'גרף ' + $scope.report.cReportType + ' שנתי ',
-	                x: -20, //center
+	                x: -20, 
 	                useHTML: Highcharts.hasBidiBug
 	            },
 	            subtitle: {
@@ -204,85 +228,15 @@
 	    }
 
 	    $scope.loadBarChart = function () {
-	        $scope.showIncome_outcomeCart = true;
 
-	        var myChart = Highcharts.chart('income_outcomeChart', {
-	            chart: {
-	                type: 'bar'
-	            },
-	            title: {
-	                text: 'הוצאות הכנסות'
-	            },
-	            xAxis: {
-	                categories: $scope.report.catDesc
-	            },
-	            yAxis: {
-	                title: {
-	                    text: 'ש"ח'
-	                }
-	            },
-	            series: [{
-	                name: 'הנכסות',
-	                data: [514334, 326337, 346553]
-	            }, {
-	                name: 'הוצאות',
-	                data: [513434, 646337, 344653]
-	            }]
-	        });
 	    }
 
 	    $scope.loadPieChart = function () {
-	        Highcharts.chart('pieChart', {
-	            credits: {
-	                text: 'ערן התותח',
-	                href: 'https://www.facebook.com/Eran.Math.teacher/'
-	            },
-	            chart: {
-	                plotBackgroundColor: null,
-	                plotBorderWidth: null,
-	                plotShadow: false,
-	                type: 'pie'
-	            },
-	            title: {
-	                text: ' פילוג הכנסות לפי ' + $scope.report.cCategory.CategoryName + ' שנים: ' + $scope.report.cStartYear + '-' + $scope.report.cEndYear
-	            },
-	            tooltip: {
-	                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-	            },
-	            plotOptions: {
-	                pie: {
-	                    allowPointSelect: true,
-	                    cursor: 'pointer',
-	                    dataLabels: {
-	                        enabled: true,
-	                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-	                        style: {
-	                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-	                        }
-	                    }
-	                }
-	            },
-	            xAxis: {
-	                labels: {
-	                    align: 'left'
-	                }
-	            },
-	            legend: {
-	                rtl: true
-	            }, useHTML: true,
-	            series: [{
-	                name: $scope.report.cCategory.CategoryName,
-	                colorByPoint: true,
-	                data: $scope.report.valForPieChart
-	            }]
-	        });
+
 	    }
 
 	    //alerts
-	    $scope.alerts = [
-            { type: 'danger', msg: 'testing alerts!' },
-            { type: 'success', msg: 'testing alerts!' }
-	    ];
+	    $scope.alerts = [];
 	    $scope.addAlert = function (ty, ms) {
 	        $scope.alerts.push({ type: ty, msg: ms });
 	    };

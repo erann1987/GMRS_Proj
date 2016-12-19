@@ -15,10 +15,23 @@
     }
 
     //get list of category descripstions
-    fac.GetCategoriesDes = function (catName) {
+    fac.GetCategoriesDesc = function (catName) {
         req = {
             method: 'GET',
             url: '/api/gmrs/categories/' + catName,
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        }
+        return $http(req);
+    }
+
+    //get list of value type descripstions
+    fac.GetValueTypeDesc = function (valTpeDesc) {
+        req = {
+            method: 'GET',
+            url: '/api/gmrs/valtype/' + valTpeDesc,
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -33,7 +46,7 @@
             category: rep.cCategory.CategoryName,
             startYear: rep.cStartYear,
             endYear: rep.cEndYear,
-            reportType: rep.cReportType[0],
+            reportType: rep.cReportType,
             catDesc: rep.cCategoryDesc
         }
         req = {

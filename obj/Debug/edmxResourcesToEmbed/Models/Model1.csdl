@@ -38,6 +38,7 @@
     <Property Name="ValueTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="ValueTypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <NavigationProperty Name="Data" Relationship="Self.FK_Data_ValueType" FromRole="ValueType" ToRole="Data" />
+    <Property Name="ValueTypeDesc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
   </EntityType>
   <Association Name="FK_DataCategory_Category">
     <End Role="Category" Type="Self.Category" Multiplicity="1" />

@@ -33,6 +33,7 @@
     <EntitySetMapping Name="ValueType">
       <EntityTypeMapping TypeName="GMRSDBModel.ValueType">
         <MappingFragment StoreEntitySet="ValueType">
+          <ScalarProperty Name="ValueTypeDesc" ColumnName="ValueTypeDesc" />
           <ScalarProperty Name="ValueTypeID" ColumnName="ValueTypeID" />
           <ScalarProperty Name="ValueTypeName" ColumnName="ValueTypeName" />
         </MappingFragment>
