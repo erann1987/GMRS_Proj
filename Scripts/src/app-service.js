@@ -61,18 +61,5 @@
         return $http(req);
     }
 
-    //get all data service
-    fac.GetAllData = function () {
-        req = {
-            method: 'GET',
-            url: '/api/gmrs/data',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        }
-        return $http(req);
-    }
-
     return fac;
 });

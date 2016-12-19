@@ -6,9 +6,6 @@
 	    $scopecatDescChoosed = false;
 	    $scope.ReportTypeChoosed = false;
 
-	    $scope.dataList = [];
-	    $scope.showDataTable = false;
-
 	    $scope.lineChart = {
 	        categories: [],
 	        series: []
@@ -67,7 +64,7 @@
 	            });
 	        }
 	    });
-	    //report.cStartYear
+	    //when user picked a StartYear in create roport modalreport
 	    $scope.$watch('report.cStartYear', function (newValue, oldValue) {
 	        if (newValue !== oldValue) {
 	            $scope.report.possibleEndYears = Enumerable.From($scope.report.years)
@@ -156,21 +153,6 @@
 	        for (i = $scope.report.cStartYear; i <= $scope.report.cEndYear; i++) {
 	            $scope.dTable.years.push(i);
 	        }
-	    }
-
-	    //get all the data form db
-	    $scope.getAllData = function () {
-	        $.loader({
-	            className: "blue-with-image-2",
-	            content: ''
-	        });
-	        AppService.GetAllData().then(function (results) {
-	            $scope.dataList = results.data;
-	            $.loader('close');
-	        }, function (e) {
-	            $.loader('close');
-	            alert("getting categories failed");
-	        });
 	    }
 
 
@@ -268,7 +250,5 @@
             }
         })
         .withOption('bLengthChange', false);
-
-
 
 	}]);

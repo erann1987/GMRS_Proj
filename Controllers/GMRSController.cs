@@ -9,34 +9,7 @@ using System.Web.Http;
 namespace GMRS_Proj.Controllers
 {
     public class GmrsController : ApiController
-    {
-        //get all data
-        [Route("api/gmrs/data")]
-        public IHttpActionResult getData()
-        {
-            using (var db = new GMRSDBEntities())
-            {
-                try
-                {
-                    db.Configuration.ProxyCreationEnabled = false;
-                    var data = (from DataCategory in db.DataCategory
-                                select new
-                                {
-                                    DataCategory.Data.Value,
-                                    DataCategory.Data.Year,
-                                    DataCategory.Data.Month,
-                                    DataCategory.Data.ValueType.ValueTypeName,
-                                    DataCategory.CategoryDesc
-                                }).ToList();
-                    return Ok(data);
-                }
-                catch (Exception ex)
-                {
-                    return null;
-                }
-            }
-        }
-        
+    {    
         //get category descriptions
         [Route("api/gmrs/categories/{catName}")]
         public IHttpActionResult getCategoriesDesc(string catName)
@@ -186,7 +159,6 @@ namespace GMRS_Proj.Controllers
                 }
             }
         }
-
     }
 
     //class Report
@@ -215,6 +187,5 @@ namespace GMRS_Proj.Controllers
             years = new List<int>();
         }
     }
-
 
 }
