@@ -109,6 +109,7 @@
     <Content Include="Scripts\src\app-controller.js" />
     <Content Include="Scripts\src\app-service.js" />
     <Content Include="Scripts\src\app.js" />
+    <Content Include="Scripts\src\clock.js" />
     <Content Include="Scripts\ui-bootstrap-tpls-2.3.1.min.js" />
     <Content Include="Styles\angular-datatables.css" />
     <Content Include="Styles\bootstrap-select.min.css" />

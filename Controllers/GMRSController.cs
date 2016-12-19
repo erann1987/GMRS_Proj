@@ -160,7 +160,7 @@ namespace GMRS_Proj.Controllers
 
                     var data = (from DataCategory in db.DataCategory
                                 where
-                                  DataCategory.Data.Year >= 2013 && DataCategory.Data.Year <= 2014 &&
+                                  DataCategory.Data.Year >= report.startYear && DataCategory.Data.Year <= report.endYear &&
                                   DataCategory.Data.ValueType.ValueTypeName == report.reportType &&
                                   DataCategory.Category.CategoryName == report.category &&
                                   DataCategory.CategoryDesc == report.catDesc
