@@ -152,7 +152,7 @@
 	                    var valArray = Enumerable.From($scope.report.data)
                             .Where(function (x) { return x.CategoryDesc == $scope.report.categoryDesc[i].CategoryDesc })
                             .OrderBy(function (x) { return x.Month })
-                            .Select(function (x) { return x.Value })
+                            .Select(function (x) { return x.value })
                             .ToArray();
 	                    var seria = {
 	                        name: $scope.report.categoryDesc[i].CategoryDesc,
@@ -197,7 +197,7 @@
 	                    var valArray = Enumerable.From($scope.report.data)
                             .Where(function (x) { return x.Month == i })
                             .OrderBy(function (x) { return x.CategoryDesc })
-                            .Select(function (x) { return x.Value })
+                            .Select(function (x) { return x.value })
                             .ToArray();
 	                    $scope.dTable.data.push(valArray);
 	                }
