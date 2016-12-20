@@ -63,6 +63,14 @@
                     id: rep.id
                 }
                 break;
+            case 3:
+                report = {
+                    category: rep.cCategory.CategoryName,
+                    Year: rep.cStartYear,
+                    reportType: rep.cReportType,
+                    id: rep.id
+                }
+                break;
 
         }
         req = {

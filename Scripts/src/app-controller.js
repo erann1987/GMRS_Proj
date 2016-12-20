@@ -12,7 +12,8 @@
 	        title: null,
 	        subtitle: null,
 	        categories: [],
-	        series: []
+	        series: [],
+            drilldownSeries: []
 	    }
 
 	    $scope.report = {
@@ -115,7 +116,9 @@
 	            $scope.report.data = results.data;
 	            $scope.renderDataForChart();
 	            $scope.renderDataForTable();
-	            $scope.loadChart();
+	            if ($scope.report.id == 3)
+	                $scope.loadChart2();
+	            else $scope.loadChart();
 	            switch ($scope.report.id) {
 	                case 1:
 	                    $scope.showReport = true;
@@ -135,6 +138,9 @@
 	    $scope.renderDataForChart = function () {
 	        switch ($scope.report.id) {
 	            case 1:
+	                $scope.reportChart.type = 'line';
+	                $scope.reportChart.title = 'גרף ' + $scope.report.cReportType + ' לפי שנים '
+	                $scope.reportChart.subtitle = $scope.report.cCategory.CategoryName + ': ' + $scope.report.cCategoryDesc;
 	                $scope.reportChart.categories = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'];
 	                for (i = $scope.report.cStartYear; i <= $scope.report.cEndYear; i++) {
 	                    var valArray = Enumerable.From($scope.report.data)
@@ -150,6 +156,9 @@
 	                }
 	                break;
 	            case 2:
+	                $scope.reportChart.type = 'column';
+	                $scope.reportChart.title = 'גרף ' + $scope.report.cReportType + ' ' + $scope.report.cValueTypeDesc + ' לפי ' + $scope.report.cCategory.CategoryName
+	                $scope.reportChart.subtitle = 'שנת ' + $scope.report.cStartYear;
 	                $scope.reportChart.categories = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'];
 	                for (i = 0; i < $scope.report.categoryDesc.length; i++) {
 	                    var valArray = Enumerable.From($scope.report.data)
@@ -164,6 +173,48 @@
 	                    $scope.reportChart.series.push(seria);
 	                }
 	                break;
+	            case 3:
+	                $scope.reportChart.title =  $scope.report.cReportType + ' לפי ' + $scope.report.cCategory.CategoryName
+	                $scope.reportChart.type = 'column';
+	                $scope.reportChart.subtitle = ' שנת ' + $scope.report.cStartYear;
+	                for (i = 0; i < $scope.report.categoryDesc.length; i++) {
+	                    $scope.reportChart.drilldownSeries.push({
+	                        name: $scope.report.categoryDesc[i].CategoryDesc,
+	                        id: $scope.report.categoryDesc[i].CategoryDesc,
+                            data: []
+	                    });
+	                }
+	                var drilldownSeriesData = [];
+	                for (i = 0; i < $scope.report.categoryDesc.length; i++) {
+	                    for (j = 0; j < $scope.report.valueTypeDesc.length; j++) {
+	                        var val = Enumerable.From($scope.report.data)
+                            .Where(function (x) { return x.CategoryDesc == $scope.report.categoryDesc[i].CategoryDesc })
+                            .Where(function (x) { return x.ValueTypeDesc == $scope.report.valueTypeDesc[j].ValueTypeDesc })
+                            .Select(function (x) { return x.value })
+                            .ToArray();
+	                        drilldownSeriesData.push([$scope.report.valueTypeDesc[j].ValueTypeDesc, val[0]])
+	                    }
+	                    $scope.reportChart.drilldownSeries[i].data = drilldownSeriesData;
+	                    drilldownSeriesData = [];
+	                }
+	                var seriesData = [];
+	                for (i = 0; i < $scope.report.categoryDesc.length; i++) {
+	                    var sum = 0;
+	                    for (j = 0; j < $scope.report.valueTypeDesc.length; j++) {
+	                        sum = parseInt(sum) + parseInt($scope.reportChart.drilldownSeries[i].data[j][1]);
+	                    }
+	                    seriesData.push({
+	                        name: $scope.report.categoryDesc[i].CategoryDesc,
+	                        y: sum,
+	                        drilldown: $scope.report.categoryDesc[i].CategoryDesc
+	                    });
+	                }
+	                $scope.reportChart.series[0] = {
+	                    name: $scope.report.cCategory.CategoryName,
+	                    colorByPoint: true,
+	                    data: seriesData
+	                }
+	                break;
 	        }      
 	    }
 
@@ -172,9 +223,6 @@
 	    {
 	        switch ($scope.report.id) {
 	            case 1:
-	                $scope.reportChart.type = 'line';
-	                $scope.reportChart.title = 'גרף ' + $scope.report.cReportType + ' לפי שנים '
-	                $scope.reportChart.subtitle = $scope.report.cCategory.CategoryName + ': ' + $scope.report.cCategoryDesc;
 	                for (i = 1; i < 13; i++) {
 	                    var valArray = Enumerable.From($scope.report.data)
                             .Where(function (x) { return x.Month == i })
@@ -193,9 +241,6 @@
                             .ToArray();
 	                break;
 	            case 2:
-	                $scope.reportChart.type = 'column';
-	                $scope.reportChart.title = 'גרף ' + $scope.report.cReportType + ' ' + $scope.report.cValueTypeDesc + ' לפי ' + $scope.report.cCategory.CategoryName
-	                $scope.reportChart.subtitle = 'שנת ' + $scope.report.cStartYear;
 	                for (i = 1; i < 13; i++) {
 	                    var valArray = Enumerable.From($scope.report.data)
                             .Where(function (x) { return x.Month == i })
@@ -274,11 +319,69 @@
 	            tooltip: {
 	                useHTML: true,
 	                headerFormat: '<small>{point.key}</small><table>',
-	                pointFormat: '<tr><td style="color: {series.color}"> {point.y} שח &nbsp;</td>' + '<td style="text-align: right"><b>  :{series.name}</b></td></tr>'
+	                pointFormat: '<tr><td style="color: {series.color}"> {point.y:f} שח &nbsp;</td>' + '<td style="text-align: right"><b>  :{series.name}</b></td></tr>'
 	            },
-	            series: $scope.reportChart.series
+	            series: $scope.reportChart.series,
+	            drilldown: $scope.reportChart.drilldownSeries
 	        });
 	                        
+	    }
+	    $scope.loadChart2 = function () {
+	        Highcharts.chart('lineChart', {
+	            credits: {
+	                text: 'ערן התותח',
+	                href: 'https://www.facebook.com/Eran.Math.teacher/'
+	            },
+	            chart: {
+	                type: $scope.reportChart.type
+	            },
+	            title: {
+	                text: $scope.reportChart.title,
+	                x: -20,
+	                useHTML: Highcharts.hasBidiBug
+	            },
+	            subtitle: {
+	                text: $scope.reportChart.subtitle
+	            },
+	            xAxis: {
+	                reversed: true,
+	                type: 'category'
+	            },
+	            yAxis: {
+	                title: {
+	                    text: '(ש"ח)',
+	                    useHTML: Highcharts.hasBidiBug
+	                },
+	                plotLines: [{
+	                    value: 0,
+	                    width: 1,
+	                    color: '#808080'
+	                }],
+	                opposite: true,
+	            },
+	            legend: {
+	                enabled: false
+	            },
+	            plotOptions: {
+	                series: {
+	                    borderWidth: 0,
+	                    dataLabels: {
+	                        enabled: true,
+	                    }
+	                }
+	            },
+
+	            tooltip: {
+	                useHTML: true,
+	                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+	                pointFormat: '<span style="color:{point.color}">{point.name}:</span> <b>{point.y:f}</b> ש"ח<br/>'
+	            },
+
+	            series: $scope.reportChart.series,
+	            drilldown: {
+	                series: $scope.reportChart.drilldownSeries
+	            }
+	        });
 	    }
 
 	    $scope.loadBarChart = function () {

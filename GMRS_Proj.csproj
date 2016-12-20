@@ -99,6 +99,8 @@
     <Content Include="Scripts\bootstrap-select.min.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\dark-unica.js" />
+    <Content Include="Scripts\data.js" />
+    <Content Include="Scripts\drilldown.js" />
     <Content Include="Scripts\exporting.js" />
     <Content Include="Scripts\highcharts-more.js" />
     <Content Include="Scripts\highcharts.js" />
