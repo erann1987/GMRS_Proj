@@ -3,18 +3,17 @@
 
 	    $scope.chart;
 	    $scope.showReport = false;
+	    $scope.showReport2 = false;
 	    $scopecatDescChoosed = false;
 	    $scope.ReportTypeChoosed = false;
 
-	    $scope.dataList = [];
-	    $scope.showDataTable = false;
-
-	    $scope.lineChart = {
+	    $scope.reportChart = {
 	        categories: [],
 	        series: []
 	    }
 
 	    $scope.report = {
+            id: null,
 	        reportType: [],
             valueTypeDesc: [],
 	        categories: [],
@@ -29,6 +28,8 @@
 	        cEndYear: null,
 	        data: []
 	    }
+
+        
         //when user picked a category in create roport modal
 	    $scope.$watch('report.cCategory', function (newValue, oldValue) {
 	        if (newValue !== oldValue) {
@@ -46,7 +47,7 @@
 	            });
 	        }
 	    });
-
+        
 	    //when user picked a value type in create roport modal
 	    $scope.$watch('report.cReportType', function (newValue, oldValue) {
 	        if (newValue !== oldValue) {
@@ -67,7 +68,7 @@
 	            });
 	        }
 	    });
-	    //report.cStartYear
+	    //when user picked a StartYear in create roport modalreport
 	    $scope.$watch('report.cStartYear', function (newValue, oldValue) {
 	        if (newValue !== oldValue) {
 	            $scope.report.possibleEndYears = Enumerable.From($scope.report.years)
@@ -80,7 +81,8 @@
 	        }
 	    });
 	    //get data for create report modal
-	    $scope.createReportButton = function () {
+	    $scope.createReportButton = function (id) {
+	        $scope.report.id = id;
 	        $.loader({
 	            className: "blue-with-image-2",
 	            content: ''
@@ -110,89 +112,141 @@
 	            $scope.report.data = results.data;
 	            $scope.renderDataForChart();
 	            $scope.renderDataForTable();
-	            $scope.loadLineChart();
-	            $scope.showReport = true;
+	            $scope.loadChart();
+	            switch ($scope.report.id) {
+	                case 1:
+	                    $scope.showReport = true;
+	                    break;
+	                case 2:
+	                    $scope.showReport2 = true;
+	                    break;
+	            }
 	            $.loader('close');
 	        }, function (e) {
 	            $.loader('close');
 	            alert("getting categories failed");
-	        });
+	        });	                
 	    }
 
 	    //render data for chart
 	    $scope.renderDataForChart = function () {
-	        $scope.lineChart.categories = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'];
-	        for (i = $scope.report.cStartYear; i <= $scope.report.cEndYear; i++) {
-	            var valArray = Enumerable.From($scope.report.data)
-                    .Where(function (x) { return x.Year == i })
-                    .OrderBy(function (x) { return x.Month })
-                    .Select(function (x) { return x.value })
-                    .ToArray();
-	            var seria = {
-	                name: i,
-	                data: valArray
-	            }
-	            $scope.lineChart.series.push(seria);
-	        }
+	        switch ($scope.report.id) {
+	            case 1:
+	                $scope.reportChart.categories = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'];
+	                for (i = $scope.report.cStartYear; i <= $scope.report.cEndYear; i++) {
+	                    var valArray = Enumerable.From($scope.report.data)
+                            .Where(function (x) { return x.Year == i })
+                            .OrderBy(function (x) { return x.Month })
+                            .Select(function (x) { return x.value })
+                            .ToArray();
+	                    var seria = {
+	                        name: i,
+	                        data: valArray
+	                    }
+	                    $scope.reportChart.series.push(seria);
+	                }
+	                break;
+	            case 2:
+	                $scope.reportChart.categories = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'];
+	                for (i = 0; i < $scope.report.categoryDesc.length; i++) {
+	                    var valArray = Enumerable.From($scope.report.data)
+                            .Where(function (x) { return x.CategoryDesc == $scope.report.categoryDesc[i].CategoryDesc })
+                            .OrderBy(function (x) { return x.Month })
+                            .Select(function (x) { return x.Value })
+                            .ToArray();
+	                    var seria = {
+	                        name: $scope.report.categoryDesc[i].CategoryDesc,
+	                        data: valArray
+	                    }
+	                    $scope.reportChart.series.push(seria);
+	                }
+	                break;
+	        }      
 	    }
 
-	    $scope.dTable = {
-	        month: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-	        years: [],
-            data:[]
-	    }
 	    //render data for table
 	    $scope.renderDataForTable = function()
 	    {
-	        for (i = 1; i < 13; i++) {
-	            var valArray = Enumerable.From($scope.report.data)
-                    .Where(function (x) { return x.Month == i })
-                    .OrderBy(function (x) { return x.Year })
-                    .Select(function (x) { return x.value })
-                    .ToArray();
-	            $scope.dTable.data.push(valArray);
+	        switch ($scope.report.id) {
+	            case 1:
+	                $scope.dTable.type = 'line';
+	                $scope.dTable.title = 'גרף ' + $scope.report.cReportType + ' לפי שנים '
+	                $scope.dTable.subtitle = $scope.report.cCategory.CategoryName + ': ' + $scope.report.cCategoryDesc;
+	                for (i = 1; i < 13; i++) {
+	                    var valArray = Enumerable.From($scope.report.data)
+                            .Where(function (x) { return x.Month == i })
+                            .OrderBy(function (x) { return x.Year })
+                            .Select(function (x) { return x.value })
+                            .ToArray();
+	                    $scope.dTable.data.push(valArray);
+	                }
+
+	                for (i = $scope.report.cStartYear; i <= $scope.report.cEndYear; i++) {
+	                    $scope.dTable.years.push(i);
+	                }
+	                $scope.dTable.catDesc = Enumerable.From($scope.report.categoryDesc)
+                            .OrderBy(function (x) { return x.CategoryDesc })
+                            .Select(function (x) { return x.CategoryDesc })
+                            .ToArray();
+	                break;
+	            case 2:
+	                $scope.dTable.type = 'column';
+                    $scope.dTable.title = 'גרף ' + $scope.report.cReportType + ' ' + $scope.report.cValueTypeDesc + ' לפי ' + $scope.report.cCategory.CategoryName
+	                $scope.dTable.subtitle = 'שנת ' + $scope.report.cStartYear;
+	                for (i = 1; i < 13; i++) {
+	                    var valArray = Enumerable.From($scope.report.data)
+                            .Where(function (x) { return x.Month == i })
+                            .OrderBy(function (x) { return x.CategoryDesc })
+                            .Select(function (x) { return x.Value })
+                            .ToArray();
+	                    $scope.dTable.data.push(valArray);
+	                }
+
+	                for (i = $scope.report.cStartYear; i <= $scope.report.cEndYear; i++) {
+	                    $scope.dTable.years.push(i);
+	                }
+
+	                $scope.dTable.catDesc = Enumerable.From($scope.report.categoryDesc)
+                            .OrderBy(function (x) { return x.CategoryDesc })
+                            .Select(function (x) { return x.CategoryDesc })
+                            .ToArray();
+	                break;
 	        }
 	        
-	        for (i = $scope.report.cStartYear; i <= $scope.report.cEndYear; i++) {
-	            $scope.dTable.years.push(i);
-	        }
 	    }
 
-	    //get all the data form db
-	    $scope.getAllData = function () {
-	        $.loader({
-	            className: "blue-with-image-2",
-	            content: ''
-	        });
-	        AppService.GetAllData().then(function (results) {
-	            $scope.dataList = results.data;
-	            $.loader('close');
-	        }, function (e) {
-	            $.loader('close');
-	            alert("getting categories failed");
-	        });
+	    $scope.dTable = {
+	        type: null,
+            title: null,
+	        subtitle: null,
+	        month: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+	        years: [],
+            catDesc: [],
+	        data: []
 	    }
-
 
         //charts:
 
-	    $scope.loadLineChart = function () {
-	         $scope.chart = Highcharts.chart('lineChart', {
+	    $scope.loadChart = function () {
+	        $scope.chart = Highcharts.chart('lineChart', {
 	            credits: {
 	                text: 'ערן התותח',
 	                href: 'https://www.facebook.com/Eran.Math.teacher/'
 	            },
+	            chart: {
+	                type: $scope.dTable.type
+	            },
 	            title: {
-	                text: 'גרף ' + $scope.report.cReportType + ' שנתי ',
-	                x: -20, 
+	                text: $scope.dTable.title,
+	                x: -20,
 	                useHTML: Highcharts.hasBidiBug
 	            },
 	            subtitle: {
-	                text: $scope.report.cCategory.CategoryName + ': ' + $scope.report.cCategoryDesc,
+	                text: $scope.dTable.subtitle,
 	                x: -20
 	            },
 	            xAxis: {
-	                categories: $scope.lineChart.categories,
+	                categories: $scope.reportChart.categories,
 	                reversed: true,
 	                title: {
 	                    text: 'חודש'
@@ -223,8 +277,9 @@
 	                headerFormat: '<small>{point.key}</small><table>',
 	                pointFormat: '<tr><td style="color: {series.color}"> {point.y} שח &nbsp;</td>' + '<td style="text-align: right"><b>  :{series.name}</b></td></tr>'
 	            },
-	            series: $scope.lineChart.series
+	            series: $scope.reportChart.series
 	        });
+	                        
 	    }
 
 	    $scope.loadBarChart = function () {
@@ -268,7 +323,5 @@
             }
         })
         .withOption('bLengthChange', false);
-
-
 
 	}]);
