@@ -161,11 +161,16 @@ namespace GMRS_Proj.Controllers
                                            DataCategory.Category.CategoryName == report.category &&
                                            DataCategory.Data.ValueType.ValueTypeName == report.reportType &&
                                            DataCategory.Data.ValueType.ValueTypeDesc == report.typeDesc
-                                         select new
+                                         group new { DataCategory.Data, DataCategory } by new
                                          {
                                              DataCategory.Data.Month,
-                                             DataCategory.CategoryDesc,
-                                             DataCategory.Data.Value
+                                             DataCategory.CategoryDesc
+                                         } into g
+                                         select new
+                                         {
+                                             g.Key.Month,
+                                             g.Key.CategoryDesc,
+                                             value = (double?)g.Sum(p => p.DataCategory.Data.Value)
                                          }).ToList();
                             return Ok(data2);
                         default:

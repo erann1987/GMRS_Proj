@@ -8,6 +8,9 @@
 	    $scope.ReportTypeChoosed = false;
 
 	    $scope.reportChart = {
+	        type: null,
+	        title: null,
+	        subtitle: null,
 	        categories: [],
 	        series: []
 	    }
@@ -152,7 +155,7 @@
 	                    var valArray = Enumerable.From($scope.report.data)
                             .Where(function (x) { return x.CategoryDesc == $scope.report.categoryDesc[i].CategoryDesc })
                             .OrderBy(function (x) { return x.Month })
-                            .Select(function (x) { return x.Value })
+                            .Select(function (x) { return x.value })
                             .ToArray();
 	                    var seria = {
 	                        name: $scope.report.categoryDesc[i].CategoryDesc,
@@ -169,9 +172,9 @@
 	    {
 	        switch ($scope.report.id) {
 	            case 1:
-	                $scope.dTable.type = 'line';
-	                $scope.dTable.title = 'גרף ' + $scope.report.cReportType + ' לפי שנים '
-	                $scope.dTable.subtitle = $scope.report.cCategory.CategoryName + ': ' + $scope.report.cCategoryDesc;
+	                $scope.reportChart.type = 'line';
+	                $scope.reportChart.title = 'גרף ' + $scope.report.cReportType + ' לפי שנים '
+	                $scope.reportChart.subtitle = $scope.report.cCategory.CategoryName + ': ' + $scope.report.cCategoryDesc;
 	                for (i = 1; i < 13; i++) {
 	                    var valArray = Enumerable.From($scope.report.data)
                             .Where(function (x) { return x.Month == i })
@@ -190,14 +193,14 @@
                             .ToArray();
 	                break;
 	            case 2:
-	                $scope.dTable.type = 'column';
-                    $scope.dTable.title = 'גרף ' + $scope.report.cReportType + ' ' + $scope.report.cValueTypeDesc + ' לפי ' + $scope.report.cCategory.CategoryName
-	                $scope.dTable.subtitle = 'שנת ' + $scope.report.cStartYear;
+	                $scope.reportChart.type = 'column';
+	                $scope.reportChart.title = 'גרף ' + $scope.report.cReportType + ' ' + $scope.report.cValueTypeDesc + ' לפי ' + $scope.report.cCategory.CategoryName
+	                $scope.reportChart.subtitle = 'שנת ' + $scope.report.cStartYear;
 	                for (i = 1; i < 13; i++) {
 	                    var valArray = Enumerable.From($scope.report.data)
                             .Where(function (x) { return x.Month == i })
                             .OrderBy(function (x) { return x.CategoryDesc })
-                            .Select(function (x) { return x.Value })
+                            .Select(function (x) { return x.value })
                             .ToArray();
 	                    $scope.dTable.data.push(valArray);
 	                }
@@ -211,14 +214,10 @@
                             .Select(function (x) { return x.CategoryDesc })
                             .ToArray();
 	                break;
-	        }
-	        
+	        }        
 	    }
 
 	    $scope.dTable = {
-	        type: null,
-            title: null,
-	        subtitle: null,
 	        month: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
 	        years: [],
             catDesc: [],
@@ -234,15 +233,15 @@
 	                href: 'https://www.facebook.com/Eran.Math.teacher/'
 	            },
 	            chart: {
-	                type: $scope.dTable.type
+	                type: $scope.reportChart.type
 	            },
 	            title: {
-	                text: $scope.dTable.title,
+	                text: $scope.reportChart.title,
 	                x: -20,
 	                useHTML: Highcharts.hasBidiBug
 	            },
 	            subtitle: {
-	                text: $scope.dTable.subtitle,
+	                text: $scope.reportChart.subtitle,
 	                x: -20
 	            },
 	            xAxis: {
@@ -301,27 +300,27 @@
 
 
 	    //data-tables configuration
-	    $scope.dtOptions = DTOptionsBuilder.newOptions()
-        .withDisplayLength(12)
-        .withPaginationType('full_numbers')
-        .withLanguage({
-            "processing": "מעבד...",
-            "lengthMenu": "הצג _MENU_ פריטים",
-            "zeroRecords": "לא נמצאו רשומות מתאימות",
-            "emptyTable": "לא נמצאו רשומות מתאימות",
-            "info": "_START_ עד _END_ מתוך _TOTAL_ רשומות",
-            "infoEmpty": "0 עד 0 מתוך 0 רשומות",
-            "infoFiltered": "(מסונן מסך _MAX_  רשומות)",
-            "infoPostFix": "",
-            "search": "חפש:",
-            "url": "",
-            "paginate": {
-                "first": "ראשון",
-                "previous": "קודם",
-                "next": "הבא",
-                "last": "אחרון"
-            }
-        })
-        .withOption('bLengthChange', false);
+	    //$scope.dtOptions = DTOptionsBuilder.newOptions()
+        //.withDisplayLength(12)
+        //.withPaginationType('full_numbers')
+        //.withLanguage({
+        //    "processing": "מעבד...",
+        //    "lengthMenu": "הצג _MENU_ פריטים",
+        //    "zeroRecords": "לא נמצאו רשומות מתאימות",
+        //    "emptyTable": "לא נמצאו רשומות מתאימות",
+        //    "info": "_START_ עד _END_ מתוך _TOTAL_ רשומות",
+        //    "infoEmpty": "0 עד 0 מתוך 0 רשומות",
+        //    "infoFiltered": "(מסונן מסך _MAX_  רשומות)",
+        //    "infoPostFix": "",
+        //    "search": "חפש:",
+        //    "url": "",
+        //    "paginate": {
+        //        "first": "ראשון",
+        //        "previous": "קודם",
+        //        "next": "הבא",
+        //        "last": "אחרון"
+        //    }
+        //})
+        //.withOption('bLengthChange', false);
 
 	}]);
