@@ -173,6 +173,26 @@ namespace GMRS_Proj.Controllers
                                              value = (double?)g.Sum(p => p.DataCategory.Data.Value)
                                          }).ToList();
                             return Ok(data2);
+                        case 3:
+                            var data3 = (from DataCategory in db.DataCategory
+                                         where
+                                           DataCategory.Data.Year == report.year &&
+                                           DataCategory.Category.CategoryName == report.category &&
+                                           DataCategory.Data.ValueType.ValueTypeName == report.reportType
+                                         group new { DataCategory, DataCategory.Data.ValueType, DataCategory.Data } by new
+                                         {
+                                             DataCategory.CategoryDesc,
+                                             DataCategory.Data.ValueType.ValueTypeDesc
+                                         } into g
+                                         orderby
+                                           g.Key.CategoryDesc
+                                         select new
+                                         {
+                                             g.Key.CategoryDesc,
+                                             g.Key.ValueTypeDesc,
+                                             value = (double?)g.Sum(p => p.DataCategory.Data.Value)
+                                         }).ToList();
+                            return Ok(data3);
                         default:
                             return null;
                     }
