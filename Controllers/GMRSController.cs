@@ -130,28 +130,47 @@ namespace GMRS_Proj.Controllers
                 try
                 {
                     db.Configuration.ProxyCreationEnabled = false;
-
-                    var data = (from DataCategory in db.DataCategory
-                                where
-                                  DataCategory.Data.Year >= report.startYear && DataCategory.Data.Year <= report.endYear &&
-                                  DataCategory.Data.ValueType.ValueTypeName == report.reportType &&
-                                  DataCategory.Category.CategoryName == report.category &&
-                                  DataCategory.CategoryDesc == report.catDesc
-                                group DataCategory.Data by new
-                                {
-                                    DataCategory.Data.Year,
-                                    DataCategory.Data.Month
-                                } into g
-                                orderby
-                                  g.Key.Year,
-                                  g.Key.Month
-                                select new
-                                {
-                                    g.Key.Year,
-                                    g.Key.Month,
-                                    value = (double?)g.Sum(p => p.Value)
-                                }).ToList();
-                    return Ok(data);
+                    switch (report.id)
+                    {
+                        case 1:
+                            var data = (from DataCategory in db.DataCategory
+                                        where
+                                          DataCategory.Data.Year >= report.startYear && DataCategory.Data.Year <= report.endYear &&
+                                          DataCategory.Data.ValueType.ValueTypeName == report.reportType &&
+                                          DataCategory.Category.CategoryName == report.category &&
+                                          DataCategory.CategoryDesc == report.catDesc
+                                        group DataCategory.Data by new
+                                        {
+                                            DataCategory.Data.Year,
+                                            DataCategory.Data.Month
+                                        } into g
+                                        orderby
+                                          g.Key.Year,
+                                          g.Key.Month
+                                        select new
+                                        {
+                                            g.Key.Year,
+                                            g.Key.Month,
+                                            value = (double?)g.Sum(p => p.Value)
+                                        }).ToList();
+                            return Ok(data);
+                        case 2:
+                            var data2 = (from DataCategory in db.DataCategory
+                                         where
+                                           DataCategory.Data.Year == report.year &&
+                                           DataCategory.Category.CategoryName == report.category &&
+                                           DataCategory.Data.ValueType.ValueTypeName == report.reportType &&
+                                           DataCategory.Data.ValueType.ValueTypeDesc == report.typeDesc
+                                         select new
+                                         {
+                                             DataCategory.Data.Month,
+                                             DataCategory.CategoryDesc,
+                                             DataCategory.Data.Value
+                                         }).ToList();
+                            return Ok(data2);
+                        default:
+                            return null;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -169,6 +188,9 @@ namespace GMRS_Proj.Controllers
         public int startYear;
         public int endYear;
         public string reportType;
+        public int year;
+        public string typeDesc;
+        public int id;
     }
 
     //class ReportModal

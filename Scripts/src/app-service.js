@@ -42,12 +42,28 @@
 
     //get relevant data for report
     fac.GetRelevantData = function (rep) {
-        var report = {
-            category: rep.cCategory.CategoryName,
-            startYear: rep.cStartYear,
-            endYear: rep.cEndYear,
-            reportType: rep.cReportType,
-            catDesc: rep.cCategoryDesc
+        var report;
+        switch (rep.id) {
+            case 1:
+                report = {
+                    category: rep.cCategory.CategoryName,
+                    startYear: rep.cStartYear,
+                    endYear: rep.cEndYear,
+                    reportType: rep.cReportType,
+                    catDesc: rep.cCategoryDesc,
+                    id: rep.id
+                }
+                break;
+            case 2:
+                report = {
+                    category: rep.cCategory.CategoryName,
+                    Year: rep.cStartYear,
+                    reportType: rep.cReportType,
+                    typeDesc: rep.cValueTypeDesc,
+                    id: rep.id
+                }
+                break;
+
         }
         req = {
             method: 'POST',
