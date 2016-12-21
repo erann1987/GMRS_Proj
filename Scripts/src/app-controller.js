@@ -4,6 +4,7 @@
 	    $scope.chart;
 	    $scope.showReport = false;
 	    $scope.showReport2 = false;
+	    $scope.showReport3 = false;
 	    $scopecatDescChoosed = false;
 	    $scope.ReportTypeChoosed = false;
 
@@ -126,6 +127,8 @@
 	                case 2:
 	                    $scope.showReport2 = true;
 	                    break;
+	                case 3:
+	                    $scope.showReport3 = true;
 	            }
 	            $.loader('close');
 	        }, function (e) {
@@ -174,7 +177,7 @@
 	                }
 	                break;
 	            case 3:
-	                $scope.reportChart.title =  $scope.report.cReportType + ' לפי ' + $scope.report.cCategory.CategoryName
+	                $scope.reportChart.title = ' גרף ' + $scope.report.cReportType + ' לפי ' + $scope.report.cCategory.CategoryName
 	                $scope.reportChart.type = 'column';
 	                $scope.reportChart.subtitle = ' שנת ' + $scope.report.cStartYear;
 	                for (i = 0; i < $scope.report.categoryDesc.length; i++) {
@@ -259,13 +262,39 @@
                             .Select(function (x) { return x.CategoryDesc })
                             .ToArray();
 	                break;
+	            case 3:
+	                $scope.dTable.catDesc = Enumerable.From($scope.report.categoryDesc)
+                            .OrderBy(function (x) { return x.CategoryDesc })
+                            .Select(function (x) { return x.CategoryDesc })
+                            .ToArray();
+	                $scope.dTable.valueTypeDesc = Enumerable.From($scope.report.valueTypeDesc)
+                            .OrderBy(function (x) { return x.ValueTypeDesc })
+                            .Select(function (x) { return x.ValueTypeDesc })
+                            .ToArray();
+
+	                for (i = 0; i < $scope.dTable.catDesc.length; i++) {
+	                    $scope.dTable.data.push([$scope.dTable.catDesc[i]]);
+	                    var valArray = Enumerable.From($scope.report.data)
+                            .Where(function (x) { return x.CategoryDesc == $scope.dTable.catDesc[i] })
+                            .OrderByDescending(function (x) { return x.CategoryDesc })
+                            .Select(function (x) { return x.value })
+                            .ToArray();
+	                    $scope.dTable.data[i] = $scope.dTable.data[i].concat(valArray);
+	                    $scope.dTable.data[i].push(
+                            Enumerable.From($scope.reportChart.series[0].data)
+                            .Where(function (x) { return x.name == $scope.dTable.catDesc[i] })
+                            .Select(function (x) { return x.y })
+                            .ToArray()[0]);
+	                }
+	                break;
 	        }        
 	    }
 
 	    $scope.dTable = {
 	        month: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
 	        years: [],
-            catDesc: [],
+	        catDesc: [],
+            valueTypeDesc: [],
 	        data: []
 	    }
 

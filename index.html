@@ -65,13 +65,17 @@
 
         <!--alerts div-->
         <div style="text-align:center" dismiss-on-timeout="2000" uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>
+       
+        <!--chart div-->
+        <div class="container">
+            <div class="chart" dir="ltr" id="lineChart"></div>
+
+        </div>
         
         <!--report 1 div-->
-        <div class="container">
-            <!--chart div-->
-            <div class="chart" dir="ltr" id="lineChart"></div>
+        <div ng-show="showReport" class="container">
             <!--table div-->
-            <div style="margin-top:2px;" ng-show="showReport" id="report_table1">
+            <div style="margin-top:2px;" id="report_table1">
                 <table class="table table-bordered table-inverse table-hover ">
                     <thead>
                         <tr class="bg-primary">
@@ -86,14 +90,13 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>   
+            </div>
         </div>
 
         <!--report 2 div-->
-        <div class="container">
+        <div ng-show="showReport2" class="container">
             <!--chart div-->
-            <div class="chart" dir="ltr" id="lineChart"></div>
-            <div style="margin-top:2px;" ng-show="showReport2" id="report_table2">
+            <div style="margin-top:2px;" id="report_table2">
                 <table class="table table-bordered table-inverse table-hover ">
                     <thead>
                         <tr class="bg-primary">
@@ -108,7 +111,28 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>             
+            </div>
+        </div>
+
+        <!--report 2 div-->
+        <div ng-show="showReport3" class="container">
+            <!--chart div-->
+            <div style="margin-top:2px;" id="report_table3">
+                <table class="table table-bordered table-inverse table-hover ">
+                    <thead>
+                        <tr class="bg-primary">
+                            <th>{{report.cCategory.CategoryName}}/{{report.cReportType}}</th>
+                            <th ng-repeat="desc in dTable.valueTypeDesc">{{desc}}</th>
+                            <th>סה"כ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="d in dTable.data track by $index">
+                            <td ng-repeat="dd in d">{{dd}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- Create Report 1 Modal  -->
