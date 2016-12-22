@@ -7,14 +7,18 @@
 	    $scope.showReport3 = false;
 	    $scopecatDescChoosed = false;
 	    $scope.ReportTypeChoosed = false;
+	    
 
 	    $scope.reportChart = {
 	        type: null,
 	        title: null,
 	        subtitle: null,
+	        legend: null,
+            xAxis: null,
 	        categories: [],
 	        series: [],
-            drilldownSeries: []
+	        drilldownSeries: [],
+	        categories: ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר']
 	    }
 
 	    $scope.report = {
@@ -117,9 +121,7 @@
 	            $scope.report.data = results.data;
 	            $scope.renderDataForChart();
 	            $scope.renderDataForTable();
-	            if ($scope.report.id == 3)
-	                $scope.loadChart2();
-	            else $scope.loadChart();
+	            $scope.loadChart();
 	            switch ($scope.report.id) {
 	                case 1:
 	                    $scope.showReport = true;
@@ -142,9 +144,28 @@
 	        switch ($scope.report.id) {
 	            case 1:
 	                $scope.reportChart.type = 'line';
+	                $scope.reportChart.legend = {
+	                    layout: 'vertical',
+	                    align: 'left',
+	                    verticalAlign: 'middle',
+	                    borderWidth: 0,
+	                    rtl: true,
+	                    useHTML: Highcharts.hasBidiBug
+	                };
+	                $scope.reportChart.tooltip = {
+	                    useHTML: true,
+	                    headerFormat: '<small>{point.key}</small><table>',
+	                    pointFormat: '<tr><td style="color: {series.color}"> {point.y:f} שח &nbsp;</td>' + '<td style="text-align: right"><b>  :{series.name}</b></td></tr>'
+	                };
+	                $scope.reportChart.xAxis = {
+	                    categories: $scope.reportChart.categories,
+	                    reversed: true,
+	                    title: {
+	                        text: 'חודש'
+	                    }
+	                };
 	                $scope.reportChart.title = 'גרף ' + $scope.report.cReportType + ' לפי שנים '
 	                $scope.reportChart.subtitle = $scope.report.cCategory.CategoryName + ': ' + $scope.report.cCategoryDesc;
-	                $scope.reportChart.categories = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'];
 	                for (i = $scope.report.cStartYear; i <= $scope.report.cEndYear; i++) {
 	                    var valArray = Enumerable.From($scope.report.data)
                             .Where(function (x) { return x.Year == i })
@@ -160,9 +181,28 @@
 	                break;
 	            case 2:
 	                $scope.reportChart.type = 'column';
+	                $scope.reportChart.legend = {
+	                    layout: 'vertical',
+	                    align: 'left',
+	                    verticalAlign: 'middle',
+	                    borderWidth: 0,
+	                    rtl: true,
+	                    useHTML: Highcharts.hasBidiBug
+	                };
+	                $scope.reportChart.tooltip = {
+	                    useHTML: true,
+	                    headerFormat: '<small>{point.key}</small><table>',
+	                    pointFormat: '<tr><td style="color: {series.color}"> {point.y:f} שח &nbsp;</td>' + '<td style="text-align: right"><b>  :{series.name}</b></td></tr>'
+	                };
+	                $scope.reportChart.xAxis = {
+	                    categories: $scope.reportChart.categories,
+	                    reversed: true,
+	                    title: {
+	                        text: 'חודש'
+	                    }
+	                };
 	                $scope.reportChart.title = 'גרף ' + $scope.report.cReportType + ' ' + $scope.report.cValueTypeDesc + ' לפי ' + $scope.report.cCategory.CategoryName
 	                $scope.reportChart.subtitle = 'שנת ' + $scope.report.cStartYear;
-	                $scope.reportChart.categories = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'];
 	                for (i = 0; i < $scope.report.categoryDesc.length; i++) {
 	                    var valArray = Enumerable.From($scope.report.data)
                             .Where(function (x) { return x.CategoryDesc == $scope.report.categoryDesc[i].CategoryDesc })
@@ -179,6 +219,16 @@
 	            case 3:
 	                $scope.reportChart.title = ' גרף ' + $scope.report.cReportType + ' לפי ' + $scope.report.cCategory.CategoryName
 	                $scope.reportChart.type = 'column';
+	                $scope.reportChart.xAxis = {
+	                    reversed: true,
+	                    type: 'category'
+	                };
+	                $scope.reportChart.tooltip = {
+	                    useHTML: true,
+	                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+	                    pointFormat: '<span style="color:{point.color}">{point.name}:</span> <b>{point.y:f}</b> ש"ח<br/>'
+	                };
+	                $scope.reportChart.legend = { enabled: false };
 	                $scope.reportChart.subtitle = ' שנת ' + $scope.report.cStartYear;
 	                for (i = 0; i < $scope.report.categoryDesc.length; i++) {
 	                    $scope.reportChart.drilldownSeries.push({
@@ -318,13 +368,7 @@
 	                text: $scope.reportChart.subtitle,
 	                x: -20
 	            },
-	            xAxis: {
-	                categories: $scope.reportChart.categories,
-	                reversed: true,
-	                title: {
-	                    text: 'חודש'
-	                }
-	            },
+	            xAxis: $scope.reportChart.xAxis,
 	            yAxis: {
 	                title: {
 	                    text: '(ש"ח)',
@@ -337,89 +381,73 @@
 	                }],
 	                opposite: true,
 	            },
-	            legend: {
-	                layout: 'vertical',
-	                align: 'left',
-	                verticalAlign: 'middle',
-	                borderWidth: 0,
-	                rtl: true,
-	                useHTML: Highcharts.hasBidiBug
-	            },
-	            tooltip: {
-	                useHTML: true,
-	                headerFormat: '<small>{point.key}</small><table>',
-	                pointFormat: '<tr><td style="color: {series.color}"> {point.y:f} שח &nbsp;</td>' + '<td style="text-align: right"><b>  :{series.name}</b></td></tr>'
-	            },
-	            series: $scope.reportChart.series,
-	            drilldown: $scope.reportChart.drilldownSeries
-	        });
-	                        
-	    }
-	    $scope.loadChart2 = function () {
-	        Highcharts.chart('lineChart', {
-	            credits: {
-	                text: 'ערן התותח',
-	                href: 'https://www.facebook.com/Eran.Math.teacher/'
-	            },
-	            chart: {
-	                type: $scope.reportChart.type
-	            },
-	            title: {
-	                text: $scope.reportChart.title,
-	                x: -20,
-	                useHTML: Highcharts.hasBidiBug
-	            },
-	            subtitle: {
-	                text: $scope.reportChart.subtitle
-	            },
-	            xAxis: {
-	                reversed: true,
-	                type: 'category'
-	            },
-	            yAxis: {
-	                title: {
-	                    text: '(ש"ח)',
-	                    useHTML: Highcharts.hasBidiBug
-	                },
-	                plotLines: [{
-	                    value: 0,
-	                    width: 1,
-	                    color: '#808080'
-	                }],
-	                opposite: true,
-	            },
-	            legend: {
-	                enabled: false
-	            },
-	            plotOptions: {
-	                series: {
-	                    borderWidth: 0,
-	                    dataLabels: {
-	                        enabled: true,
-	                    }
-	                }
-	            },
 
-	            tooltip: {
-	                useHTML: true,
-	                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-	                pointFormat: '<span style="color:{point.color}">{point.name}:</span> <b>{point.y:f}</b> ש"ח<br/>'
-	            },
-
+	            tooltip: $scope.reportChart.tooltip,
+	            legend: $scope.reportChart.legend,
 	            series: $scope.reportChart.series,
 	            drilldown: {
 	                series: $scope.reportChart.drilldownSeries
 	            }
-	        });
+	        });                        
 	    }
+	    //$scope.loadChart2 = function () {
+	    //    Highcharts.chart('lineChart', {
+	    //        credits: {
+	    //            text: 'ערן התותח',
+	    //            href: 'https://www.facebook.com/Eran.Math.teacher/'
+	    //        },
+	    //        chart: {
+	    //            type: $scope.reportChart.type
+	    //        },
+	    //        title: {
+	    //            text: $scope.reportChart.title,
+	    //            x: -20,
+	    //            useHTML: Highcharts.hasBidiBug
+	    //        },
+	    //        subtitle: {
+	    //            text: $scope.reportChart.subtitle
+	    //        },
+	    //        xAxis: {
+	    //            reversed: true,
+	    //            type: 'category'
+	    //        },
+	    //        yAxis: {
+	    //            title: {
+	    //                text: '(ש"ח)',
+	    //                useHTML: Highcharts.hasBidiBug
+	    //            },
+	    //            plotLines: [{
+	    //                value: 0,
+	    //                width: 1,
+	    //                color: '#808080'
+	    //            }],
+	    //            opposite: true,
+	    //        },
+	    //        legend: {
+	    //            enabled: false
+	    //        },
+	    //        plotOptions: {
+	    //            series: {
+	    //                borderWidth: 0,
+	    //                dataLabels: {
+	    //                    enabled: true,
+	    //                }
+	    //            }
+	    //        },
 
-	    $scope.loadBarChart = function () {
+	    //        tooltip: {
+	    //            useHTML: true,
+	    //            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+	    //            pointFormat: '<span style="color:{point.color}">{point.name}:</span> <b>{point.y:f}</b> ש"ח<br/>'
+	    //        },
 
-	    }
+	    //        series: $scope.reportChart.series,
+	    //        drilldown: {
+	    //            series: $scope.reportChart.drilldownSeries
+	    //        }
+	    //    });
+	    //}
 
-	    $scope.loadPieChart = function () {
-
-	    }
 
 	    //alerts
 	    $scope.alerts = [];
