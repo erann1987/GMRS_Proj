@@ -117,7 +117,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger black-background white pull-left" data-dismiss="modal">ביטול</button>
+                        <button ng-click="closeReport()" type="button" class="btn btn-danger black-background white pull-left" data-dismiss="modal">ביטול</button>
                         <button ng-click="loadRelevantData()" type="button" class="btn btn-success black-background white pull-right" data-dismiss="modal" ng-disabled="createReportModalForm1.$error.required" data-toggle="modal" data-target="#ReportModal">אישור</button>
                     </div>
                 </div>
@@ -162,7 +162,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger black-background white pull-left" data-dismiss="modal">ביטול</button>
+                        <button ng-click="closeReport()" type="button" class="btn btn-danger black-background white pull-left" data-dismiss="modal">ביטול</button>
                         <button ng-click="loadRelevantData()" type="button" class="btn btn-success black-background white pull-right" data-dismiss="modal" ng-disabled="createReportModalForm2.$error.required" data-toggle="modal" data-target="#ReportModal">אישור</button>
                     </div>
                 </div>
@@ -181,7 +181,7 @@
                         <h4 class="modal-title">יצירת דוח</h4>
                     </div>
                     <div class="modal-body">
-                        <form name="createReportModalForm2">
+                        <form name="createReportModalForm3">
                             <div class="form-group">
                                 <label for="recipient-name" class="form-control-label">סוג מידע:</label>
                                 <select name="select_type" data-width="fit" data-live-search="true" title="אפשרויות..." class="selectpicker" ng-model="report.cReportType" required>
@@ -199,8 +199,8 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger black-background white pull-left" data-dismiss="modal">ביטול</button>
-                        <button ng-click="loadRelevantData()" type="button" class="btn btn-success black-background white pull-right" data-dismiss="modal" ng-disabled="createReportModalForm2.$error.required" data-toggle="modal" data-target="#ReportModal">אישור</button>
+                        <button ng-click="closeReport()" type="button" class="btn btn-danger black-background white pull-left" data-dismiss="modal">ביטול</button>
+                        <button ng-click="loadRelevantData()" type="button" class="btn btn-success black-background white pull-right" data-dismiss="modal" ng-disabled="createReportModalForm3.$error.required" data-toggle="modal" data-target="#ReportModal">אישור</button>
                     </div>
                 </div>
 
