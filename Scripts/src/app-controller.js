@@ -122,9 +122,17 @@
 	            $scope.renderDataForChart();
 	            $scope.renderDataForTable();
 	            $scope.loadChart();
+	            var chart = $('#lineChart').highcharts();
+	            $('#ReportModal').on('show.bs.modal', function () {
+	                $('#lineChart').css('visibility', 'hidden');
+	            });
+	            $('#ReportModal').on('shown.bs.modal', function () {
+	                $('#lineChart').css('visibility', 'initial');
+	                chart.reflow();
+	            });
 	            switch ($scope.report.id) {
 	                case 1:
-	                    $scope.showReport = true;
+	                    $scope.showReport1 = true;
 	                    break;
 	                case 2:
 	                    $scope.showReport2 = true;
@@ -133,6 +141,7 @@
 	                    $scope.showReport3 = true;
 	            }
 	            $.loader('close');
+	            
 	        }, function (e) {
 	            $.loader('close');
 	            alert("getting categories failed");

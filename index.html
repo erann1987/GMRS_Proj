@@ -44,7 +44,14 @@
             width: 100%;
         }
         .black-background {background-color:#000000;}
-        .white {color:#ffffff;}       
+        .white {color:#ffffff;}  
+        #modal-dialog-report {
+            overflow-y: initial !important
+        }
+        #modal-body-report {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }     
     </style>
     <title>GMRS</title>
 </head>
@@ -69,75 +76,6 @@
 
         <!--alerts div-->
         <div style="text-align:center" dismiss-on-timeout="2000" uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>
-       
-        <!--chart div-->
-        <div class="container">
-            <div class="chart" dir="ltr" id="lineChart"></div>
-
-        </div>
-        
-        <!--report 1 div-->
-        <div ng-show="showReport" class="container">
-            <!--table div-->
-            <div style="margin-top:2px;" id="report_table1">
-                <table class="table table-bordered table-inverse table-hover ">
-                    <thead>
-                        <tr class="bg-primary">
-                            <th>חודש/שנים</th>
-                            <th ng-repeat="year in dTable.years">{{year}}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="d in dTable.data track by $index">
-                            <td>{{$index +1}}</td>
-                            <td ng-repeat="dd in d">{{dd}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!--report 2 div-->
-        <div ng-show="showReport2" class="container">
-            <!--chart div-->
-            <div style="margin-top:2px;" id="report_table2">
-                <table class="table table-bordered table-inverse table-hover ">
-                    <thead>
-                        <tr class="bg-primary">
-                            <th>חודש/{{report.cCategory.CategoryName}}</th>
-                            <th ng-repeat="desc in dTable.catDesc">{{desc}}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="d in dTable.data track by $index">
-                            <td>{{$index +1}}</td>
-                            <td ng-repeat="dd in d">{{dd}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!--report 2 div-->
-        <div ng-show="showReport3" class="container">
-            <!--chart div-->
-            <div style="margin-top:2px;" id="report_table3">
-                <table class="table table-bordered table-inverse table-hover ">
-                    <thead>
-                        <tr class="bg-primary">
-                            <th>{{report.cCategory.CategoryName}}/{{report.cReportType}}</th>
-                            <th ng-repeat="desc in dTable.valueTypeDesc">{{desc}}</th>
-                            <th>סה"כ</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="d in dTable.data track by $index">
-                            <td ng-repeat="dd in d">{{dd}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
 
         <!-- Create Report 1 Modal  -->
         <div id="createReportModal1" class="modal fade " role="dialog">
@@ -180,7 +118,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger black-background white pull-left" data-dismiss="modal">ביטול</button>
-                        <button ng-click="loadRelevantData()" type="button" class="btn btn-success black-background white pull-right" data-dismiss="modal" ng-disabled="createReportModalForm1.$error.required">אישור</button>
+                        <button ng-click="loadRelevantData()" type="button" class="btn btn-success black-background white pull-right" data-dismiss="modal" ng-disabled="createReportModalForm1.$error.required" data-toggle="modal" data-target="#ReportModal">אישור</button>
                     </div>
                 </div>
 
@@ -225,7 +163,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger black-background white pull-left" data-dismiss="modal">ביטול</button>
-                        <button ng-click="loadRelevantData()" type="button" class="btn btn-success black-background white pull-right" data-dismiss="modal" ng-disabled="createReportModalForm2.$error.required">אישור</button>
+                        <button ng-click="loadRelevantData()" type="button" class="btn btn-success black-background white pull-right" data-dismiss="modal" ng-disabled="createReportModalForm2.$error.required" data-toggle="modal" data-target="#ReportModal">אישור</button>
                     </div>
                 </div>
 
@@ -262,13 +200,92 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger black-background white pull-left" data-dismiss="modal">ביטול</button>
-                        <button ng-click="loadRelevantData()" type="button" class="btn btn-success black-background white pull-right" data-dismiss="modal" ng-disabled="createReportModalForm2.$error.required">אישור</button>
+                        <button ng-click="loadRelevantData()" type="button" class="btn btn-success black-background white pull-right" data-dismiss="modal" ng-disabled="createReportModalForm2.$error.required" data-toggle="modal" data-target="#ReportModal">אישור</button>
                     </div>
                 </div>
 
             </div>
         </div>
     
+
+
+        <!--Report Modal  -->
+        <div id="ReportModal" class="modal fade " role="dialog">
+            <div id="modal-dialog-report" class="modal-dialog modal-lg">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button style="float:left" type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 style="text-align:center" class="modal-title">דו"ח מותאם אישית</h4>
+                    </div>
+                    <div id="modal-body-report" class="modal-body">
+                        <div class="form-group">
+                            <!--chart div-->
+                            <div class="chart" dir="ltr" id="lineChart"></div>
+                        </div>
+                        <div ng-show="showReport1" class="form-group">
+                            <table class="table table-bordered table-inverse table-hover ">
+                                <thead>
+                                    <tr class="bg-primary">
+                                        <th>חודש/שנים</th>
+                                        <th ng-repeat="year in dTable.years">{{year}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="d in dTable.data track by $index">
+                                        <td>{{$index +1}}</td>
+                                        <td ng-repeat="dd in d">{{dd}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div ng-show="showReport2" class="form-group">
+                            <table class="table table-bordered table-inverse table-hover ">
+                                <thead>
+                                    <tr class="bg-primary">
+                                        <th>חודש/{{report.cCategory.CategoryName}}</th>
+                                        <th ng-repeat="desc in dTable.catDesc">{{desc}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="d in dTable.data track by $index">
+                                        <td>{{$index +1}}</td>
+                                        <td ng-repeat="dd in d">{{dd}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div ng-show="showReport3" class="form-group">
+                            <table class="table table-bordered table-inverse table-hover ">
+                                <thead>
+                                    <tr class="bg-primary">
+                                        <th>{{report.cCategory.CategoryName}}/{{report.cReportType}}</th>
+                                        <th ng-repeat="desc in dTable.valueTypeDesc">{{desc}}</th>
+                                        <th>סה"כ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="d in dTable.data track by $index">
+                                        <td ng-repeat="dd in d">{{dd}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-danger center-block" data-dismiss="modal">סגור</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
 
 </body>
