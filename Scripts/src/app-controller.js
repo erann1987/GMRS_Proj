@@ -178,16 +178,7 @@
 	            $scope.report.data = results.data;
 	            $scope.renderDataForChart();
 	            $scope.renderDataForTable();
-	            $scope.loadChart();
-	            var id = '#' + $scope.reportChartID;
-	            var chart = $(id).highcharts();
-	            $('#ReportModal').on('show.bs.modal', function () {
-	                $(id).css('visibility', 'hidden');
-	            });
-	            $('#ReportModal').on('shown.bs.modal', function () {
-	                $(id).css('visibility', 'initial');
-	                chart.reflow();
-	            });
+	            $scope.loadChart();            
 	            switch ($scope.report.id) {
 	                case 1:
 	                    $scope.showReport1 = true;
@@ -198,6 +189,15 @@
 	                case 3:
 	                    $scope.showReport3 = true;
 	            }
+	            var id = '#' + $scope.reportChartID;
+	            $('#ReportModal').on('show.bs.modal', function () {
+	                $(id).css('visibility', 'hidden');
+	            });
+	            $('#ReportModal').on('shown.bs.modal', function () {
+	                $(id).css('visibility', 'initial');
+	                var chart = $(id).highcharts();
+	                chart.reflow();
+	            });
 	            $.loader('close');
 	            
 	        }, function (e) {
