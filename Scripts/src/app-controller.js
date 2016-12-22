@@ -5,9 +5,10 @@
 	    $scope.showReport = false;
 	    $scope.showReport2 = false;
 	    $scope.showReport3 = false;
-	    $scopecatDescChoosed = false;
+	    $scope.catDescChoosed = false;
 	    $scope.ReportTypeChoosed = false;
-	    
+
+	    $scope.reportChartID;
 
 	    $scope.reportChart = {
 	        type: null,
@@ -15,6 +16,17 @@
 	        subtitle: null,
 	        legend: null,
             xAxis: null,
+	        categories: [],
+	        series: [],
+	        drilldownSeries: [],
+	        categories: ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר']
+	    }
+	    $scope.reportChart_Backup = {
+	        type: null,
+	        title: null,
+	        subtitle: null,
+	        legend: null,
+	        xAxis: null,
 	        categories: [],
 	        series: [],
 	        drilldownSeries: [],
@@ -37,11 +49,51 @@
 	        cEndYear: null,
 	        data: []
 	    }
+	    $scope.report_Backup = {
+	        id: null,
+	        reportType: [],
+	        valueTypeDesc: [],
+	        categories: [],
+	        categoryDesc: [],
+	        years: [],
+	        possibleEndYears: [],
+	        cCategory: null,
+	        cCategoryDesc: '',
+	        cReportType: null,
+	        cStartYear: null,
+	        cValueTypeDesc: null,
+	        cEndYear: null,
+	        data: []
+	    }
 
+	    $scope.dTable = {
+	        month: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+	        years: [],
+	        catDesc: [],
+	        valueTypeDesc: [],
+	        data: []
+	    }
+	    $scope.dTable_Backup = {
+	        month: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+	        years: [],
+	        catDesc: [],
+	        valueTypeDesc: [],
+	        data: []
+	    }
         
+	    $scope.closeReport = function () {
+	        $scope.report = angular.copy($scope.report_Backup);
+	        $scope.reportChart = angular.copy($scope.reportChart_Backup);
+	        $scope.dTable = angular.copy($scope.dTable_Backup);
+	        $scope.showReport = false;
+	        $scope.showReport2 = false;
+	        $scope.showReport3 = false;
+	        $scope.catDescChoosed = false;
+	        $scope.ReportTypeChoosed = false;
+	    }
         //when user picked a category in create roport modal
 	    $scope.$watch('report.cCategory', function (newValue, oldValue) {
-	        if (newValue !== oldValue) {
+	        if (newValue !== oldValue && newValue != null) {
 	            $.loader({
 	                className: "blue-with-image-2",
 	                content: ''
@@ -59,7 +111,7 @@
         
 	    //when user picked a value type in create roport modal
 	    $scope.$watch('report.cReportType', function (newValue, oldValue) {
-	        if (newValue !== oldValue) {
+	        if (newValue !== oldValue && newValue != null) {
 	            $.loader({
 	                className: "blue-with-image-2",
 	                content: ''
@@ -79,7 +131,7 @@
 	    });
 	    //when user picked a StartYear in create roport modalreport
 	    $scope.$watch('report.cStartYear', function (newValue, oldValue) {
-	        if (newValue !== oldValue) {
+	        if (newValue !== oldValue && newValue != null) {
 	            $scope.report.possibleEndYears = Enumerable.From($scope.report.years)
                     .Where(function (x) { return x>= $scope.report.cStartYear })
                     .OrderBy(function (x) { return x })
@@ -92,6 +144,7 @@
 	    //get data for create report modal
 	    $scope.createReportButton = function (id) {
 	        $scope.report.id = id;
+	        $scope.reportChartID = "report" + id;
 	        $.loader({
 	            className: "blue-with-image-2",
 	            content: ''
@@ -122,12 +175,13 @@
 	            $scope.renderDataForChart();
 	            $scope.renderDataForTable();
 	            $scope.loadChart();
-	            var chart = $('#lineChart').highcharts();
+	            var id = '#' + $scope.reportChartID;
+	            var chart = $(id).highcharts();
 	            $('#ReportModal').on('show.bs.modal', function () {
-	                $('#lineChart').css('visibility', 'hidden');
+	                $(id).css('visibility', 'hidden');
 	            });
 	            $('#ReportModal').on('shown.bs.modal', function () {
-	                $('#lineChart').css('visibility', 'initial');
+	                $(id).css('visibility', 'initial');
 	                chart.reflow();
 	            });
 	            switch ($scope.report.id) {
@@ -349,18 +403,10 @@
 	        }        
 	    }
 
-	    $scope.dTable = {
-	        month: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-	        years: [],
-	        catDesc: [],
-            valueTypeDesc: [],
-	        data: []
-	    }
-
         //charts:
 
 	    $scope.loadChart = function () {
-	        $scope.chart = Highcharts.chart('lineChart', {
+	        $scope.chart = Highcharts.chart($scope.reportChartID, {
 	            credits: {
 	                text: 'ערן התותח',
 	                href: 'https://www.facebook.com/Eran.Math.teacher/'

@@ -220,64 +220,75 @@
                         <h4 style="text-align:center" class="modal-title">דו"ח מותאם אישית</h4>
                     </div>
                     <div id="modal-body-report" class="modal-body">
-                        <div class="form-group">
-                            <!--chart div-->
-                            <div class="chart" dir="ltr" id="lineChart"></div>
+                        <div ng-show="showReport1">
+                            <div class="form-group">
+                                <div class="chart" dir="ltr" id="report1"></div>
+                            </div>
+                            <div class="form-group">
+                                <table class="table table-bordered table-inverse table-hover ">
+                                    <thead>
+                                        <tr class="bg-primary">
+                                            <th>חודש/שנים</th>
+                                            <th ng-repeat="year in dTable.years">{{year}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="d in dTable.data track by $index">
+                                            <td>{{$index +1}}</td>
+                                            <td ng-repeat="dd in d">{{dd}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                        <div ng-show="showReport1" class="form-group">
-                            <table class="table table-bordered table-inverse table-hover ">
-                                <thead>
-                                    <tr class="bg-primary">
-                                        <th>חודש/שנים</th>
-                                        <th ng-repeat="year in dTable.years">{{year}}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="d in dTable.data track by $index">
-                                        <td>{{$index +1}}</td>
-                                        <td ng-repeat="dd in d">{{dd}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div ng-show="showReport2">
+                            <div class="form-group">
+                                <div class="chart" dir="ltr" id="report2"></div>
+                            </div>
+                            <div class="form-group">
+                                <table class="table table-bordered table-inverse table-hover ">
+                                    <thead>
+                                        <tr class="bg-primary">
+                                            <th>חודש/{{report.cCategory.CategoryName}}</th>
+                                            <th ng-repeat="desc in dTable.catDesc">{{desc}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="d in dTable.data track by $index">
+                                            <td>{{$index +1}}</td>
+                                            <td ng-repeat="dd in d">{{dd}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                        <div ng-show="showReport2" class="form-group">
-                            <table class="table table-bordered table-inverse table-hover ">
-                                <thead>
-                                    <tr class="bg-primary">
-                                        <th>חודש/{{report.cCategory.CategoryName}}</th>
-                                        <th ng-repeat="desc in dTable.catDesc">{{desc}}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="d in dTable.data track by $index">
-                                        <td>{{$index +1}}</td>
-                                        <td ng-repeat="dd in d">{{dd}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div ng-show="showReport3" class="form-group">
-                            <table class="table table-bordered table-inverse table-hover ">
-                                <thead>
-                                    <tr class="bg-primary">
-                                        <th>{{report.cCategory.CategoryName}}/{{report.cReportType}}</th>
-                                        <th ng-repeat="desc in dTable.valueTypeDesc">{{desc}}</th>
-                                        <th>סה"כ</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="d in dTable.data track by $index">
-                                        <td ng-repeat="dd in d">{{dd}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div ng-show="showReport3">
+                            <div class="form-group">
+                                <div class="chart" dir="ltr" id="report3"></div>
+                            </div>
+                            <div class="form-group">
+                                <table class="table table-bordered table-inverse table-hover ">
+                                    <thead>
+                                        <tr class="bg-primary">
+                                            <th>{{report.cCategory.CategoryName}}/{{report.cReportType}}</th>
+                                            <th ng-repeat="desc in dTable.valueTypeDesc">{{desc}}</th>
+                                            <th>סה"כ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="d in dTable.data track by $index">
+                                            <td ng-repeat="dd in d">{{dd}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="text-center">
-                                    <button type="button" class="btn btn-danger center-block" data-dismiss="modal">סגור</button>
+                                    <button ng-click="closeReport()" type="button" class="btn btn-danger center-block" data-dismiss="modal">סגור</button>
                                 </div>
                             </div>
                         </div>
