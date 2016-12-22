@@ -46,12 +46,13 @@
         .black-background {background-color:#000000;}
         .white {color:#ffffff;}  
         #modal-dialog-report {
-            overflow-y: initial !important
+            overflow-y: initial !important;
+            max-width:85%;
         }
         #modal-body-report {
             max-height: calc(100vh - 200px);
             overflow-y: auto;
-        }     
+        }    
     </style>
     <title>GMRS</title>
 </head>
@@ -78,7 +79,7 @@
         <div style="text-align:center" dismiss-on-timeout="2000" uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>
 
         <!-- Create Report 1 Modal  -->
-        <div id="createReportModal1" class="modal fade " role="dialog">
+        <div id="createReportModal1" class="modal fade " role="dialog" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-sm">
 
                 <!-- Modal content-->
@@ -126,7 +127,7 @@
         </div>
     
         <!-- Create Report 2 Modal  -->
-        <div id="createReportModal2" class="modal fade " role="dialog">
+        <div id="createReportModal2" class="modal fade " role="dialog" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-sm">
 
                 <!-- Modal content-->
@@ -171,7 +172,7 @@
         </div>
 
         <!-- Create Report 3 Modal  -->
-        <div id="createReportModal3" class="modal fade " role="dialog">
+        <div id="createReportModal3" class="modal fade " role="dialog" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-sm">
 
                 <!-- Modal content-->
@@ -209,7 +210,7 @@
     
 
         <!--Report Modal  -->
-        <div id="ReportModal" class="modal fade " role="dialog">
+        <div id="ReportModal" class="modal fade " role="dialog" data-backdrop="static" data-keyboard="false">
             <div id="modal-dialog-report" class="modal-dialog modal-lg">
 
                 <!-- Modal content-->
