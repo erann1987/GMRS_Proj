@@ -31,6 +31,10 @@
     <link href="Styles/angular-datatables.css" rel="stylesheet" />
     <link href="Styles/jquery.loader.min.css" rel="stylesheet" />
     <style>
+        #startDiv{
+            background: url(Styles/images/background.jpg) no-repeat center fixed; 
+            background-size: cover;
+        }
         td, th {
             text-align: center;
         }
@@ -46,20 +50,20 @@
 </head>
 <body ng-app="GMRSapp">
     <div ng-controller="AppController" class="jumbotron">
-        <div style="text-align:center" class="jumbotron">
+        <div id="startDiv" style="text-align:center" class="jumbotron">
             <div dir="ltr" id="container" style="width: 200px; height:200px; margin: 0 auto; float:left"></div>
-            <h1 class="display-2">ברוך הבא ל - GMRS !</h1>
-            <h2 class="display-12">(General Manger Report System)</h2>
-            <p class="lead">כאן תוכל ליצור ולנהל דוחות אינטרקטיבים בצורה מהירה ויעילה!</p>
+            <h1 style="color:white" class="display-2">ברוך הבא ל - GMRS !</h1>
+            <h2 style="color:white" class="display-12">(General Maneger Report System)</h2>
+            <p style="color:white" class="lead">כאן תוכל ליצור ולנהל דוחות אינטרקטיבים בצורה מהירה ויעילה!</p>
             <br /><br />
             <hr class="my-2">
-            <h6 style="text-align:right">פותח ע"י: ערן נחום וגור אריה יהודה</h6>
+            <h6 style="text-align:right; color:white">פותח ע"י: ערן נחום וגור אריה יהודה</h6>
             <button style="float:right" class="btn btn-info btn-xs black-background white">קרא עוד</button>
             <br /><br />
             <div class="row">
-                <button ng-click="createReportButton(3)" type="button" class="btn btn-success black-background white col-sm-4" data-toggle="modal" data-target="#createReportModal3">צור דוח מסוג 3</button>
-                <button ng-click="createReportButton(2)" type="button" class="btn btn-success black-background white col-sm-4" data-toggle="modal" data-target="#createReportModal2">צור דוח מסוג 2</button>
-                <button ng-click="createReportButton(1)" type="button" class="btn btn-success black-background white col-sm-4" data-toggle="modal" data-target="#createReportModal1">צור דוח מסוג 1</button>
+                <button ng-click="createReportButton(3)" type="button" class="btn btn-primary black-background white col-sm-4" data-toggle="modal" data-target="#createReportModal3">צור דוח מסוג 3</button>
+                <button ng-click="createReportButton(2)" type="button" class="btn btn-primary black-background white col-sm-4" data-toggle="modal" data-target="#createReportModal2">צור דוח מסוג 2</button>
+                <button ng-click="createReportButton(1)" type="button" class="btn btn-primary black-background white col-sm-4" data-toggle="modal" data-target="#createReportModal1">צור דוח מסוג 1</button>
             </div>
         </div>
 
