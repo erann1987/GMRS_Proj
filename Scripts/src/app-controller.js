@@ -2,13 +2,11 @@
 	.controller('AppController', ['$scope', 'AppService', 'DTOptionsBuilder', function ($scope, AppService, DTOptionsBuilder) {
 
 	    $scope.chart;
-	    $scope.showReport = false;
+	    $scope.showReport1 = false;
 	    $scope.showReport2 = false;
 	    $scope.showReport3 = false;
 	    $scope.catDescChoosed = false;
 	    $scope.ReportTypeChoosed = false;
-
-	    $scope.reportChartID;
 
 	    $scope.reportChart = {
 	        type: null,
@@ -32,6 +30,8 @@
 	        drilldownSeries: [],
 	        categories: ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר']
 	    }
+
+	    $scope.reportChartID;
 
 	    $scope.report = {
             id: null,
@@ -81,16 +81,18 @@
 	        data: []
 	    }
         
+        //refresh report data when closing a report
 	    $scope.closeReport = function () {
 	        $scope.report = angular.copy($scope.report_Backup);
 	        $scope.reportChart = angular.copy($scope.reportChart_Backup);
 	        $scope.dTable = angular.copy($scope.dTable_Backup);
-	        $scope.showReport = false;
+	        $scope.showReport1 = false;
 	        $scope.showReport2 = false;
 	        $scope.showReport3 = false;
 	        $scope.catDescChoosed = false;
 	        $scope.ReportTypeChoosed = false;
 	    }
+
         //when user picked a category in create roport modal
 	    $scope.$watch('report.cCategory', function (newValue, oldValue) {
 	        if (newValue !== oldValue && newValue != null) {
@@ -129,6 +131,7 @@
 	            });
 	        }
 	    });
+
 	    //when user picked a StartYear in create roport modalreport
 	    $scope.$watch('report.cStartYear', function (newValue, oldValue) {
 	        if (newValue !== oldValue && newValue != null) {
@@ -141,6 +144,7 @@
 	            });
 	        }
 	    });
+
 	    //get data for create report modal
 	    $scope.createReportButton = function (id) {
 	        $scope.report.id = id;
@@ -174,16 +178,7 @@
 	            $scope.report.data = results.data;
 	            $scope.renderDataForChart();
 	            $scope.renderDataForTable();
-	            $scope.loadChart();
-	            var id = '#' + $scope.reportChartID;
-	            var chart = $(id).highcharts();
-	            $('#ReportModal').on('show.bs.modal', function () {
-	                $(id).css('visibility', 'hidden');
-	            });
-	            $('#ReportModal').on('shown.bs.modal', function () {
-	                $(id).css('visibility', 'initial');
-	                chart.reflow();
-	            });
+	            $scope.loadChart();            
 	            switch ($scope.report.id) {
 	                case 1:
 	                    $scope.showReport1 = true;
@@ -194,6 +189,15 @@
 	                case 3:
 	                    $scope.showReport3 = true;
 	            }
+	            var id = '#' + $scope.reportChartID;
+	            $('#ReportModal').on('show.bs.modal', function () {
+	                $(id).css('visibility', 'hidden');
+	            });
+	            $('#ReportModal').on('shown.bs.modal', function () {
+	                $(id).css('visibility', 'initial');
+	                var chart = $(id).highcharts();
+	                chart.reflow();
+	            });
 	            $.loader('close');
 	            
 	        }, function (e) {
@@ -445,64 +449,6 @@
 	            }
 	        });                        
 	    }
-	    //$scope.loadChart2 = function () {
-	    //    Highcharts.chart('lineChart', {
-	    //        credits: {
-	    //            text: 'ערן התותח',
-	    //            href: 'https://www.facebook.com/Eran.Math.teacher/'
-	    //        },
-	    //        chart: {
-	    //            type: $scope.reportChart.type
-	    //        },
-	    //        title: {
-	    //            text: $scope.reportChart.title,
-	    //            x: -20,
-	    //            useHTML: Highcharts.hasBidiBug
-	    //        },
-	    //        subtitle: {
-	    //            text: $scope.reportChart.subtitle
-	    //        },
-	    //        xAxis: {
-	    //            reversed: true,
-	    //            type: 'category'
-	    //        },
-	    //        yAxis: {
-	    //            title: {
-	    //                text: '(ש"ח)',
-	    //                useHTML: Highcharts.hasBidiBug
-	    //            },
-	    //            plotLines: [{
-	    //                value: 0,
-	    //                width: 1,
-	    //                color: '#808080'
-	    //            }],
-	    //            opposite: true,
-	    //        },
-	    //        legend: {
-	    //            enabled: false
-	    //        },
-	    //        plotOptions: {
-	    //            series: {
-	    //                borderWidth: 0,
-	    //                dataLabels: {
-	    //                    enabled: true,
-	    //                }
-	    //            }
-	    //        },
-
-	    //        tooltip: {
-	    //            useHTML: true,
-	    //            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-	    //            pointFormat: '<span style="color:{point.color}">{point.name}:</span> <b>{point.y:f}</b> ש"ח<br/>'
-	    //        },
-
-	    //        series: $scope.reportChart.series,
-	    //        drilldown: {
-	    //            series: $scope.reportChart.drilldownSeries
-	    //        }
-	    //    });
-	    //}
-
 
 	    //alerts
 	    $scope.alerts = [];
