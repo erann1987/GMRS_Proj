@@ -62,16 +62,20 @@
             <div dir="ltr" id="container" style="width: 200px; height:200px; margin: 0 auto; float:left"></div>
             <h1 style="color:white" class="display-2">ברוך הבא ל - GMRS !</h1>
             <h2 style="color:white" class="display-12">(General Maneger Report System)</h2>
-            <p style="color:white" class="lead">כאן תוכל ליצור ולנהל דוחות אינטרקטיבים בצורה מהירה ויעילה!</p>
+            <p style="color:white" class="lead">כאן תוכל ליצור ולנהל דוחות מנהלים אינטרקטיבים בצורה מהירה ויעילה!</p>
             <br /><br />
             <hr class="my-2">
             <h6 style="text-align:right; color:white">פותח ע"י: ערן נחום וגור אריה יהודה</h6>
-            <button style="float:right" class="btn btn-info btn-xs black-background white">קרא עוד</button>
+            <hr class="my-2">
             <br /><br />
-            <div class="row">
+            <div class="row" style="margin-bottom:10px">
                 <button ng-click="createReportButton(3)" type="button" class="btn btn-primary black-background white col-sm-4" data-toggle="modal" data-target="#createReportModal3">צור דוח מסוג 3</button>
                 <button ng-click="createReportButton(2)" type="button" class="btn btn-primary black-background white col-sm-4" data-toggle="modal" data-target="#createReportModal2">צור דוח מסוג 2</button>
                 <button ng-click="createReportButton(1)" type="button" class="btn btn-primary black-background white col-sm-4" data-toggle="modal" data-target="#createReportModal1">צור דוח מסוג 1</button>
+            </div>
+            <div class="form-group">
+                <button style="float:right" class="btn btn-info btn-xs black-background white">קרא עוד...</button>
+                <button style="float:left" class="btn btn-info btn-xs black-background white" data-toggle="modal" data-target="#ContactInfo">צור קשר</button>
             </div>
         </div>
 
@@ -295,6 +299,47 @@
                     </div>
                 </div>
 
+            </div>
+        </div>
+
+        <!-- Contact Info Modal  -->
+        <div id="ContactInfo" class="modal fade " role="dialog">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span style="float:left" aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 style="text-align:center" class="modal-title" id="exampleModalLabel">פרטי התקשרות</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="recipient-name" class="form-control-label">מפתחים:</label>
+                                <input style="text-align: center;" readonly type="text" class="form-control" id="recipient-name" placeholder="ערן נחום ">
+                                <input style="text-align: center;" readonly type="text" class="form-control" id="recipient-name" placeholder="גור אריה יהודה">
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="form-control-label">אימייל:</label>
+                                <input style="text-align: center;" readonly type="text" class="form-control" id="recipient-name" placeholder="erann1987@gmail.com">
+                                <input style="text-align: center;" readonly type="text" class="form-control" id="recipient-name" placeholder="gury87@gmail.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="form-control-label">טלפון:</label>
+                                <input style="text-align: center;" readonly type="text" class="form-control" id="recipient-name" placeholder="052-458-1157">
+                                <input style="text-align: center;" readonly type="text" class="form-control" id="recipient-name" placeholder="052-597-1523">
+                            </div>
+                            <div class="form-group">
+                                <label for="message-text" class="form-control-label">השאר הודעה:</label>
+                                <textarea class="form-control" id="message-text"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button style="float:right" type="button" class="btn btn-warning" data-dismiss="modal">שלח</button>
+                        <button style="float:left" type="button" class="btn btn-danger" data-dismiss="modal">ביטול</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
