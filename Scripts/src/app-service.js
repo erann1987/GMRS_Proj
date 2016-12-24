@@ -45,6 +45,7 @@
         var report;
         switch (rep.id) {
             case 1:
+            case 4:
                 report = {
                     category: rep.cCategory.CategoryName,
                     startYear: rep.cStartYear,

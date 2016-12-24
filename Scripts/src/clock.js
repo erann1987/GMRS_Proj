@@ -24,12 +24,13 @@
     var now = getNow();
 
     // Create the chart
-    Highcharts.chart('container', {
+    Highcharts.chart('clock', {
 
         chart: {
             type: 'gauge',
             plotBackgroundColor: null,
             plotBackgroundImage: null,
+            backgroundColor: null,
             plotBorderWidth: 0,
             plotShadow: false,
             height: 200
