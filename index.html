@@ -59,7 +59,7 @@
 <body ng-app="GMRSapp">
     <div ng-controller="AppController" class="jumbotron">
         <div id="startDiv" style="text-align:center" class="jumbotron">
-            <div dir="ltr" id="container" style="width: 200px; height:200px; margin: 0 auto; float:left"></div>
+            <div dir="ltr" id="clock" style="width: 200px; height:200px; margin: 0 auto; float:left"></div>
             <h1 style="color:white" class="display-2">ברוך הבא ל - GMRS !</h1>
             <h2 style="color:white" class="display-12">(General Maneger Report System)</h2>
             <p style="color:white" class="lead">כאן תוכל ליצור ולנהל דוחות מנהלים אינטרקטיבים בצורה מהירה ויעילה!</p>
@@ -69,9 +69,10 @@
             <hr class="my-2">
             <br /><br />
             <div class="row" style="margin-bottom:10px">
-                <button ng-click="createReportButton(3)" type="button" class="btn btn-primary black-background white col-sm-4" data-toggle="modal" data-target="#createReportModal3">צור דוח מסוג 3</button>
-                <button ng-click="createReportButton(2)" type="button" class="btn btn-primary black-background white col-sm-4" data-toggle="modal" data-target="#createReportModal2">צור דוח מסוג 2</button>
-                <button ng-click="createReportButton(1)" type="button" class="btn btn-primary black-background white col-sm-4" data-toggle="modal" data-target="#createReportModal1">צור דוח מסוג 1</button>
+                <button ng-click="createReportButton(4)" type="button" class="btn btn-primary black-background white col-sm-3" data-toggle="modal" data-target="#createReportModal1">צור דוח מסוג 4</button>
+                <button ng-click="createReportButton(3)" type="button" class="btn btn-primary black-background white col-sm-3" data-toggle="modal" data-target="#createReportModal3">צור דוח מסוג 3</button>
+                <button ng-click="createReportButton(2)" type="button" class="btn btn-primary black-background white col-sm-3" data-toggle="modal" data-target="#createReportModal2">צור דוח מסוג 2</button>
+                <button ng-click="createReportButton(1)" type="button" class="btn btn-primary black-background white col-sm-3" data-toggle="modal" data-target="#createReportModal1">צור דוח מסוג 1</button>
             </div>
             <div class="form-group">
                 <button style="float:right" class="btn btn-info btn-xs black-background white">קרא עוד...</button>
@@ -286,6 +287,26 @@
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
+                    </div>
+                    <div ng-show="showReport4">
+                        <div class="form-group">
+                            <div class="chart" dir="ltr" id="report4"></div>
+                        </div>
+                        <div class="form-group">
+                            <table class="table table-bordered table-inverse table-hover ">
+                                <thead>
+                                    <tr class="bg-primary">
+                                        <th>{{report.cReportType}}/שנים</th>
+                                        <th ng-repeat="year in dTable.years">{{year}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="d in dTable.data track by $index">
+                                        <td ng-repeat="dd in d">{{dd}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <div class="modal-footer">

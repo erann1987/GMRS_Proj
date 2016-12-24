@@ -5,6 +5,7 @@
 	    $scope.showReport1 = false;
 	    $scope.showReport2 = false;
 	    $scope.showReport3 = false;
+	    $scope.showReport4 = false;
 	    $scope.catDescChoosed = false;
 	    $scope.ReportTypeChoosed = false;
 
@@ -13,7 +14,8 @@
 	        title: null,
 	        subtitle: null,
 	        legend: null,
-            xAxis: null,
+	        xAxis: null,
+            lables: null,
 	        categories: [],
 	        series: [],
 	        drilldownSeries: [],
@@ -25,6 +27,7 @@
 	        subtitle: null,
 	        legend: null,
 	        xAxis: null,
+	        lables: null,
 	        categories: [],
 	        series: [],
 	        drilldownSeries: [],
@@ -89,6 +92,7 @@
 	        $scope.showReport1 = false;
 	        $scope.showReport2 = false;
 	        $scope.showReport3 = false;
+	        $scope.showReport4 = false;
 	        $scope.catDescChoosed = false;
 	        $scope.ReportTypeChoosed = false;
 	    }
@@ -178,7 +182,7 @@
 	            $scope.report.data = results.data;
 	            $scope.renderDataForChart();
 	            $scope.renderDataForTable();
-	            $scope.loadChart();            
+	            $scope.loadChart();
 	            switch ($scope.report.id) {
 	                case 1:
 	                    $scope.showReport1 = true;
@@ -188,6 +192,10 @@
 	                    break;
 	                case 3:
 	                    $scope.showReport3 = true;
+	                    break;
+	                case 4:
+	                    $scope.showReport4 = true;
+                        break;
 	            }
 	            var id = '#' + $scope.reportChartID;
 	            $('#ReportModal').on('show.bs.modal', function () {
@@ -228,7 +236,7 @@
 	                    categories: $scope.reportChart.categories,
 	                    reversed: true,
 	                    title: {
-	                        text: 'חודש'
+	                        text: '(חודש)'
 	                    }
 	                };
 	                $scope.reportChart.title = 'גרף ' + $scope.report.cReportType + ' לפי שנים '
@@ -265,7 +273,7 @@
 	                    categories: $scope.reportChart.categories,
 	                    reversed: true,
 	                    title: {
-	                        text: 'חודש'
+	                        text: '(חודש)'
 	                    }
 	                };
 	                $scope.reportChart.title = 'גרף ' + $scope.report.cReportType + ' ' + $scope.report.cValueTypeDesc + ' לפי ' + $scope.report.cCategory.CategoryName
@@ -334,6 +342,91 @@
 	                    colorByPoint: true,
 	                    data: seriesData
 	                }
+	                break;
+	            case 4:
+	                $scope.reportChart.title = 'גרף ' + $scope.report.cReportType + ' לפי שנים ';
+	                $scope.reportChart.subtitle = $scope.report.cCategory.CategoryName + ': ' + $scope.report.cCategoryDesc;
+	                $scope.reportChart.tooltip = {
+	                    useHTML: true,
+	                    headerFormat: '<small>{point.key}</small><table>',
+	                    pointFormat: '<tr><td style="color: {series.color}"> {point.y:f} שח &nbsp;</td>' + '<td style="text-align: right"><b>  :{series.name}</b></td></tr>'
+	                }
+	                
+	                for (i = $scope.report.cStartYear; i <= $scope.report.cEndYear; i++) {
+	                    $scope.dTable.years.push(i);
+	                }
+	                
+	                var valTypeDesc = Enumerable.From($scope.report.valueTypeDesc)
+                            .OrderBy(function (x) { return x.ValueTypeDesc })
+                            .Select(function (x) { return x.ValueTypeDesc })
+                            .ToArray();
+	                $scope.reportChart.xAxis = {
+	                    categories: valTypeDesc,
+	                    reversed: true,
+	                    title: {
+	                        text: '(שנים)'
+	                    }
+	                };
+	                for (i = 0; i < $scope.dTable.years.length; i++) {
+	                    var valArray = Enumerable.From($scope.report.data)
+                            .Where(function (x) { return x.Year == $scope.dTable.years[i] })
+                            .OrderBy(function (x) { return x.ValueTypeDesc })
+                            .Select(function (x) { return x.value })
+                            .ToArray();
+	                    var seria = {
+                            type: 'column',
+                            name: $scope.dTable.years[i],
+	                        data: valArray
+	                    }
+	                    $scope.reportChart.series.push(seria);
+	                }
+	                //render average array and push it to the chart series
+	                var avg = [];
+	                for (k = 0; k < valTypeDesc.length; k++) {
+	                    var sum = 0;
+	                    for (j = 0; j < $scope.reportChart.series.length; j++) {
+	                        sum = sum + $scope.reportChart.series[j].data[k];
+	                    }
+	                    avg.push(sum / $scope.reportChart.series.length);
+	                }
+	                $scope.reportChart.series.push({
+	                    type: 'spline',
+	                    name: 'ממוצע',
+	                    data: avg,
+	                    marker: {
+	                        lineWidth: 2,
+	                        lineColor: Highcharts.getOptions().colors[3],
+	                        fillColor: 'white'
+	                    }
+	                });
+	                //render pie data and push it to the chart series
+	                var pieY = [];
+	                for (k = 0; k <  $scope.reportChart.series.length - 1; k++) {
+	                    var sum = 0;
+	                    for (j = 0; j < valTypeDesc.length; j++) {
+	                        sum = sum + $scope.reportChart.series[k].data[j];
+	                    }
+	                    pieY.push(sum);
+	                }
+	                var pieData = [];
+	                for (i = 0; i < $scope.dTable.years.length; i++) {
+	                    pieData.push({
+	                        name: $scope.dTable.years[i],
+	                        y: pieY[i],
+	                        color: Highcharts.getOptions().colors[i]
+	                    });
+	                }
+	                $scope.reportChart.series.push({
+	                    type: 'pie',
+	                    name: 'סה"כ ' + $scope.report.cReportType + ' לפי שנה ',
+	                    data: pieData,
+	                    center: [30, 2],
+	                    size: 75,
+	                    showInLegend: false,
+	                    dataLabels: {
+	                        enabled: false
+	                    }
+	                });
 	                break;
 	        }      
 	    }
@@ -404,6 +497,21 @@
                             .ToArray()[0]);
 	                }
 	                break;
+	            case 4:
+	                $scope.dTable.valueTypeDesc = Enumerable.From($scope.report.valueTypeDesc)
+                            .OrderBy(function (x) { return x.ValueTypeDesc })
+                            .Select(function (x) { return x.ValueTypeDesc })
+                            .ToArray();
+	                for (i = 0; i < $scope.dTable.valueTypeDesc.length; i++) {
+	                    $scope.dTable.data.push([$scope.dTable.valueTypeDesc[i]]);
+	                    var valArray = Enumerable.From($scope.report.data)
+                            .Where(function (x) { return x.ValueTypeDesc == $scope.dTable.valueTypeDesc[i] })
+                            .OrderBy(function (x) { return x.Year })
+                            .Select(function (x) { return x.value })
+                            .ToArray();
+	                    $scope.dTable.data[i] = $scope.dTable.data[i].concat(valArray);
+	                }
+	                break;
 	        }        
 	    }
 
@@ -440,9 +548,7 @@
 	                }],
 	                opposite: true,
 	            },
-
 	            tooltip: $scope.reportChart.tooltip,
-	            legend: $scope.reportChart.legend,
 	            series: $scope.reportChart.series,
 	            drilldown: {
 	                series: $scope.reportChart.drilldownSeries
