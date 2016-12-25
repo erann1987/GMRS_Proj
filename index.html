@@ -31,11 +31,9 @@
     <link href="Styles/angular-datatables.css" rel="stylesheet" />
     <link href="Styles/jquery.loader.min.css" rel="stylesheet" />
     <style>
-        #startDiv{
-            background: url(Styles/images/background.jpg) no-repeat center fixed; 
-            background-size: cover;
-            position: absolute;
-            top: 0; right: 0; bottom: 0; left: 0;
+        body {
+            background-image:url(Styles/images/background.jpg);
+            background-position:center;
         }
         td, th {
             text-align: center;
@@ -54,19 +52,28 @@
         #modal-body-report {
             max-height: calc(100vh - 200px);
             overflow-y: auto;
+        }
+        hr {
+            display: block;
+            height: 1px;
+            border: 0;
+            border-top: 1px solid #ccc;
+            margin: 1em 0;
+            padding: 0; 
         }    
     </style>
     <title>GMRS</title>
 </head>
 <body ng-app="GMRSapp">
-    <div ng-controller="AppController" class="jumbotron">
-        <div id="startDiv" style="text-align:center" class="jumbotron">
-            <!--<div dir="ltr" id="clock" style="width: 200px; height:200px; margin: 0 auto; float:left"></div>-->
+    <div ng-controller="AppController">
+        <div id="startDiv" style="text-align:center;">
             <h1 style="color:white" class="display-2">ברוך הבא ל - GMRS !</h1>
             <h2 style="color:white" class="display-12">(General Maneger Report System)</h2>
             <p style="color:white" class="lead">מערכת לייצור וניהול דוחות מנהלים אינטראקטיביים</p>
-            <br /><br />
-            <hr class="my-2">
+            
+            <div dir="ltr" id="clock" style="width: 200px; height:200px; margin: 0 auto;"></div>
+            
+            <hr>
             <div class="btn-group">
                 <div style="background:none" class="dropdown-submenu pull-left dropdown-menu-right">
                     <button ng-click="createReportButton(1)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal1">צור דוח מסוג 1</button>
@@ -75,19 +82,14 @@
                     <button ng-click="createReportButton(4)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal1">צור דוח מסוג 4</button>
                 </div>
             </div>
-            <hr class="my-2">
-            <h6 style="text-align:center; color:white">פותח ע"י: ערן נחום וגור אריה יהודה</h6>
+            <hr>
 
-            <!--<div class="row" style="margin-bottom:10px">
-                <button ng-click="createReportButton(4)" type="button" class="btn btn-primary black-background white col-sm-3" data-toggle="modal" data-target="#createReportModal1">צור דוח מסוג 4</button>
-                <button ng-click="createReportButton(3)" type="button" class="btn btn-primary black-background white col-sm-3" data-toggle="modal" data-target="#createReportModal3">צור דוח מסוג 3</button>
-                <button ng-click="createReportButton(2)" type="button" class="btn btn-primary black-background white col-sm-3" data-toggle="modal" data-target="#createReportModal2">צור דוח מסוג 2</button>
-                <button ng-click="createReportButton(1)" type="button" class="btn btn-primary black-background white col-sm-3" data-toggle="modal" data-target="#createReportModal1">צור דוח מסוג 1</button>
-            </div>-->
+            <h6 style="text-align:center; color:white">פותח ע"י: ערן נחום וגור אריה יהודה</h6>
             <div class="form-group">
-                <button class="btn btn-info btn-xs black-background white">קרא עוד...</button>
                 <button class="btn btn-info btn-xs black-background white" data-toggle="modal" data-target="#ContactInfo">צור קשר</button>
+                <button class="btn btn-info btn-xs black-background white">קרא עוד...</button>
             </div>
+
         </div>
 
         <!--alerts div-->
