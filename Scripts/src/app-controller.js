@@ -6,32 +6,51 @@
 	    $scope.showReport2 = false;
 	    $scope.showReport3 = false;
 	    $scope.showReport4 = false;
+	    $scope.showReport5 = false;
 	    $scope.catDescChoosed = false;
 	    $scope.ReportTypeChoosed = false;
 
 	    $scope.reportChart = {
 	        type: null,
+	        chart: {
+	            type: null
+	        },
 	        title: null,
 	        subtitle: null,
-	        legend: null,
+	        legend: {},
 	        xAxis: null,
             lables: null,
 	        categories: [],
 	        series: [],
 	        drilldownSeries: [],
-	        categories: ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר']
+	        categories: ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'],
+	        plotOptions: {
+	            pie: {
+	                innerSize: 0,
+	                depth: 0
+	            }
+	        }
 	    }
 	    $scope.reportChart_Backup = {
 	        type: null,
+	        chart: {
+	            type: null
+	        },
 	        title: null,
 	        subtitle: null,
-	        legend: null,
+	        legend: {},
 	        xAxis: null,
 	        lables: null,
 	        categories: [],
 	        series: [],
 	        drilldownSeries: [],
-	        categories: ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר']
+	        categories: ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'],
+	        plotOptions: {
+	            pie: {
+	                innerSize: 0,
+	                depth: 0
+	            }
+	        }
 	    }
 
 	    $scope.reportChartID;
@@ -93,6 +112,7 @@
 	        $scope.showReport2 = false;
 	        $scope.showReport3 = false;
 	        $scope.showReport4 = false;
+	        $scope.showReport5 = false;
 	        $scope.catDescChoosed = false;
 	        $scope.ReportTypeChoosed = false;
 	    }
@@ -195,7 +215,10 @@
 	                    break;
 	                case 4:
 	                    $scope.showReport4 = true;
-                        break;
+	                    break;
+	                case 5:
+	                    $scope.showReport5 = true;
+	                    break;
 	            }
 	            var id = '#' + $scope.reportChartID;
 	            $('#ReportModal').on('show.bs.modal', function () {
@@ -218,7 +241,9 @@
 	    $scope.renderDataForChart = function () {
 	        switch ($scope.report.id) {
 	            case 1:
-	                $scope.reportChart.type = 'line';
+	                $scope.reportChart.chart = {
+	                    type: 'line'
+	                };
 	                $scope.reportChart.legend = {
 	                    layout: 'vertical',
 	                    align: 'left',
@@ -255,7 +280,9 @@
 	                }
 	                break;
 	            case 2:
-	                $scope.reportChart.type = 'column';
+	                $scope.reportChart.chart = {
+	                    type: 'column'
+	                };
 	                $scope.reportChart.legend = {
 	                    layout: 'vertical',
 	                    align: 'left',
@@ -293,7 +320,9 @@
 	                break;
 	            case 3:
 	                $scope.reportChart.title = ' גרף ' + $scope.report.cReportType + ' לפי ' + $scope.report.cCategory.CategoryName
-	                $scope.reportChart.type = 'column';
+	                $scope.reportChart.chart = {
+	                    type: 'column'
+	                };
 	                $scope.reportChart.xAxis = {
 	                    reversed: true,
 	                    type: 'category'
@@ -348,9 +377,9 @@
 	                $scope.reportChart.subtitle = $scope.report.cCategory.CategoryName + ': ' + $scope.report.cCategoryDesc;
 	                $scope.reportChart.tooltip = {
 	                    useHTML: true,
-	                    headerFormat: '<small>{point.key}</small><table>',
-	                    pointFormat: '<tr><td style="color: {series.color}"> {point.y:f} שח &nbsp;</td>' + '<td style="text-align: right"><b>  :{series.name}</b></td></tr>'
-	                }
+	                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+	                    pointFormat: '<span style="color:{point.color}">{point.name}:</span> <b>{point.y:f}</b> ש"ח<br/>'
+	                };
 	                
 	                for (i = $scope.report.cStartYear; i <= $scope.report.cEndYear; i++) {
 	                    $scope.dTable.years.push(i);
@@ -427,6 +456,78 @@
 	                        enabled: false
 	                    }
 	                });
+	                break;
+	            case 5:
+	                $scope.reportChart.title = ' גרף הוצאות הכנסות ';
+	                $scope.reportChart.chart = {
+	                    type: 'column'
+	                };
+	                $scope.reportChart.xAxis = {
+	                    reversed: true,
+	                    type: 'category'
+	                };
+	                $scope.reportChart.tooltip = {
+	                    useHTML: true,
+	                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+	                    pointFormat: '<span style="color:{point.color}">{point.name}:</span> <b>{point.y:f}</b> ש"ח<br/>'
+	                };
+	                $scope.reportChart.legend = { enabled: false };
+	                $scope.reportChart.subtitle = ' שנת ' + $scope.report.cStartYear;
+
+
+	                var incomeValTypeDesc = Enumerable.From($scope.report.data)
+                            .Where(function (x) { return x.ValueTypeName == 'הכנסה' })
+                            .OrderBy(function (x) { return x.ValueTypeDesc})
+                            .Select(function (x) { return x.ValueTypeDesc })
+                            .ToArray();
+	                var outcomeValTypeDesc = Enumerable.From($scope.report.data)
+                            .Where(function (x) { return x.ValueTypeName == 'הוצאה' })
+                            .OrderBy(function (x) { return x.ValueTypeDesc })
+                            .Select(function (x) { return x.ValueTypeDesc })
+                            .ToArray();
+	                var incomeVal = Enumerable.From($scope.report.data)
+                            .Where(function (x) { return x.ValueTypeName == 'הכנסה' })
+                            .OrderBy(function (x) { return x.ValueTypeDesc})
+                            .Select(function (x) { return x.value })
+                            .ToArray();
+	                var outcomeVal = Enumerable.From($scope.report.data)
+                            .Where(function (x) { return x.ValueTypeName == 'הוצאה' })
+                            .OrderBy(function (x) { return x.ValueTypeDesc })
+                            .Select(function (x) { return x.value })
+                            .ToArray();
+	                var in_data = [];
+	                for(i=0;i<incomeVal.length;i++){
+	                    in_data.push([incomeValTypeDesc[i], incomeVal[i]]);
+	                }
+	                var out_data = [];
+	                for(i=0;i<outcomeVal.length;i++){
+	                    out_data.push([outcomeValTypeDesc[i], outcomeVal[i]]);
+	                }
+
+	                $scope.reportChart.drilldownSeries[0] = {
+	                    name: 'הכנסה',
+	                    id: 'הכנסה',
+	                    data: in_data
+	                };
+	                $scope.reportChart.drilldownSeries[1] = {
+	                    name: 'הוצאה',
+	                    id: 'הוצאה',
+	                    data: out_data
+	                };
+	                var sumIn = 0;
+	                var sumOut = 0;
+	                for (i = 0; i < incomeVal.length; i++) {
+	                    sumIn = sumIn + incomeVal[i];
+	                }
+	                for (i = 0; i < outcomeVal.length; i++) {
+	                    sumOut = sumOut + outcomeVal[i];
+	                }
+	                $scope.reportChart.series.push({
+	                    name: 'סה"כ בשנה',
+	                    colorByPoint: true,
+	                    data: [{ name: 'הכנסה', y: sumIn, drilldown: 'הכנסה' }, { name: 'הוצאה', y: sumOut, drilldown: 'הוצאה' }]
+	                });
+
 	                break;
 	        }      
 	    }
@@ -523,9 +624,7 @@
 	                text: 'ערן התותח',
 	                href: 'https://www.facebook.com/Eran.Math.teacher/'
 	            },
-	            chart: {
-	                type: $scope.reportChart.type
-	            },
+	            chart: $scope.reportChart.chart,
 	            title: {
 	                text: $scope.reportChart.title,
 	                x: -20,
@@ -548,11 +647,13 @@
 	                }],
 	                opposite: true,
 	            },
+                legend: $scope.reportChart.legend,
 	            tooltip: $scope.reportChart.tooltip,
 	            series: $scope.reportChart.series,
 	            drilldown: {
 	                series: $scope.reportChart.drilldownSeries
-	            }
+	            },
+	            plotOptions: $scope.reportChart.plotOptions
 	        });                        
 	    }
 

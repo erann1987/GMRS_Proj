@@ -65,14 +65,14 @@
     <title>GMRS</title>
 </head>
 <body ng-app="GMRSapp">
-    <div ng-controller="AppController">
+    <div class="container" ng-controller="AppController">
         <div id="startDiv" style="text-align:center;">
             <h1 style="color:white" class="display-2">ברוך הבא ל - GMRS !</h1>
             <h2 style="color:white" class="display-12">(General Maneger Report System)</h2>
             <p style="color:white" class="lead">מערכת לייצור וניהול דוחות מנהלים אינטראקטיביים</p>
-            
+
             <div dir="ltr" id="clock" style="width: 200px; height:200px; margin: 0 auto;"></div>
-            
+
             <hr>
             <div class="btn-group">
                 <div style="background:none" class="dropdown-submenu pull-left dropdown-menu-right">
@@ -80,6 +80,7 @@
                     <button ng-click="createReportButton(2)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal2">צור דוח מסוג 2</button>
                     <button ng-click="createReportButton(3)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal3">צור דוח מסוג 3</button>
                     <button ng-click="createReportButton(4)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal1">צור דוח מסוג 4</button>
+                    <button ng-click="createReportButton(5)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal5">צור דוח מסוג 5</button>
                 </div>
             </div>
             <hr>
@@ -142,7 +143,7 @@
 
             </div>
         </div>
-    
+
         <!-- Create Report 2 Modal  -->
         <div id="createReportModal2" class="modal fade " role="dialog" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-sm">
@@ -224,7 +225,46 @@
 
             </div>
         </div>
-    
+
+        <!-- Create Report 5 Modal  -->
+        <div id="createReportModal5" class="modal fade " role="dialog" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-sm">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button ng-click="closeReport()" style="float:left" type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">יצירת דוח</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form name="createReportModalForm5">
+                            <div class="form-group">
+                                <label for="recipient-name" class="form-control-label">קטגוריה:</label>
+                                <select ng-options="category.CategoryName for category in report.categories track by category.CategoryID" ng-model="report.cCategory" required></select>
+                            </div>
+                            <div class="form-group">
+                                <div ng-show="catDescChoosed" class="form-group">
+                                    <label for="recipient-name" class="form-control-label">בחר {{report.cCategory.CategoryName}}:</label>
+                                    <select data-width="fit" data-live-search="true" class="selectpicker show-tick" title="בחר פה..." ng-model=" report.cCategoryDesc" required>
+                                        <option style="text-align:right" ng-repeat="catDesc in report.categoryDesc" value="{{catDesc.CategoryDesc}}">{{catDesc.CategoryDesc}}</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="form-control-label">שנה:</label>
+                                <select ng-options="year for year in report.years" ng-model="report.cStartYear" required></select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button ng-click="closeReport()" type="button" class="btn btn-danger black-background white pull-left" data-dismiss="modal">ביטול</button>
+                        <button ng-click="loadRelevantData()" type="button" class="btn btn-success black-background white pull-right" data-dismiss="modal" ng-disabled="createReportModalForm4.$error.required" data-toggle="modal" data-target="#ReportModal">אישור</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
 
         <!--Report Modal  -->
         <div id="ReportModal" class="modal fade " role="dialog" data-backdrop="static" data-keyboard="false">
@@ -251,7 +291,7 @@
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="d in dTable.data track by $index">
-                                            <td>{{$index +1}}</td>
+                                            <td>{{reportChart.categories[$index]}}</td>
                                             <td ng-repeat="dd in d">{{dd}}</td>
                                         </tr>
                                     </tbody>
@@ -272,7 +312,7 @@
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="d in dTable.data track by $index">
-                                            <td>{{$index +1}}</td>
+                                            <td>{{reportChart.categories[$index]}}</td>
                                             <td ng-repeat="dd in d">{{dd}}</td>
                                         </tr>
                                     </tbody>
@@ -320,7 +360,32 @@
                                 </table>
                             </div>
                         </div>
-                    </div>      
+                        <div ng-show="showReport5">
+                            <div class="form-group">
+                                <div class="chart" dir="ltr" id="report5"></div>
+                            </div>
+                            <div class="form-group">
+                                <table class="table table-bordered table-inverse table-hover ">
+                                    <thead>
+                                        <tr class="bg-primary">
+                                            <th>#</th>
+                                            <th>הוצאה/הכנסה</th>
+                                            <th>תיאור</th>
+                                            <th>סה"כ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="d in report.data track by $index">
+                                            <td>{{$index + 1}}</td>
+                                            <td>{{d.ValueTypeName}}</td>
+                                            <td>{{d.ValueTypeDesc}}</td>
+                                            <td>{{d.value}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                     <div class="modal-footer">
                         <div class="row">
                             <div class="col-sm-12">

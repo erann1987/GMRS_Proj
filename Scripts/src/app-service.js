@@ -72,6 +72,14 @@
                     id: rep.id
                 }
                 break;
+            case 5:
+                report = {
+                    category: rep.cCategory.CategoryName,
+                    year: rep.cStartYear,
+                    catDesc: rep.cCategoryDesc,
+                    id: rep.id
+                }
+                break;
 
         }
         req = {
