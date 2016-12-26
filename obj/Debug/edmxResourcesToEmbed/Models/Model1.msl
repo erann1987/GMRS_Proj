@@ -39,5 +39,21 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Report">
+      <EntityTypeMapping TypeName="GMRSDBModel.Report">
+        <MappingFragment StoreEntitySet="Report">
+          <ScalarProperty Name="typeDesc" ColumnName="typeDesc" />
+          <ScalarProperty Name="year" ColumnName="year" />
+          <ScalarProperty Name="reportType" ColumnName="reportType" />
+          <ScalarProperty Name="endYear" ColumnName="endYear" />
+          <ScalarProperty Name="startYear" ColumnName="startYear" />
+          <ScalarProperty Name="catDesc" ColumnName="catDesc" />
+          <ScalarProperty Name="category" ColumnName="category" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="SN" ColumnName="SN" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

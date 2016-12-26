@@ -94,5 +94,30 @@
         return $http(req);
     }
 
+    //save report
+    fac.AddReport = function (rep) {
+        var report;
+        report = {
+            Name: rep.Name,
+            category: rep.cCategory.CategoryName,
+            startYear: rep.cStartYear,
+            endYear: rep.cEndYear,
+            year: rep.cStartYear,
+            typeDesc: rep.cValueTypeDesc,
+            reportType: rep.cReportType,
+            catDesc: rep.cCategoryDesc,
+            id: rep.id
+        }
+        req = {
+            method: 'POST',
+            url: '/api/gmrs/savereport',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            data: JSON.stringify(report)
+        }
+        return $http(req);
+    }
     return fac;
 });

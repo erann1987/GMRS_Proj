@@ -26,6 +26,21 @@
     <Property Name="CategoryID" Type="int" Nullable="false" />
     <Property Name="CategoryDesc" Type="varchar" MaxLength="120" Nullable="false" />
   </EntityType>
+  <EntityType Name="Report">
+    <Key>
+      <PropertyRef Name="SN" />
+    </Key>
+    <Property Name="SN" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="512" Nullable="false" />
+    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="category" Type="varchar" MaxLength="256" />
+    <Property Name="catDesc" Type="varchar" MaxLength="256" />
+    <Property Name="startYear" Type="int" />
+    <Property Name="endYear" Type="int" />
+    <Property Name="reportType" Type="varchar" MaxLength="256" />
+    <Property Name="year" Type="int" />
+    <Property Name="typeDesc" Type="varchar" MaxLength="256" />
+  </EntityType>
   <EntityType Name="ValueType">
     <Key>
       <PropertyRef Name="ValueTypeID" />
@@ -74,6 +89,7 @@
     <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Data" EntityType="Self.Data" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DataCategory" EntityType="Self.DataCategory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Report" EntityType="Self.Report" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ValueType" EntityType="Self.ValueType" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_Data_ValueType" Association="Self.FK_Data_ValueType">
       <End Role="ValueType" EntitySet="ValueType" />

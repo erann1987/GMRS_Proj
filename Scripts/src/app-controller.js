@@ -10,6 +10,21 @@
 	    $scope.catDescChoosed = false;
 	    $scope.ReportTypeChoosed = false;
 
+	    $scope.saveReport = function () {
+	        $.loader({
+	            className: "blue-with-image-2",
+	            content: ''
+	        });
+	        AppService.AddReport($scope.report).then(function (results) {
+	            $.loader('close');
+	            $scope.closeReport();
+	            $scope.addAlert('success', 'הדו"ח נשמר בהצלחה!');
+	        }, function (e) {
+	            $.loader('close');
+	            alert("save report failed");
+	        });
+	    }
+
 	    $scope.reportChart = {
 	        type: null,
 	        chart: {
@@ -56,7 +71,8 @@
 	    $scope.reportChartID;
 
 	    $scope.report = {
-            id: null,
+            Name: '',
+	        id: null,
 	        reportType: [],
             valueTypeDesc: [],
 	        categories: [],
@@ -72,6 +88,7 @@
 	        data: []
 	    }
 	    $scope.report_Backup = {
+	        Name: '',
 	        id: null,
 	        reportType: [],
 	        valueTypeDesc: [],

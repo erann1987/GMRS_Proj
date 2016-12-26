@@ -29,5 +29,6 @@ namespace GMRS_Proj.Models
         public virtual DbSet<Data> Data { get; set; }
         public virtual DbSet<DataCategory> DataCategory { get; set; }
         public virtual DbSet<ValueType> ValueType { get; set; }
+        public virtual DbSet<Report> Report { get; set; }
     }
 }

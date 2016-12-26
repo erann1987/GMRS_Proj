@@ -14,8 +14,6 @@ namespace GMRS_Proj.Controllers
         [Route("api/gmrs/categories/{catName}")]
         public IHttpActionResult getCategoriesDesc(string catName)
         {
-            IEnumerable<Category> res;
-
             using (var db = new GMRSDBEntities())
             {
                 try
@@ -240,20 +238,51 @@ namespace GMRS_Proj.Controllers
                 }
             }
         }
+
+        //save report
+        [HttpPost]
+        [Route("api/gmrs/savereport/")]
+        public IHttpActionResult SaveReport([FromBody] Report rep)
+        {
+            using (var db = new GMRSDBEntities())
+            {
+                try
+                {
+                    db.Configuration.ProxyCreationEnabled = false;
+                    db.Report.Add(new Report() {
+                        category = rep.category,
+                        catDesc = rep.catDesc,
+                        startYear = rep.startYear,
+                        endYear = rep.endYear,
+                        reportType = rep.reportType,
+                        year = rep.year,
+                        typeDesc = rep.typeDesc,
+                        id = rep.id,
+                        Name = rep.Name
+                    });
+                    db.SaveChanges();
+                    return Ok();
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
+        }
     }
 
-    //class Report
-    public class Report
-    {
-        public String category;
-        public string catDesc;
-        public int startYear;
-        public int endYear;
-        public string reportType;
-        public int year;
-        public string typeDesc;
-        public int id;
-    }
+    ////class Report
+    //public class Report
+    //{
+    //    public String category;
+    //    public string catDesc;
+    //    public int startYear;
+    //    public int endYear;
+    //    public string reportType;
+    //    public int year;
+    //    public string typeDesc;
+    //    public int id;
+    //}
 
     //class ReportModal
     public class ReportModal

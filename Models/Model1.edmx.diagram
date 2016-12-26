@@ -12,6 +12,7 @@
         <AssociationConnector Association="GMRSDBModel.FK_DataCategory_Category" ManuallyRouted="false" />
         <AssociationConnector Association="GMRSDBModel.FK_Data_ValueType" ManuallyRouted="false" />
         <AssociationConnector Association="GMRSDBModel.FK_DataCategory_Data" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="GMRSDBModel.Report" Width="1.5" PointX="0.875" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
