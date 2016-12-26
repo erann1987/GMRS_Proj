@@ -241,8 +241,8 @@ namespace GMRS_Proj.Controllers
 
         //save report
         [HttpPost]
-        [Route("api/gmrs/savereport/")]
-        public IHttpActionResult SaveReport([FromBody] Report rep)
+        [Route("api/gmrs/reports/")]
+        public IHttpActionResult PostReport([FromBody] Report rep)
         {
             using (var db = new GMRSDBEntities())
             {
@@ -260,6 +260,50 @@ namespace GMRS_Proj.Controllers
                         id = rep.id,
                         Name = rep.Name
                     });
+                    db.SaveChanges();
+                    return Ok();
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
+        }
+
+        //Get favorites reports
+        [HttpGet]
+        [Route("api/gmrs/reports/")]
+        public IHttpActionResult GetReport()
+        {
+            using (var db = new GMRSDBEntities())
+            {
+                try
+                {
+                    db.Configuration.ProxyCreationEnabled = false;
+                    return Ok(db.Report.ToList());
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
+        }
+
+        //Delete report
+        [HttpDelete]
+        [Route("api/gmrs/reports/{sn}")]
+        public IHttpActionResult DeleteReport([FromUri]int sn)
+        {
+            using (var db = new GMRSDBEntities())
+            {
+                try
+                {
+                    db.Configuration.ProxyCreationEnabled = false;
+                    var cust =
+                        (from r in db.Report
+                         where r.SN == sn
+                         select r).First();
+                    db.Report.Remove(cust);
                     db.SaveChanges();
                     return Ok();
                 }

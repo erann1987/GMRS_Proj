@@ -88,7 +88,7 @@
             <br />
 
             <div class="row">
-                <button type="button" class="btn btn-lg btn-primary btn-block black-background white" data-toggle="modal" data-target="#favoriteReportsModal">דוחות מועדפים</button>
+                <button ng-click="loadFavoriteReports()" type="button" class="btn btn-lg btn-primary btn-block black-background white" data-toggle="modal" data-target="#favoriteReportsModal">דוחות מועדפים</button>
             </div>
             <hr>
 
@@ -428,6 +428,45 @@
                     <div class="modal-footer">
                         <button ng-click="closeReport()" type="button" class="btn btn-danger black-background white pull-left" data-dismiss="modal">ביטול</button>
                         <button ng-click="saveReport()" type="button" class="btn btn-success black-background white pull-right" data-dismiss="modal" ng-disabled="reportNameModalForm.$error.required">שמור</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Favorites Report modal  -->
+        <div id="favoriteReportsModal" class="modal fade " role="dialog" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-lg">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button ng-click="resetReportArray()" style="float:left" type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">דוחות מועדפים</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-bordered table-inverse table-hover ">
+                            <thead>
+                                <tr class="bg-primary">
+                                    <th>#</th>
+                                    <th>שם הדוח</th>
+                                    <th>פעולה</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="r in reportsArray track by $index">
+                                    <td>{{$index + 1}}</td>
+                                    <td>{{r.Name}}</td>
+                                    <td style="width:40%">
+                                        <button ng-click="loadFromFavorites(r)" type="button" class="btn btn-success black-background white" data-dismiss="modal" data-toggle="modal" data-target="#ReportModal">פתח דו"ח</button>
+                                        <button ng-click="deleteReport(r.SN)" type="button" class="btn btn-danger black-background white">מחק</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button ng-click="resetReportArray()" type="button" class="btn btn-danger black-background white pull-left" data-dismiss="modal">סגור</button>
                     </div>
                 </div>
 

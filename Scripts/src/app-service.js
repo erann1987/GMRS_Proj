@@ -110,7 +110,7 @@
         }
         req = {
             method: 'POST',
-            url: '/api/gmrs/savereport',
+            url: '/api/gmrs/reports',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -119,5 +119,32 @@
         }
         return $http(req);
     }
+
+    //get Favorites reports
+    fac.GetFavoriteReports = function () {
+        req = {
+            method: 'GET',
+            url: '/api/gmrs/reports/',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        }
+        return $http(req);
+    }
+
+    //delete report
+    fac.DeleteReport = function (sn) {
+        req = {
+            method: 'DELETE',
+            url: '/api/gmrs/reports/' + sn,
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        }
+        return $http(req);
+    }
+
     return fac;
 });
