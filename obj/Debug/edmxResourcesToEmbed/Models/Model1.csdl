@@ -93,5 +93,21 @@
       <End Role="Data" EntitySet="Data" />
       <End Role="DataCategory" EntitySet="DataCategory" />
     </AssociationSet>
+    <EntitySet Name="Report" EntityType="GMRSDBModel.Report" />
   </EntityContainer>
+  <EntityType Name="Report">
+    <Key>
+      <PropertyRef Name="SN" />
+    </Key>
+    <Property Name="SN" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="512" FixedLength="false" Unicode="false" />
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="category" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+    <Property Name="catDesc" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+    <Property Name="startYear" Type="Int32" />
+    <Property Name="endYear" Type="Int32" />
+    <Property Name="reportType" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+    <Property Name="year" Type="Int32" />
+    <Property Name="typeDesc" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+  </EntityType>
 </Schema>

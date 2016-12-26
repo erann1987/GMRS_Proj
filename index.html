@@ -66,6 +66,9 @@
 </head>
 <body ng-app="GMRSapp">
     <div class="container" ng-controller="AppController">
+        <!--alerts div-->
+        <div style="text-align:center" dismiss-on-timeout="2000" uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>
+        <!--start div-->
         <div id="startDiv" style="text-align:center;">
             <h1 style="color:white" class="display-2">ברוך הבא ל - GMRS !</h1>
             <h2 style="color:white" class="display-12">(General Maneger Report System)</h2>
@@ -74,16 +77,22 @@
             <div dir="ltr" id="clock" style="width: 200px; height:200px; margin: 0 auto;"></div>
 
             <hr>
-            <div class="btn-group">
-                <div style="background:none" class="dropdown-submenu pull-left dropdown-menu-right">
-                    <button ng-click="createReportButton(1)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal1">צור דוח מסוג 1</button>
-                    <button ng-click="createReportButton(2)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal2">צור דוח מסוג 2</button>
-                    <button ng-click="createReportButton(3)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal3">צור דוח מסוג 3</button>
-                    <button ng-click="createReportButton(4)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal1">צור דוח מסוג 4</button>
-                    <button ng-click="createReportButton(5)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal5">צור דוח מסוג 5</button>
-                </div>
+            <div class="row">
+                <button ng-click="createReportButton(1)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal1">צור דוח מסוג 1</button>
+                <button ng-click="createReportButton(2)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal2">צור דוח מסוג 2</button>
+                <button ng-click="createReportButton(3)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal3">צור דוח מסוג 3</button>
+                <button ng-click="createReportButton(4)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal1">צור דוח מסוג 4</button>
+                <button ng-click="createReportButton(5)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal5">צור דוח מסוג 5</button>
+            </div>    
+
+            <br />
+
+            <div class="row">
+                <button type="button" class="btn btn-lg btn-primary btn-block black-background white" data-toggle="modal" data-target="#favoriteReportsModal">דוחות מועדפים</button>
             </div>
             <hr>
+
+            <br />
 
             <h6 style="text-align:center; color:white">פותח ע"י: ערן נחום וגור אריה יהודה</h6>
             <div class="form-group">
@@ -92,9 +101,6 @@
             </div>
 
         </div>
-
-        <!--alerts div-->
-        <div style="text-align:center" dismiss-on-timeout="2000" uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>
 
         <!-- Create Report 1 Modal  -->
         <div id="createReportModal1" class="modal fade " role="dialog" data-backdrop="static" data-keyboard="false">
@@ -391,9 +397,37 @@
                             <div class="col-sm-12">
                                 <div class="text-center">
                                     <button ng-click="closeReport()" type="button" class="btn btn-danger center-block" data-dismiss="modal">סגור</button>
+                                    <button type="button" class="btn btn-success center-block" data-dismiss="modal" data-toggle="modal" data-target="#reportNameModal">שמור</button>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Report name modal  -->
+        <div id="reportNameModal" class="modal fade " role="dialog" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-sm">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button ng-click="closeReport()" style="float:left" type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">שמירת דוח חדש</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form name="reportNameModalForm">
+                            <div class="form-group">
+                                <label>שם הדוח:</label>
+                                <input ng-model="report.Name" type="text" class="form-control" required>
+                            </div>                            
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button ng-click="closeReport()" type="button" class="btn btn-danger black-background white pull-left" data-dismiss="modal">ביטול</button>
+                        <button ng-click="saveReport()" type="button" class="btn btn-success black-background white pull-right" data-dismiss="modal" ng-disabled="reportNameModalForm.$error.required">שמור</button>
                     </div>
                 </div>
 
