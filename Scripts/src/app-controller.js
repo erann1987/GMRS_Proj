@@ -71,8 +71,26 @@
 	        $scope.report.cEndYear = r.endYear;
 
 	        $scope.reportChartID = 'report' + r.id;
-
+	        $scope.reportCategorySelected();
+	        $scope.reportTypeSelected();
 	        $scope.loadRelevantData();
+	        switch ($scope.report.id) {
+	            case 1:
+	                $scope.showReport1 = true;
+	                break;
+	            case 2:
+	                $scope.showReport2 = true;
+	                break;
+	            case 3:
+	                $scope.showReport3 = true;
+	                break;
+	            case 4:
+	                $scope.showReport4 = true;
+	                break;
+	            case 5:
+	                $scope.showReport5 = true;
+	                break;
+	        }
 	    }
 
 	    $scope.reportChart = {
@@ -185,43 +203,58 @@
 	    }
 
         //when user picked a category in create roport modal
-	    $scope.$watch('report.cCategory', function (newValue, oldValue) {
-	        if (newValue !== oldValue && newValue != null) {
-	            $.loader({
-	                className: "blue-with-image-2",
-	                content: ''
+	    $scope.reportCategorySelected = function () {
+	        $.loader({
+	            className: "blue-with-image-2",
+	            content: ''
+	        });
+	        AppService.GetCategoriesDesc($scope.report.cCategory.CategoryName).then(function (results) {
+	            $scope.report.categoryDesc = results.data;
+	            $.loader('close');
+	            $scope.catDescChoosed = true;
+	        }, function (e) {
+	            $.loader('close');
+	            alert("getting categories description list failed");
+	        });
+	    }
+	    //when user picked a type in create roport modal
+	    $scope.reportTypeSelected = function () {
+	        $.loader({
+	            className: "blue-with-image-2",
+	            content: ''
+	        });
+	        AppService.GetValueTypeDesc($scope.report.cReportType).then(function (results) {
+	            $scope.report.valueTypeDesc = results.data;
+	            $.loader('close');
+	            $scope.$watch(function () {
+	                $('.selectpicker').selectpicker('refresh');
 	            });
-	            AppService.GetCategoriesDesc($scope.report.cCategory.CategoryName).then(function (results) {
-	                $scope.report.categoryDesc = results.data;
-	                $.loader('close');
-	                $scope.catDescChoosed = true;
-	            }, function (e) {
-	                $.loader('close');
-	                alert("getting categories description list failed");
-	            });
-	        }
-	    });
-        
+	            $scope.ReportTypeChoosed = true;
+	        }, function (e) {
+	            $.loader('close');
+	            alert("getting categories description list failed");
+	        });
+	    }
 	    //when user picked a value type in create roport modal
-	    $scope.$watch('report.cReportType', function (newValue, oldValue) {
-	        if (newValue !== oldValue && newValue != null) {
-	            $.loader({
-	                className: "blue-with-image-2",
-	                content: ''
-	            });
-	            AppService.GetValueTypeDesc($scope.report.cReportType).then(function (results) {
-	                $scope.report.valueTypeDesc = results.data;
-	                $.loader('close');
-	                $scope.$watch(function () {
-	                    $('.selectpicker').selectpicker('refresh');
-	                });
-	                $scope.ReportTypeChoosed = true;
-	            }, function (e) {
-	                $.loader('close');
-	                alert("getting categories description list failed");
-	            });
-	        }
-	    });
+	    //$scope.$watch('report.cReportType', function (newValue, oldValue) {
+	    //    if (newValue !== oldValue && newValue != null) {
+	    //        $.loader({
+	    //            className: "blue-with-image-2",
+	    //            content: ''
+	    //        });
+	    //        AppService.GetValueTypeDesc($scope.report.cReportType).then(function (results) {
+	    //            $scope.report.valueTypeDesc = results.data;
+	    //            $.loader('close');
+	    //            $scope.$watch(function () {
+	    //                $('.selectpicker').selectpicker('refresh');
+	    //            });
+	    //            $scope.ReportTypeChoosed = true;
+	    //        }, function (e) {
+	    //            $.loader('close');
+	    //            alert("getting categories description list failed");
+	    //        });
+	    //    }
+	    //});
 
 	    //when user picked a StartYear in create roport modalreport
 	    $scope.$watch('report.cStartYear', function (newValue, oldValue) {
@@ -240,6 +273,23 @@
 	    $scope.createReportButton = function (id) {
 	        $scope.report.id = id;
 	        $scope.reportChartID = "report" + id;
+	        switch ($scope.report.id) {
+	            case 1:
+	                $scope.showReport1 = true;
+	                break;
+	            case 2:
+	                $scope.showReport2 = true;
+	                break;
+	            case 3:
+	                $scope.showReport3 = true;
+	                break;
+	            case 4:
+	                $scope.showReport4 = true;
+	                break;
+	            case 5:
+	                $scope.showReport5 = true;
+	                break;
+	        }
 	        $.loader({
 	            className: "blue-with-image-2",
 	            content: ''
@@ -265,28 +315,23 @@
 	            className: "blue-with-image-2",
 	            content: ''
 	        });
+	        if ($scope.report.id == 2)
+	            $scope.reportCategorySelected();
+	        else if ($scope.report.id == 3) {
+	            $scope.reportCategorySelected();
+	            $scope.reportTypeSelected();
+	        }
+	        else if ($scope.report.id == 4) {
+	            $scope.reportTypeSelected();
+	        }
+	            
+            
 	        AppService.GetRelevantData($scope.report).then(function (results) {
 	            $scope.report.data = results.data;
 	            $scope.renderDataForChart();
 	            $scope.renderDataForTable();
 	            $scope.loadChart();
-	            switch ($scope.report.id) {
-	                case 1:
-	                    $scope.showReport1 = true;
-	                    break;
-	                case 2:
-	                    $scope.showReport2 = true;
-	                    break;
-	                case 3:
-	                    $scope.showReport3 = true;
-	                    break;
-	                case 4:
-	                    $scope.showReport4 = true;
-	                    break;
-	                case 5:
-	                    $scope.showReport5 = true;
-	                    break;
-	            }
+
 	            var id = '#' + $scope.reportChartID;
 	            $('#ReportModal').on('show.bs.modal', function () {
 	                $(id).css('visibility', 'hidden');
