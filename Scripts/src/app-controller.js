@@ -1,6 +1,5 @@
 ﻿angular.module('GMRSapp')
 	.controller('AppController', ['$scope', 'AppService', 'DTOptionsBuilder', function ($scope, AppService, DTOptionsBuilder) {
-
 	    $scope.chart;
 	    $scope.showReport1 = false;
 	    $scope.showReport2 = false;
@@ -9,6 +8,27 @@
 	    $scope.showReport5 = false;
 	    $scope.catDescChoosed = false;
 	    $scope.ReportTypeChoosed = false;
+
+	    $scope.reportsArray = [];
+	    $scope.reportsArray_Backup = [];
+
+	    $scope.resetReportArray = function () {
+	        $scope.reportsArray = $scope.reportsArray_Backup;
+	    }
+
+	    $scope.loadFavoriteReports = function () {
+	        $.loader({
+	            className: "blue-with-image-2",
+	            content: ''
+	        });
+	        AppService.GetFavoriteReports().then(function (results) {
+	            $scope.reportsArray = results.data;
+	            $.loader('close');
+	        }, function (e) {
+	            $.loader('close');
+	            alert("loading favorites reports failed!");
+	        })
+	    }
 
 	    $scope.saveReport = function () {
 	        $.loader({
@@ -23,6 +43,36 @@
 	            $.loader('close');
 	            alert("save report failed");
 	        });
+	    }
+
+	    $scope.deleteReport = function (sn) {
+	        $.loader('close');
+	        AppService.DeleteReport(sn).then(function (results) {
+	            $.loader('close');
+	            for (i = 0; i < $scope.reportsArray.length; i++) {
+	                if($scope.reportsArray[i].SN == sn)
+	                    $scope.reportsArray.splice(i, 1);
+	            }
+	            $scope.addAlert('success', 'הדו"ח נמחק!');
+	        }, function (e) {
+	            $.loader('close');
+	            alert("delete report failed");
+	        });
+	    }
+
+	    $scope.loadFromFavorites = function (r) {
+	        $scope.report.Name = r.Name;
+	        $scope.report.id = r.id;
+	        $scope.report.cCategory = { CategoryName: r.category},
+	        $scope.report.cCategoryDesc = r.catDesc;
+	        $scope.report.cReportType = r.reportType;
+	        $scope.report.cStartYear = r.startYear;
+	        $scope.report.cValueTypeDesc = r.typeDesc;
+	        $scope.report.cEndYear = r.endYear;
+
+	        $scope.reportChartID = 'report' + r.id;
+
+	        $scope.loadRelevantData();
 	    }
 
 	    $scope.reportChart = {
