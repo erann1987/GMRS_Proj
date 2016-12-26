@@ -79,10 +79,10 @@
             <hr>
             <div class="row">
                 <button ng-click="createReportButton(1)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal1">צור דוח מסוג 1</button>
-                <button ng-click="createReportButton(2)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal2">צור דוח מסוג 2</button>
-                <button ng-click="createReportButton(3)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal3">צור דוח מסוג 3</button>
+                <button ng-click="createReportButton(2)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal1">צור דוח מסוג 2</button>
+                <button ng-click="createReportButton(3)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal1">צור דוח מסוג 3</button>
                 <button ng-click="createReportButton(4)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal1">צור דוח מסוג 4</button>
-                <button ng-click="createReportButton(5)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal5">צור דוח מסוג 5</button>
+                <button ng-click="createReportButton(5)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal1">צור דוח מסוג 5</button>
             </div>    
 
             <br />
@@ -112,7 +112,7 @@
                         <button ng-click="closeReport()" style="float:left" type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">יצירת דוח</h4>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" ng-show="showReport1 || showReport4">
                         <form name="createReportModalForm1">
                             <div class="form-group">
                                 <label for="recipient-name" class="form-control-label">סוג מידע:</label>
@@ -122,7 +122,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="recipient-name" class="form-control-label">קטגוריה:</label>
-                                <select ng-options="category.CategoryName for category in report.categories track by category.CategoryID" ng-model="report.cCategory" required></select>
+                                <select ng-change="reportCategorySelected()" ng-options="category.CategoryName for category in report.categories track by category.CategoryID" ng-model="report.cCategory" required></select>
                             </div>
                             <div class="form-group">
                                 <div ng-show="catDescChoosed" class="form-group">
@@ -140,31 +140,12 @@
                                 <select ng-disabled="(report.cStartYear==null)" ng-options="year for year in report.possibleEndYears" ng-model="report.cEndYear" required></select>
                             </div>
                         </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button ng-click="closeReport()" type="button" class="btn btn-danger black-background white pull-left" data-dismiss="modal">ביטול</button>
-                        <button ng-click="loadRelevantData()" type="button" class="btn btn-success black-background white pull-right" data-dismiss="modal" ng-disabled="createReportModalForm1.$error.required" data-toggle="modal" data-target="#ReportModal">אישור</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- Create Report 2 Modal  -->
-        <div id="createReportModal2" class="modal fade " role="dialog" data-backdrop="static" data-keyboard="false">
-            <div class="modal-dialog modal-sm">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button ng-click="closeReport()" style="float:left" type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">יצירת דוח</h4>
-                    </div>
-                    <div class="modal-body">
+                    </div> 
+                    <div class="modal-body" ng-show="showReport2">
                         <form name="createReportModalForm2">
                             <div class="form-group">
                                 <label for="recipient-name" class="form-control-label">סוג מידע:</label>
-                                <select name="select_type" data-width="fit" data-live-search="true" title="אפשרויות..." class="selectpicker" ng-model="report.cReportType" required>
+                                <select ng-change="reportTypeSelected()" name="select_type" data-width="fit" data-live-search="true" title="אפשרויות..." class="selectpicker" ng-model="report.cReportType" required>
                                     <option style="text-align:right" ng-repeat="val in report.reportType" value="{{val}}">{{val}}</option>
                                 </select>
                             </div>
@@ -186,26 +167,7 @@
                             </div>
                         </form>
                     </div>
-                    <div class="modal-footer">
-                        <button ng-click="closeReport()" type="button" class="btn btn-danger black-background white pull-left" data-dismiss="modal">ביטול</button>
-                        <button ng-click="loadRelevantData()" type="button" class="btn btn-success black-background white pull-right" data-dismiss="modal" ng-disabled="createReportModalForm2.$error.required" data-toggle="modal" data-target="#ReportModal">אישור</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- Create Report 3 Modal  -->
-        <div id="createReportModal3" class="modal fade " role="dialog" data-backdrop="static" data-keyboard="false">
-            <div class="modal-dialog modal-sm">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button ng-click="closeReport()" style="float:left" type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">יצירת דוח</h4>
-                    </div>
-                    <div class="modal-body">
+                    <div class="modal-body" ng-show="showReport3">
                         <form name="createReportModalForm3">
                             <div class="form-group">
                                 <label for="recipient-name" class="form-control-label">סוג מידע:</label>
@@ -223,30 +185,11 @@
                             </div>
                         </form>
                     </div>
-                    <div class="modal-footer">
-                        <button ng-click="closeReport()" type="button" class="btn btn-danger black-background white pull-left" data-dismiss="modal">ביטול</button>
-                        <button ng-click="loadRelevantData()" type="button" class="btn btn-success black-background white pull-right" data-dismiss="modal" ng-disabled="createReportModalForm3.$error.required" data-toggle="modal" data-target="#ReportModal">אישור</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- Create Report 5 Modal  -->
-        <div id="createReportModal5" class="modal fade " role="dialog" data-backdrop="static" data-keyboard="false">
-            <div class="modal-dialog modal-sm">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button ng-click="closeReport()" style="float:left" type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">יצירת דוח</h4>
-                    </div>
-                    <div class="modal-body">
+                    <div class="modal-body" ng-show="showReport5">
                         <form name="createReportModalForm5">
                             <div class="form-group">
                                 <label for="recipient-name" class="form-control-label">קטגוריה:</label>
-                                <select ng-options="category.CategoryName for category in report.categories track by category.CategoryID" ng-model="report.cCategory" required></select>
+                                <select ng-change="reportCategorySelected()" ng-options="category.CategoryName for category in report.categories track by category.CategoryID" ng-model="report.cCategory" required></select>
                             </div>
                             <div class="form-group">
                                 <div ng-show="catDescChoosed" class="form-group">
@@ -265,7 +208,10 @@
                     </div>
                     <div class="modal-footer">
                         <button ng-click="closeReport()" type="button" class="btn btn-danger black-background white pull-left" data-dismiss="modal">ביטול</button>
-                        <button ng-click="loadRelevantData()" type="button" class="btn btn-success black-background white pull-right" data-dismiss="modal" ng-disabled="createReportModalForm4.$error.required" data-toggle="modal" data-target="#ReportModal">אישור</button>
+                        <button ng-show="showReport1 || showReport4" ng-click="loadRelevantData()" type="button" class="btn btn-success black-background white pull-right" data-dismiss="modal" ng-disabled="createReportModalForm1.$error.required" data-toggle="modal" data-target="#ReportModal">אישור</button>
+                        <button ng-show="showReport2" ng-click="loadRelevantData()" type="button" class="btn btn-success black-background white pull-right" data-dismiss="modal" ng-disabled="createReportModalForm2.$error.required" data-toggle="modal" data-target="#ReportModal">אישור</button>
+                        <button ng-show="showReport3" ng-click="loadRelevantData()" type="button" class="btn btn-success black-background white pull-right" data-dismiss="modal" ng-disabled="createReportModalForm3.$error.required" data-toggle="modal" data-target="#ReportModal">אישור</button>
+                        <button ng-show="showReport5" ng-click="loadRelevantData()" type="button" class="btn btn-success black-background white pull-right" data-dismiss="modal" ng-disabled="createReportModalForm5.$error.required" data-toggle="modal" data-target="#ReportModal">אישור</button>
                     </div>
                 </div>
 
