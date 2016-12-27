@@ -9,8 +9,14 @@
 	    $scope.catDescChoosed = false;
 	    $scope.ReportTypeChoosed = false;
 
+	    $scope.reportSNtoDelete;
+
 	    $scope.reportsArray = [];
 	    $scope.reportsArray_Backup = [];
+
+	    $scope.reportToDel = function (sn) {
+	        $scope.reportSNtoDelete = sn;
+	    }
 
 	    $scope.resetReportArray = function () {
 	        $scope.reportsArray = $scope.reportsArray_Backup;
@@ -45,12 +51,15 @@
 	        });
 	    }
 
-	    $scope.deleteReport = function (sn) {
-	        $.loader('close');
-	        AppService.DeleteReport(sn).then(function (results) {
+	    $scope.deleteReport = function () {
+	        $.loader({
+	            className: "blue-with-image-2",
+	            content: ''
+	        });
+	        AppService.DeleteReport($scope.reportSNtoDelete).then(function (results) {
 	            $.loader('close');
 	            for (i = 0; i < $scope.reportsArray.length; i++) {
-	                if($scope.reportsArray[i].SN == sn)
+	                if($scope.reportsArray[i].SN == $scope.reportSNtoDelete)
 	                    $scope.reportsArray.splice(i, 1);
 	            }
 	            $scope.addAlert('success', 'הדו"ח נמחק!');

@@ -31,9 +31,15 @@
     <link href="Styles/angular-datatables.css" rel="stylesheet" />
     <link href="Styles/jquery.loader.min.css" rel="stylesheet" />
     <style>
-        body {
-            background-image:url(Styles/images/background.jpg);
-            background-position:center;
+        html { 
+          background: url(Styles/images/background.jpg) no-repeat center center fixed; 
+          -webkit-background-size: cover;
+          -moz-background-size: cover;
+          -o-background-size: cover;
+          background-size: cover;
+        }
+        body{
+            background-color: transparent;
         }
         td, th {
             text-align: center;
@@ -60,7 +66,10 @@
             border-top: 1px solid #ccc;
             margin: 1em 0;
             padding: 0; 
-        }    
+        } 
+        h4 {
+            text-align: center;
+        }   
     </style>
     <title>GMRS</title>
 </head>
@@ -391,7 +400,7 @@
                         <h4 class="modal-title">דוחות מועדפים</h4>
                     </div>
                     <div class="modal-body">
-                        <table class="table table-bordered table-inverse table-hover ">
+                        <table class="table table-bordered table-inverse table-hover " ng-hide="reportsArray.length == 0">
                             <thead>
                                 <tr class="bg-primary">
                                     <th>#</th>
@@ -405,11 +414,14 @@
                                     <td>{{r.Name}}</td>
                                     <td style="width:40%">
                                         <button ng-click="loadFromFavorites(r)" type="button" class="btn btn-success black-background white" data-dismiss="modal" data-toggle="modal" data-target="#ReportModal">פתח דו"ח</button>
-                                        <button ng-click="deleteReport(r.SN)" type="button" class="btn btn-danger black-background white">מחק</button>
+                                        <button ng-click="reportToDel(r.SN)" type="button" class="btn btn-danger black-background white" data-toggle="modal" data-target="#ConfrimModal">מחק</button>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
+                        <div ng-hide="reportsArray.length > 0">
+                            <label for="recipient-name" class="form-control-label">אין דוחות שמורים</label>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button ng-click="resetReportArray()" type="button" class="btn btn-danger black-background white pull-left" data-dismiss="modal">סגור</button>
@@ -455,6 +467,24 @@
                     <div class="modal-footer">
                         <button style="float:right" type="button" class="btn btn-warning" data-dismiss="modal">שלח</button>
                         <button style="float:left" type="button" class="btn btn-danger" data-dismiss="modal">ביטול</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Confirm Modal-->
+        <div id="ConfrimModal" class="modal fade " role="dialog">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span style="float:left" aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 style="text-align:center" class="modal-title" id="exampleModalLabel">האם אתה בטוח?</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <button ng-click="deleteReport()" style="float:right" type="button" class="btn btn-danger" data-dismiss="modal">מחק</button>
+                        <button style="float:left" type="button" class="btn btn-success" data-dismiss="modal">ביטול</button>
                     </div>
                 </div>
             </div>
