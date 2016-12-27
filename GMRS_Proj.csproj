@@ -118,6 +118,7 @@
     <Content Include="Styles\bootstrap.min.css" />
     <Content Include="Styles\images\ajax-loader.gif" />
     <Content Include="Styles\images\background.jpg" />
+    <Content Include="Styles\images\download.jpg" />
     <Content Include="Styles\jquery.loader.min.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
