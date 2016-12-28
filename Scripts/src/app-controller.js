@@ -288,9 +288,9 @@
 	    }
 
 	    //get data for create report modal
-	    $scope.createReportButton = function (id) {
-	        $scope.report.id = id;
-	        $scope.reportChartID = "report" + id;
+	    $scope.createReportButton = function () {
+	        //$scope.report.id = id;
+	        $scope.reportChartID = "report" + $scope.report.id;
 	        switch ($scope.report.id) {
 	            case 1:
 	                $scope.showReport1 = true;
@@ -580,7 +580,7 @@
 	                    name: 'סה"כ ' + $scope.report.cReportType + ' לפי שנה ',
 	                    data: pieData,
 	                    center: [30, 2],
-	                    size: 75,
+	                    size: 100,
 	                    showInLegend: false,
 	                    dataLabels: {
 	                        enabled: false

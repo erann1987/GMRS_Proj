@@ -256,6 +256,7 @@
                         <h4 style="text-align:center" class="modal-title">דו"ח מותאם אישית</h4>
                     </div>
                     <div id="modal-body-report" class="modal-body">
+                        <!--report 1-->
                         <div ng-show="showReport1">
                             <div class="form-group">
                                 <div class="chart" dir="ltr" id="report1"></div>
@@ -277,6 +278,7 @@
                                 </table>
                             </div>
                         </div>
+                        <!--report 2-->
                         <div ng-show="showReport2">
                             <div class="form-group">
                                 <div class="chart" dir="ltr" id="report2"></div>
@@ -298,6 +300,7 @@
                                 </table>
                             </div>
                         </div>
+                        <!--report 3-->
                         <div ng-show="showReport3">
                             <div class="form-group">
                                 <div class="chart" dir="ltr" id="report3"></div>
@@ -319,6 +322,7 @@
                                 </table>
                             </div>
                         </div>
+                        <!--report 4-->
                         <div ng-show="showReport4">
                             <div class="form-group">
                                 <div class="chart" dir="ltr" id="report4"></div>
@@ -339,6 +343,7 @@
                                 </table>
                             </div>
                         </div>
+                        <!--report 5-->
                         <div ng-show="showReport5">
                             <div class="form-group">
                                 <div class="chart" dir="ltr" id="report5"></div>
@@ -509,28 +514,68 @@
         </div>
 
         <!-- New Report Modal  -->
-        <div id="NewReport" class="modal fade " role="dialog">
+        <div id="NewReport" class="modal fade " role="dialog" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-sm" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button ng-click="report.id=null" type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span style="float:left" aria-hidden="true">&times;</span>
                         </button>
-                        <h4 style="text-align:center" class="modal-title" id="exampleModalLabel">יצירת דו"ח חדש</h4>
+                        <h4 style="text-align:center" class="modal-title" id="exampleModalLabel">בחר את סוג הדו"ח שברצונך ליצור</h4>
                     </div>
                     <div class="modal-body">
                         <form>
-                            <div class="form-group">
-                                <button ng-click="createReportButton(1)" type="button" class="btn btn-block btn-warning black-background white" data-toggle="modal" data-target="#createReportModal1" data-dismiss="modal">צור דוח מסוג 1</button>
-                                <button ng-click="createReportButton(2)" type="button" class="btn btn-block btn-warning black-background white" data-toggle="modal" data-target="#createReportModal1" data-dismiss="modal">צור דוח מסוג 2</button>
-                                <button ng-click="createReportButton(3)" type="button" class="btn btn-block btn-warning black-background white" data-toggle="modal" data-target="#createReportModal1" data-dismiss="modal">צור דוח מסוג 3</button>
-                                <button ng-click="createReportButton(4)" type="button" class="btn btn-block btn-warning black-background white" data-toggle="modal" data-target="#createReportModal1" data-dismiss="modal">צור דוח מסוג 4</button>
-                                <button ng-click="createReportButton(5)" type="button" class="btn btn-block btn-warning black-background white" data-toggle="modal" data-target="#createReportModal1" data-dismiss="modal">צור דוח מסוג 5</button>
+                            <div class="form-check">
+                                <div class="form-group">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" ng-model="report.id" ng-value="1">
+                                        סכום הוצאות/הכנסות בפריסה לשנים
+                                    </label>
+                                </div>
+                                <hr>
+                                <div class="form-group">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" ng-model="report.id" ng-value="2">
+                                        הוצאות/הכנסות לפי סוג בפריסה לתתי קטגוריות
+                                    </label>
+                                </div>
+                                <hr>
+                                <div class="form-group">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" ng-model="report.id" ng-value="3">
+                                        השוואה לתתי קטגוריות עם הסתעפות לסוגי הוצאות/הכנסות
+                                    </label>
+                                </div>
+                                <hr>
+                                <div class="form-group">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" ng-model="report.id" ng-value="4">
+                                        פירוט ההוצאות/הכנסות בתת קטגוריה בהשוואה לפי שנים
+                                    </label>
+                                </div>
+                                <hr>
+                                <div class="form-group">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" ng-model="report.id" ng-value="5">
+                                        הכנסות מול הוצאות עם הסתעפות לסוגים בתת קטגוריה
+                                    </label>
+                                </div>
                             </div>
+                            <hr>
+                            <div class="form-group">
+                                <button ng-click="createReportButton()" ng-show="report.id!=null" type="button" class="btn btn-block btn-success" data-toggle="modal" data-target="#createReportModal1" data-dismiss="modal">אישור</button>
+                            </div>
+                            <!--<div class="form-group">
+            <button ng-click="createReportButton(1)" type="button" class="btn btn-block btn-warning black-background white" data-toggle="modal" data-target="#createReportModal1" data-dismiss="modal">סכום הוצאות/הכנסות בפריסה לשנים</button>
+            <button ng-click="createReportButton(2)" type="button" class="btn btn-block btn-warning black-background white" data-toggle="modal" data-target="#createReportModal1" data-dismiss="modal">הוצאות/הכנסות לפי סוג בפריסה לתתי קטגוריות</button>
+            <button ng-click="createReportButton(3)" type="button" class="btn btn-block btn-warning black-background white" data-toggle="modal" data-target="#createReportModal1" data-dismiss="modal">השוואה לתתי קטגוריות עם הסתעפות לסוגי הוצאות/הכנסות</button>
+            <button ng-click="createReportButton(4)" type="button" class="btn btn-block btn-warning black-background white" data-toggle="modal" data-target="#createReportModal1" data-dismiss="modal">פירוט ההוצאות/הכנסות בתת קטגוריה בהשוואה לפי שנים </button>
+            <button ng-click="createReportButton(5)" type="button" class="btn btn-block btn-warning black-background white" data-toggle="modal" data-target="#createReportModal1" data-dismiss="modal"> הכנסות מול הוצאות עם הסתעפות לסוגים בתת קטגוריה</button>
+        </div>-->
                         </form>
                     </div>
                     <div class="modal-footer" style="text-align:center">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">ביטול</button>
+                        <button ng-click="report.id=null" type="button" class="btn btn-danger" data-dismiss="modal">ביטול</button>
                     </div>
                 </div>
             </div>
