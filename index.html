@@ -87,14 +87,8 @@
 
             <hr>
             <div class="row">
-                <button ng-click="createReportButton(1)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal1">צור דוח מסוג 1</button>
-                <button ng-click="createReportButton(2)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal1">צור דוח מסוג 2</button>
-                <button ng-click="createReportButton(3)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal1">צור דוח מסוג 3</button>
-                <button ng-click="createReportButton(4)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal1">צור דוח מסוג 4</button>
-                <button ng-click="createReportButton(5)" type="button" class="btn btn-lg btn-primary black-background white" data-toggle="modal" data-target="#createReportModal1">צור דוח מסוג 5</button>
-            </div>    
-
-            <br />
+                <button type="button" class="btn btn-lg btn-primary btn-block black-background white" data-toggle="modal" data-target="#NewReport">יצירת דוח חדש</button>
+            </div>
 
             <div class="row">
                 <button ng-click="loadFavoriteReports()" type="button" class="btn btn-lg btn-primary btn-block black-background white" data-toggle="modal" data-target="#favoriteReportsModal">דוחות מועדפים</button>
@@ -111,7 +105,7 @@
 
         </div>
 
-        <!-- Create Report 1 Modal  -->
+        <!-- Create Report Modal  -->
         <div id="createReportModal1" class="modal fade " role="dialog" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-sm">
 
@@ -121,17 +115,20 @@
                         <button ng-click="closeReport()" style="float:left" type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">יצירת דוח</h4>
                     </div>
+                    <!--report1/4-->
                     <div class="modal-body" ng-show="showReport1 || showReport4">
                         <form name="createReportModalForm1">
                             <div class="form-group">
                                 <label for="recipient-name" class="form-control-label">סוג מידע:</label>
-                                <select name="select_type" data-width="fit" data-live-search="true" title="אפשרויות..." class="selectpicker" ng-model="report.cReportType" required>
+                                <select name="select_type" data-width="fit" data-live-search="true" title="אפשרויות..." class="selectpicker show-tick" ng-model="report.cReportType" required>
                                     <option style="text-align:right" ng-repeat="val in report.reportType" value="{{val}}">{{val}}</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="recipient-name" class="form-control-label">קטגוריה:</label>
-                                <select ng-change="reportCategorySelected()" ng-options="category.CategoryName for category in report.categories track by category.CategoryID" ng-model="report.cCategory" required></select>
+                                <select ng-change="reportCategorySelected()" name="select_type" data-width="fit" data-live-search="true" title="בחר" class="selectpicker show-tick" ng-model="report.cCategory.CategoryName" required>
+                                    <option style="text-align:right" ng-repeat="category in report.categories" value="{{category.CategoryName}}">{{category.CategoryName}}</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <div ng-show="catDescChoosed" class="form-group">
@@ -143,18 +140,25 @@
 
                             </div>
                             <div class="form-group">
-                                <label for="recipient-name" class="form-control-label">משנה:</label>
-                                <select ng-options="year for year in report.years" ng-model="report.cStartYear" required></select>
-                                <label for="recipient-name" class="form-control-label">עד שנה:</label>
-                                <select ng-disabled="(report.cStartYear==null)" ng-options="year for year in report.possibleEndYears" ng-model="report.cEndYear" required></select>
+                                <div class="form-group">
+                                    <label for="recipient-name" class="form-control-label">משנה:</label>
+                                    <select ng-change="calcEndYears()" name="select_type" data-width="fit" data-live-search="true" title="בחר" class="selectpicker show-tick" ng-model="report.cStartYear" required>
+                                        <option style="text-align:right" ng-repeat="year in report.years">{{year}}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label ng-hide="(report.cStartYear==null)" for="recipient-name" class="form-control-label">עד שנה:</label>
+                                    <select ng-hide="(report.cStartYear==null)" ng-options="year for year in report.possibleEndYears" ng-model="report.cEndYear" required></select>
+                                </div>
                             </div>
                         </form>
                     </div> 
+                    <!--report2-->
                     <div class="modal-body" ng-show="showReport2">
                         <form name="createReportModalForm2">
                             <div class="form-group">
                                 <label for="recipient-name" class="form-control-label">סוג מידע:</label>
-                                <select ng-change="reportTypeSelected()" name="select_type" data-width="fit" data-live-search="true" title="אפשרויות..." class="selectpicker" ng-model="report.cReportType" required>
+                                <select ng-change="reportTypeSelected()" name="select_type" data-width="fit" data-live-search="true" title="אפשרויות..." class="selectpicker show-tick" ng-model="report.cReportType" required>
                                     <option style="text-align:right" ng-repeat="val in report.reportType" value="{{val}}">{{val}}</option>
                                 </select>
                             </div>
@@ -168,37 +172,49 @@
                             </div>
                             <div class="form-group">
                                 <label for="recipient-name" class="form-control-label">קטגוריה:</label>
-                                <select ng-options="category.CategoryName for category in report.categories track by category.CategoryID" ng-model="report.cCategory" required></select>
+                                <select ng-change="reportCategorySelected()" name="select_type" data-width="fit" data-live-search="true" title="בחר" class="selectpicker show-tick" ng-model="report.cCategory.CategoryName" required>
+                                    <option style="text-align:right" ng-repeat="category in report.categories" value="{{category.CategoryName}}">{{category.CategoryName}}</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="recipient-name" class="form-control-label">בחר שנה:</label>
-                                <select ng-options="year for year in report.years" ng-model="report.cStartYear" required></select>
+                                <select ng-change="calcEndYears()" name="select_type" data-width="fit" data-live-search="true" title="בחר" class="selectpicker show-tick" ng-model="report.cStartYear" required>
+                                    <option style="text-align:right" ng-repeat="year in report.years">{{year}}</option>
+                                </select>                            
                             </div>
                         </form>
                     </div>
+                    <!--report3-->
                     <div class="modal-body" ng-show="showReport3">
                         <form name="createReportModalForm3">
                             <div class="form-group">
                                 <label for="recipient-name" class="form-control-label">סוג מידע:</label>
-                                <select name="select_type" data-width="fit" data-live-search="true" title="אפשרויות..." class="selectpicker" ng-model="report.cReportType" required>
+                                <select name="select_type" data-width="fit" data-live-search="true" title="אפשרויות..." class="selectpicker show-tick" ng-model="report.cReportType" required>
                                     <option style="text-align:right" ng-repeat="val in report.reportType" value="{{val}}">{{val}}</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="recipient-name" class="form-control-label">קטגוריה:</label>
-                                <select ng-options="category.CategoryName for category in report.categories track by category.CategoryID" ng-model="report.cCategory" required></select>
+                                <select ng-change="reportCategorySelected()" name="select_type" data-width="fit" data-live-search="true" title="בחר" class="selectpicker show-tick" ng-model="report.cCategory.CategoryName" required>
+                                    <option style="text-align:right" ng-repeat="category in report.categories" value="{{category.CategoryName}}">{{category.CategoryName}}</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="recipient-name" class="form-control-label">בחר שנה:</label>
-                                <select ng-options="year for year in report.years" ng-model="report.cStartYear" required></select>
+                                <select ng-change="calcEndYears()" name="select_type" data-width="fit" data-live-search="true" title="בחר" class="selectpicker show-tick" ng-model="report.cStartYear" required>
+                                    <option style="text-align:right" ng-repeat="year in report.years">{{year}}</option>
+                                </select>
                             </div>
                         </form>
                     </div>
+                    <!--report5-->
                     <div class="modal-body" ng-show="showReport5">
                         <form name="createReportModalForm5">
                             <div class="form-group">
                                 <label for="recipient-name" class="form-control-label">קטגוריה:</label>
-                                <select ng-change="reportCategorySelected()" ng-options="category.CategoryName for category in report.categories track by category.CategoryID" ng-model="report.cCategory" required></select>
+                                <select ng-change="reportCategorySelected()" name="select_type" data-width="fit" data-live-search="true" title="בחר" class="selectpicker show-tick" ng-model="report.cCategory.CategoryName" required>
+                                    <option style="text-align:right" ng-repeat="category in report.categories" value="{{category.CategoryName}}">{{category.CategoryName}}</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <div ng-show="catDescChoosed" class="form-group">
@@ -210,8 +226,10 @@
 
                             </div>
                             <div class="form-group">
-                                <label for="recipient-name" class="form-control-label">שנה:</label>
-                                <select ng-options="year for year in report.years" ng-model="report.cStartYear" required></select>
+                                <label for="recipient-name" class="form-control-label">בחר שנה:</label>
+                                <select ng-change="calcEndYears()" name="select_type" data-width="fit" data-live-search="true" title="בחר" class="selectpicker show-tick" ng-model="report.cStartYear" required>
+                                    <option style="text-align:right" ng-repeat="year in report.years">{{year}}</option>
+                                </select>
                             </div>
                         </form>
                     </div>
@@ -376,7 +394,7 @@
                         <form name="reportNameModalForm">
                             <div class="form-group">
                                 <label>שם הדוח:</label>
-                                <input ng-model="report.Name" type="text" class="form-control" required>
+                                <input id="reportName" ng-model="report.Name" type="text" class="form-control" required>
                             </div>                            
                         </form>
                     </div>
@@ -413,8 +431,8 @@
                                     <td>{{$index + 1}}</td>
                                     <td>{{r.Name}}</td>
                                     <td style="width:40%">
-                                        <button ng-click="loadFromFavorites(r)" type="button" class="btn btn-success black-background white" data-dismiss="modal" data-toggle="modal" data-target="#ReportModal">פתח דו"ח</button>
-                                        <button ng-click="reportToDel(r.SN)" type="button" class="btn btn-danger black-background white" data-toggle="modal" data-target="#ConfrimModal">מחק</button>
+                                        <button ng-click="loadFromFavorites(r)" type="button" class="btn btn-secondary black-background white" data-dismiss="modal" data-toggle="modal" data-target="#ReportModal">פתח דו"ח</button>
+                                        <button ng-click="reportToDel(r.SN)" type="button" class="btn btn-danger black-background white" data-toggle="modal" data-target="#ConfrimModal">X</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -423,8 +441,8 @@
                             <label for="recipient-name" class="form-control-label">אין דוחות שמורים</label>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button ng-click="resetReportArray()" type="button" class="btn btn-danger black-background white pull-left" data-dismiss="modal">סגור</button>
+                    <div class="modal-footer" style="text-align:center">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">סגור</button>
                     </div>
                 </div>
 
@@ -485,6 +503,34 @@
                     <div class="modal-footer">
                         <button ng-click="deleteReport()" style="float:right" type="button" class="btn btn-danger" data-dismiss="modal">מחק</button>
                         <button style="float:left" type="button" class="btn btn-success" data-dismiss="modal">ביטול</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- New Report Modal  -->
+        <div id="NewReport" class="modal fade " role="dialog">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span style="float:left" aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 style="text-align:center" class="modal-title" id="exampleModalLabel">יצירת דו"ח חדש</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <button ng-click="createReportButton(1)" type="button" class="btn btn-block btn-warning black-background white" data-toggle="modal" data-target="#createReportModal1" data-dismiss="modal">צור דוח מסוג 1</button>
+                                <button ng-click="createReportButton(2)" type="button" class="btn btn-block btn-warning black-background white" data-toggle="modal" data-target="#createReportModal1" data-dismiss="modal">צור דוח מסוג 2</button>
+                                <button ng-click="createReportButton(3)" type="button" class="btn btn-block btn-warning black-background white" data-toggle="modal" data-target="#createReportModal1" data-dismiss="modal">צור דוח מסוג 3</button>
+                                <button ng-click="createReportButton(4)" type="button" class="btn btn-block btn-warning black-background white" data-toggle="modal" data-target="#createReportModal1" data-dismiss="modal">צור דוח מסוג 4</button>
+                                <button ng-click="createReportButton(5)" type="button" class="btn btn-block btn-warning black-background white" data-toggle="modal" data-target="#createReportModal1" data-dismiss="modal">צור דוח מסוג 5</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer" style="text-align:center">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">ביטול</button>
                     </div>
                 </div>
             </div>

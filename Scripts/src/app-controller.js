@@ -266,17 +266,26 @@
 	    //});
 
 	    //when user picked a StartYear in create roport modalreport
-	    $scope.$watch('report.cStartYear', function (newValue, oldValue) {
-	        if (newValue !== oldValue && newValue != null) {
-	            $scope.report.possibleEndYears = Enumerable.From($scope.report.years)
-                    .Where(function (x) { return x>= $scope.report.cStartYear })
+	    //$scope.$watch('report.cStartYear', function (newValue, oldValue) {
+	    //    if (newValue !== oldValue && newValue != null) {
+	    //        $scope.report.possibleEndYears = Enumerable.From($scope.report.years)
+        //            .Where(function (x) { return x>= $scope.report.cStartYear })
+        //            .OrderBy(function (x) { return x })
+        //            .ToArray();
+        //        $scope.$watch(function () {
+	    //            $('.selectpicker').selectpicker('refresh');
+	    //        });
+	    //    }
+	    //});
+
+	    $scope.calcEndYears = function () {
+	        $scope.report.possibleEndYears = Enumerable.From($scope.report.years)
+                    .Where(function (x) { return x >= $scope.report.cStartYear })
                     .OrderBy(function (x) { return x })
                     .ToArray();
-                $scope.$watch(function () {
-	                $('.selectpicker').selectpicker('refresh');
-	            });
-	        }
-	    });
+	        $('.selectpicker').selectpicker('refresh');
+
+	    }
 
 	    //get data for create report modal
 	    $scope.createReportButton = function (id) {
@@ -787,7 +796,9 @@
 	        $scope.alerts.splice(index, 1);
 	    };
 
-
+	    $('#reportNameModal').on('shown.bs.modal', function () {
+	        $('#reportName').focus();
+	    })
 	    //data-tables configuration
 	    //$scope.dtOptions = DTOptionsBuilder.newOptions()
         //.withDisplayLength(12)
