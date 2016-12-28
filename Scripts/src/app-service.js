@@ -42,7 +42,6 @@
 
     //get relevant data for report
     fac.GetRelevantData = function (rep) {
-        var report;
         switch (rep.id) {
             case 1:
             case 4:

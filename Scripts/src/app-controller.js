@@ -602,8 +602,7 @@
 	                    pointFormat: '<span style="color:{point.color}">{point.name}:</span> <b>{point.y:f}</b> ש"ח<br/>'
 	                };
 	                $scope.reportChart.legend = { enabled: false };
-	                $scope.reportChart.subtitle = ' שנת ' + $scope.report.cStartYear;
-
+	                $scope.reportChart.subtitle = $scope.report.cCategory.CategoryName + ' - ' + $scope.report.cCategoryDesc + '. שנת ' + $scope.report.cStartYear;
 
 	                var incomeValTypeDesc = Enumerable.From($scope.report.data)
                             .Where(function (x) { return x.ValueTypeName == 'הכנסה' })
