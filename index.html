@@ -79,7 +79,11 @@
             text-align: center;
         }   
         .repType:hover {
-            background-color: yellow;
+            background-color: yellowgreen;
+        }
+        input[type=radio]:checked+label {
+        /* Or `#a1:checked+label` if you only want it for that input */
+            background-color: yellowgreen;
         }
 
     </style>
@@ -100,11 +104,8 @@
 
             <hr>
             <div class="row">
-                <button type="button" class="btn btn-lg btn-primary btn-block black-background white" data-toggle="modal" data-target="#NewReport">יצירת דוח חדש</button>
-            </div>
-
-            <div class="row">
-                <button ng-click="loadFavoriteReports()" type="button" class="btn btn-lg btn-primary btn-block black-background white" data-toggle="modal" data-target="#favoriteReportsModal">דוחות מועדפים</button>
+                    <button style="height:100px" type="button" class=" col-sm-6 btn btn-lg btn-primary black-background white pr_btn" data-toggle="modal" data-target="#NewReport">דו"ח חדש</button>
+                    <button style="height:100px" ng-click="loadFavoriteReports()" type="button" class=" col-sm-6 btn btn-lg btn-primary black-background white pr_btn" data-toggle="modal" data-target="#favoriteReportsModal">דו"חות שמורים</button>
             </div>
             <hr>
 
@@ -408,13 +409,12 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button ng-click="closeReport()" style="float:left" type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">שמירת דוח חדש</h4>
+                        <h4 class="modal-title">שמירה</h4>
                     </div>
                     <div class="modal-body">
                         <form name="reportNameModalForm">
                             <div class="form-group">
-                                <label>שם הדוח:</label>
-                                <input id="reportName" ng-model="report.Name" type="text" class="form-control" required>
+                                <input id="reportName" ng-model="report.Name" type="text" class="form-control" placeholder='שם הדו"ח...' required>
                             </div>                            
                         </form>
                     </div>
@@ -435,14 +435,14 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button ng-click="resetReportArray()" style="float:left" type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">דוחות מועדפים</h4>
+                        <h4 class="modal-title">דוח"ות שמורים</h4>
                     </div>
                     <div class="modal-body">
                         <table class="table table-bordered table-inverse table-hover " ng-hide="reportsArray.length == 0">
                             <thead>
                                 <tr class="bg-primary">
                                     <th>#</th>
-                                    <th>שם הדוח</th>
+                                    <th>שם הדו"ח</th>
                                     <th>פעולה</th>
                                 </tr>
                             </thead>
@@ -451,14 +451,14 @@
                                     <td>{{$index + 1}}</td>
                                     <td>{{r.Name}}</td>
                                     <td style="width:40%">
-                                        <button ng-click="loadFromFavorites(r)" type="button" class="btn btn-secondary black-background white" data-dismiss="modal" data-toggle="modal" data-target="#ReportModal">פתח דו"ח</button>
+                                        <button ng-click="loadFromFavorites(r)" type="button" class="btn btn-secondary black-background white" data-dismiss="modal" data-toggle="modal" data-target="#ReportModal">פתח</button>
                                         <button ng-click="reportToDel(r.SN)" type="button" class="btn btn-danger black-background white" data-toggle="modal" data-target="#ConfrimModal">X</button>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                         <div ng-hide="reportsArray.length > 0">
-                            <label for="recipient-name" class="form-control-label">אין דוחות שמורים</label>
+                            <label for="recipient-name" class="form-control-label">אין דוח"ות שמורים</label>
                         </div>
                     </div>
                     <div class="modal-footer" style="text-align:center">
@@ -544,14 +544,14 @@
                                 <div class="form-group repType">
                                     <label class="form-check-label">
                                         <input class="form-check-input" type="radio" ng-model="report.id" ng-value="1">
-                                        סכום הוצאות/הכנסות בפריסה לשנים
+                                        סכום כל ההוצאות/הכנסות של תת קטגוריה בפריסה לשנים
                                     </label>
                                 </div>
                                 <hr>
                                 <div class="form-group repType">
                                     <label class="form-check-label">
                                         <input class="form-check-input" type="radio" ng-model="report.id" ng-value="2">
-                                        הוצאות/הכנסות לפי סוג בפריסה לתתי קטגוריות
+                                        הוצאות/הכנסות לפי סוגים בפריסה לתתי קטגוריות
                                     </label>
                                 </div>
                                 <hr>
