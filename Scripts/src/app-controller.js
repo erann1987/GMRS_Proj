@@ -798,6 +798,21 @@
 	    $('#reportNameModal').on('shown.bs.modal', function () {
 	        $('#reportName').focus();
 	    })
+
+	    $('[data-toggle="tooltip"]').tooltip();
+	    $scope.printTable = function () {
+	        var id;
+	        if ($scope.showReport1) id = "p_report1";
+	        else if ($scope.showReport2) id = "p_report2";
+	        else if ($scope.showReport3) id = "p_report3";
+	        else if ($scope.showReport4) id = "p_report4";
+	        else if ($scope.showReport5) id = "p_report5";
+	        var divToPrint = document.getElementById(id);
+	        newWin = window.open("");
+	        newWin.document.write(divToPrint.outerHTML);
+	        newWin.print();
+	        newWin.close();
+	    }
 	    //data-tables configuration
 	    //$scope.dtOptions = DTOptionsBuilder.newOptions()
         //.withDisplayLength(12)

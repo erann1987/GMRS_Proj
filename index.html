@@ -40,6 +40,9 @@
           -o-background-size: cover;
           background-size: cover;
         }
+        .printElm{
+            text-align:center; width:auto;
+        }
         body{
             background-color: transparent;
         }
@@ -269,16 +272,19 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button ng-click="closeReport()" style="float:left" type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 style="text-align:center" class="modal-title">דו"ח מותאם אישית</h4>
+                        <h4 style="text-align:center" class="modal-title">דו"ח מנהלים אינטראקטיבי</h4>
                     </div>
                     <div id="modal-body-report" class="modal-body">
                         <!--report 1-->
-                        <div ng-show="showReport1">
+                        <div ng-show="showReport1" id="p_report1">
+                            <label style="text-align:center; width:auto; display:block">סיכום ההוצאות/הכנסות בהשוואה לשנים קודמות</label>
+                            <br />
                             <div class="form-group">
                                 <div class="chart" dir="ltr" id="report1"></div>
                             </div>
+                            <br />
                             <div class="form-group">
-                                <table class="table table-bordered table-inverse table-hover">
+                                <table style="float:right" dir="RTL" id="talbeReport1" class="table table-bordered table-inverse table-hover">
                                     <thead>
                                         <tr class="bg-primary">
                                             <th>חודש/שנים</th>
@@ -295,11 +301,13 @@
                             </div>
                         </div>
                         <!--report 2-->
-                        <div ng-show="showReport2">
+                        <div ng-show="showReport2" id="p_report2">
+                            <label style="text-align:center; width:auto; display:block">הכנוסת/הוצאות לפי סוג בשנה מסויימת בהשוואה לפי תת קטגוריה</label>
+                            <br />
                             <div class="form-group">
                                 <div class="chart" dir="ltr" id="report2"></div>
                             </div>
-                            <div class="form-group">
+                            <div dir="RTL" class="form-group">
                                 <table class="table table-bordered table-inverse table-hover ">
                                     <thead>
                                         <tr class="bg-primary">
@@ -317,11 +325,13 @@
                             </div>
                         </div>
                         <!--report 3-->
-                        <div ng-show="showReport3">
+                        <div ng-show="showReport3" id="p_report3">
+                            <label style="text-align:center; width:auto; display:block">הכנוסת/הוצאות עם פריסה לסוגים בהשוואה לתת קטגוריה</label>
+                            <br />
                             <div class="form-group">
                                 <div class="chart" dir="ltr" id="report3"></div>
                             </div>
-                            <div class="form-group">
+                            <div dir="RTL" class="form-group">
                                 <table class="table table-bordered table-inverse table-hover ">
                                     <thead>
                                         <tr class="bg-primary">
@@ -339,11 +349,13 @@
                             </div>
                         </div>
                         <!--report 4-->
-                        <div ng-show="showReport4">
+                        <div ng-show="showReport4" id="p_report4">
+                            <label style="text-align:center; width:auto; display:block">פירוט ההוצאות/הכנסות בתת קטגוריה בהשוואה לפי שנים</label>
+                            <br />
                             <div class="form-group">
                                 <div class="chart" dir="ltr" id="report4"></div>
                             </div>
-                            <div class="form-group">
+                            <div dir="RTL" class="form-group">
                                 <table class="table table-bordered table-inverse table-hover ">
                                     <thead>
                                         <tr class="bg-primary">
@@ -360,11 +372,13 @@
                             </div>
                         </div>
                         <!--report 5-->
-                        <div ng-show="showReport5">
+                        <div ng-show="showReport5" id="p_report5">
+                            <label style="text-align:center; width:auto; display:block">הכנסות מול הוצאות עם הסתעפות לסוגים בתת קטגוריה</label>
+                            <br />
                             <div class="form-group">
                                 <div class="chart" dir="ltr" id="report5"></div>
                             </div>
-                            <div class="form-group">
+                            <div dir="RTL" class="form-group">
                                 <table class="table table-bordered table-inverse table-hover ">
                                     <thead>
                                         <tr class="bg-primary">
@@ -390,8 +404,9 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="text-center">
+                                    <button data-toggle="tooltip" title="הקטן את הדפדפן לפני הדפסה " id="printBtn" class="btn btn-warning center-block" ng-click="printTable()">הדפסה</button>
                                     <button ng-click="closeReport()" type="button" class="btn btn-danger center-block" data-dismiss="modal">סגור</button>
-                                    <button type="button" class="btn btn-success center-block" data-dismiss="modal" data-toggle="modal" data-target="#reportNameModal">שמור</button>
+                                    <button type="button" class="btn btn-success center-block" data-dismiss="modal" data-toggle="modal" data-target="#reportNameModal">שמירה בשם</button>
                                 </div>
                             </div>
                         </div>
