@@ -20,7 +20,7 @@
     <script src="Scripts/highcharts-more.js"></script>
     <script src="Scripts/src/clock.js"></script>
     <script src="Scripts/dark-unica.js"></script>
-    <script src="Scripts/exporting.js"></script>
+    <!--<script src="Scripts/exporting.js"></script>-->
 
     <script src="/Scripts/src/app.js"></script>
     <script src="/Scripts/src/app-service.js"></script>
@@ -107,8 +107,8 @@
 
             <hr>
             <div class="row">
-                    <button style="height:100px" type="button" class=" col-sm-6 btn btn-lg btn-primary black-background white pr_btn" data-toggle="modal" data-target="#NewReport">דו"ח חדש</button>
-                    <button style="height:100px" ng-click="loadFavoriteReports()" type="button" class=" col-sm-6 btn btn-lg btn-primary black-background white pr_btn" data-toggle="modal" data-target="#favoriteReportsModal">דו"חות שמורים</button>
+                    <button style="height:100px" type="button" class=" col-sm-6 btn btn-lg btn-primary black-background white pr_btn" data-toggle="modal" data-target="#NewReport">דו"ח חדש <span class="glyphicon glyphicon-new-window"></span></button>
+                    <button style="height:100px" ng-click="loadFavoriteReports()" type="button" class=" col-sm-6 btn btn-lg btn-primary black-background white pr_btn" data-toggle="modal" data-target="#favoriteReportsModal">דו"חות שמורים <span class="glyphicon glyphicon-floppy-saved"></span></button>
             </div>
             <hr>
 
@@ -116,8 +116,8 @@
 
             <h6 style="text-align:center; color:white">פותח ע"י: ערן נחום וגור אריה יהודה</h6>
             <div class="form-group">
-                <button class="btn btn-info btn-xs black-background white" data-toggle="modal" data-target="#ContactInfo">צור קשר</button>
-                <button class="btn btn-info btn-xs black-background white">קרא עוד...</button>
+                <button class="btn btn-info btn-xs black-background white" data-toggle="modal" data-target="#ContactInfo">צור קשר <span class="glyphicon glyphicon-phone-alt"></span></button>
+                <button class="btn btn-info btn-xs black-background white">קרא עוד... <span class="glyphicon glyphicon-book"></span></button>
             </div>
 
         </div>
@@ -277,11 +277,13 @@
                     <div id="modal-body-report" class="modal-body">
                         <!--report 1-->
                         <div ng-show="showReport1" id="p_report1">
-                            <label style="text-align:center; width:auto; display:block">סיכום ההוצאות/הכנסות בהשוואה לשנים קודמות</label>
+                            <label style="text-align:center; width:auto; display:block">דו"ח הוצאות/הכנסות בהשוואה לשנים קודמות</label>
                             <br />
                             <div class="form-group">
                                 <div class="chart" dir="ltr" id="report1"></div>
                             </div>
+                            <br />
+                            <label style="text-align:center; width:auto; display:block">טבלת סיכום ההוצאות/הכנסות {{reportChart.subtitle}}</label>
                             <br />
                             <div class="form-group">
                                 <table style="float:right" dir="RTL" id="talbeReport1" class="table table-bordered table-inverse table-hover">
@@ -302,11 +304,14 @@
                         </div>
                         <!--report 2-->
                         <div ng-show="showReport2" id="p_report2">
-                            <label style="text-align:center; width:auto; display:block">הכנוסת/הוצאות לפי סוג בשנה מסויימת בהשוואה לפי תת קטגוריה</label>
+                            <label style="text-align:center; width:auto; display:block">דו"ח הכנסות/הוצאות בהשוואה לתתי קטגוריה ב{{reportChart.subtitle}}</label>
                             <br />
                             <div class="form-group">
                                 <div class="chart" dir="ltr" id="report2"></div>
                             </div>
+                            <br />
+                            <label style="text-align:center; width:auto; display:block">טבלת ההוצאות/הכנסות  ב{{reportChart.subtitle}}</label>
+                            <br />
                             <div dir="RTL" class="form-group">
                                 <table class="table table-bordered table-inverse table-hover ">
                                     <thead>
@@ -326,11 +331,14 @@
                         </div>
                         <!--report 3-->
                         <div ng-show="showReport3" id="p_report3">
-                            <label style="text-align:center; width:auto; display:block">הכנוסת/הוצאות עם פריסה לסוגים בהשוואה לתת קטגוריה</label>
+                            <label style="text-align:center; width:auto; display:block">דו"ח הכנסות/הוצאות עם פריסה לסוגים בהשוואה לתת קטגוריה</label>
                             <br />
                             <div class="form-group">
                                 <div class="chart" dir="ltr" id="report3"></div>
                             </div>
+                            <br />
+                            <label style="text-align:center; width:auto; display:block">טבלת הוצאות-הכנסות של תתי קטגוריה לפי סוגים  {{reportChart.subtitle}}</label>
+                            <br />
                             <div dir="RTL" class="form-group">
                                 <table class="table table-bordered table-inverse table-hover ">
                                     <thead>
@@ -350,11 +358,14 @@
                         </div>
                         <!--report 4-->
                         <div ng-show="showReport4" id="p_report4">
-                            <label style="text-align:center; width:auto; display:block">פירוט ההוצאות/הכנסות בתת קטגוריה בהשוואה לפי שנים</label>
+                            <label style="text-align:center; width:auto; display:block">דו"ח פירוט ההוצאות/הכנסות בתת קטגוריה בהשוואה לפי שנים</label>
                             <br />
                             <div class="form-group">
                                 <div class="chart" dir="ltr" id="report4"></div>
                             </div>
+                            <br />
+                            <label style="text-align:center; width:auto; display:block">טבלת הוצאות-הכנסות לפי שנים  {{reportChart.subtitle}}</label>
+                            <br />
                             <div dir="RTL" class="form-group">
                                 <table class="table table-bordered table-inverse table-hover ">
                                     <thead>
@@ -373,11 +384,14 @@
                         </div>
                         <!--report 5-->
                         <div ng-show="showReport5" id="p_report5">
-                            <label style="text-align:center; width:auto; display:block">הכנסות מול הוצאות עם הסתעפות לסוגים בתת קטגוריה</label>
+                            <label style="text-align:center; width:auto; display:block">דו"ח הכנסות מול הוצאות עם הסתעפות לסוגים בתת קטגוריה</label>
                             <br />
                             <div class="form-group">
                                 <div class="chart" dir="ltr" id="report5"></div>
                             </div>
+                            <br />
+                            <label style="text-align:center; width:auto; display:block">טבלת הוצאות-הכנסות  {{reportChart.subtitle}}</label>
+                            <br />
                             <div dir="RTL" class="form-group">
                                 <table class="table table-bordered table-inverse table-hover ">
                                     <thead>
@@ -404,9 +418,9 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="text-center">
-                                    <button data-toggle="tooltip" title="הקטן את הדפדפן לפני הדפסה " id="printBtn" class="btn btn-warning center-block" ng-click="printTable()">הדפסה</button>
-                                    <button ng-click="closeReport()" type="button" class="btn btn-danger center-block" data-dismiss="modal">סגור</button>
-                                    <button type="button" class="btn btn-success center-block" data-dismiss="modal" data-toggle="modal" data-target="#reportNameModal">שמירה בשם</button>
+                                    <button  id="printBtn" class="btn btn-warning center-block black-background white pr_btn" ng-click="printTable()">הדפס  <span class="glyphicon glyphicon-print"></span></button>
+                                    <!--<button ng-click="closeReport()" type="button" class="btn btn-danger center-block" data-dismiss="modal">סגור</button>-->
+                                    <button type="button" class="btn btn-warning center-block black-background white pr_btn" data-dismiss="modal" data-toggle="modal" data-target="#reportNameModal">שמור  <span class="glyphicon glyphicon-floppy-save"></span></button>
                                 </div>
                             </div>
                         </div>
@@ -466,8 +480,8 @@
                                     <td>{{$index + 1}}</td>
                                     <td>{{r.Name}}</td>
                                     <td style="width:40%">
-                                        <button ng-click="loadFromFavorites(r)" type="button" class="btn btn-secondary black-background white" data-dismiss="modal" data-toggle="modal" data-target="#ReportModal">פתח</button>
-                                        <button ng-click="reportToDel(r.SN)" type="button" class="btn btn-danger black-background white" data-toggle="modal" data-target="#ConfrimModal">X</button>
+                                        <button ng-click="loadFromFavorites(r)" type="button" class="btn btn-secondary black-background white" data-dismiss="modal" data-toggle="modal" data-target="#ReportModal"><span class="glyphicon glyphicon-folder-open"></span></button>
+                                        <button ng-click="reportToDel(r.SN)" type="button" class="btn btn-danger black-background white" data-toggle="modal" data-target="#ConfrimModal"><span class="glyphicon glyphicon-trash"></span></button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -518,7 +532,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button style="float:right" type="button" class="btn btn-warning" data-dismiss="modal">שלח</button>
+                        <button style="float:right" type="button" class="btn btn-warning" data-dismiss="modal">שלח <span class="glyphicon glyphicon-envelope"></span></button>
                         <button style="float:left" type="button" class="btn btn-danger" data-dismiss="modal">ביטול</button>
                     </div>
                 </div>
@@ -536,8 +550,8 @@
                         <h4 style="text-align:center" class="modal-title" id="exampleModalLabel">האם אתה בטוח?</h4>
                     </div>
                     <div class="modal-footer">
-                        <button ng-click="deleteReport()" style="float:right" type="button" class="btn btn-danger" data-dismiss="modal">מחק</button>
-                        <button style="float:left" type="button" class="btn btn-success" data-dismiss="modal">ביטול</button>
+                        <button ng-click="deleteReport()" style="float:right" type="button" class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-ok"></span> כן</button>
+                        <button style="float:left" type="button" class="btn btn-danger" data-dismiss="modal"> <span class="glyphicon glyphicon-remove"></span> ביטול</button>
                     </div>
                 </div>
             </div>
