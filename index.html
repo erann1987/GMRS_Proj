@@ -33,6 +33,12 @@
     <link href="Styles/angular-datatables.css" rel="stylesheet" />
     <link href="Styles/jquery.loader.min.css" rel="stylesheet" />
     <style>
+        .same-line input[type='radio'] {
+            display:none;
+        }
+        .same-line input[type='radio']:checked + label.checkbox { 
+           background-color: yellowgreen;
+        }
         html { 
           background: url(Styles/images/background.jpg) no-repeat center center fixed; 
           -webkit-background-size: cover;
@@ -84,7 +90,7 @@
         .repType:hover {
             background-color: yellowgreen;
         }
-        input[type=radio]:checked+label {
+        input[type='radio']:checked+label {
         /* Or `#a1:checked+label` if you only want it for that input */
             background-color: yellowgreen;
         }
@@ -100,8 +106,8 @@
         <!--start div-->
         <div id="startDiv" style="text-align:center;">
             <h1 style="color:white" class="display-2">ברוך הבא ל - GMRS !</h1>
-            <h2 style="color:white" class="display-12">(General Maneger Report System)</h2>
-            <p style="color:white" class="lead">מערכת לייצור וניהול דוחות מנהלים אינטראקטיביים</p>
+            <h2 style="color:white" class="display-12">(Generic Management Report System)</h2>
+            <p style="color:white" class="lead">מערכת לייצור וניהול דו"חות מנהלים אינטראקטיביים</p>
 
             <div dir="ltr" id="clock" style="width: 200px; height:200px; margin: 0 auto;"></div>
 
@@ -115,6 +121,7 @@
             <br />
 
             <h6 style="text-align:center; color:white">פותח ע"י: ערן נחום וגור אריה יהודה</h6>
+            <br />
             <div class="form-group">
                 <button class="btn btn-info btn-xs black-background white" data-toggle="modal" data-target="#ContactInfo">צור קשר <span class="glyphicon glyphicon-phone-alt"></span></button>
                 <button class="btn btn-info btn-xs black-background white">קרא עוד... <span class="glyphicon glyphicon-book"></span></button>
@@ -130,7 +137,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button ng-click="closeReport()" style="float:left" type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">יצירת דוח</h4>
+                        <h4 class="modal-title">יצירת דו"ח</h4>
                     </div>
                     <!--report1/4-->
                     <div class="modal-body" ng-show="showReport1 || showReport4">
@@ -458,13 +465,13 @@
 
         <!-- Favorites Report modal  -->
         <div id="favoriteReportsModal" class="modal fade " role="dialog" data-backdrop="static" data-keyboard="false">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-md">
 
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
                         <button ng-click="resetReportArray()" style="float:left" type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">דוח"ות שמורים</h4>
+                        <h4 class="modal-title">דו"חות שמורים</h4>
                     </div>
                     <div class="modal-body">
                         <table class="table table-bordered table-inverse table-hover " ng-hide="reportsArray.length == 0">
@@ -487,7 +494,7 @@
                             </tbody>
                         </table>
                         <div ng-hide="reportsArray.length > 0">
-                            <label for="recipient-name" class="form-control-label">אין דוח"ות שמורים</label>
+                            <label for="recipient-name" class="form-control-label">אין דו"חות שמורים</label>
                         </div>
                     </div>
                     <div class="modal-footer" style="text-align:center">
@@ -532,7 +539,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button style="float:right" type="button" class="btn btn-warning" data-dismiss="modal">שלח <span class="glyphicon glyphicon-envelope"></span></button>
+                        <button ng-click="addAlert('success', 'ההודעה נשלחה!')" style="float:right" type="button" class="btn btn-warning" data-dismiss="modal">שלח <span class="glyphicon glyphicon-envelope"></span></button>
                         <button style="float:left" type="button" class="btn btn-danger" data-dismiss="modal">ביטול</button>
                     </div>
                 </div>
@@ -559,49 +566,49 @@
 
         <!-- New Report Modal  -->
         <div id="NewReport" class="modal fade " role="dialog" data-backdrop="static" data-keyboard="false">
-            <div class="modal-dialog modal-sm" role="document">
-                <div class="modal-content">
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content" >
                     <div class="modal-header">
                         <button ng-click="report.id=null" type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span style="float:left" aria-hidden="true">&times;</span>
                         </button>
                         <h4 style="text-align:center" class="modal-title" id="exampleModalLabel">בחר את סוג הדו"ח שברצונך ליצור</h4>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" style="text-align:center">
                         <form>
                             <div class="form-check">
-                                <div class="form-group repType">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" ng-model="report.id" ng-value="1">
-                                        סכום כל ההוצאות/הכנסות של תת קטגוריה בפריסה לשנים
+                                <div class="form-group repType same-line">
+                                    <input id="cb1" class="form-check-input" type="radio" ng-model="report.id" ng-value="1">
+                                    <label for="cb1" class="checkbox form-check-label">
+                                        פריסה לחודשים בהשוואה לשנים קודמות
                                     </label>
                                 </div>
                                 <hr>
-                                <div class="form-group repType">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" ng-model="report.id" ng-value="2">
-                                        הוצאות/הכנסות לפי סוגים בפריסה לתתי קטגוריות
+                                <div class="form-group repType same-line">
+                                    <input id="cb2" class="form-check-input" type="radio" ng-model="report.id" ng-value="2">
+                                    <label for="cb2" class="checkbox form-check-label">
+                                        פריסה לחודשים בהשוואה לתתי קטגוריה
                                     </label>
                                 </div>
                                 <hr>
-                                <div class="form-group repType">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" ng-model="report.id" ng-value="3">
-                                        השוואה לתתי קטגוריות עם הסתעפות לסוגי הוצאות/הכנסות
+                                <div class="form-group repType same-line">
+                                    <input id="cb3" class="form-check-input" type="radio" ng-model="report.id" ng-value="3">
+                                    <label for="cb3" class="checkbox form-check-label">
+                                        פירוט הוצאות/הכנסות לפי קטגוריה
                                     </label>
                                 </div>
                                 <hr>
-                                <div class="form-group repType">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" ng-model="report.id" ng-value="4">
-                                        פירוט ההוצאות/הכנסות בתת קטגוריה בהשוואה לפי שנים
+                                <div class="form-group repType same-line">
+                                    <input id="cb4" class="form-check-input" type="radio" ng-model="report.id" ng-value="4">
+                                    <label for="cb4" class="checkbox form-check-label">
+                                        סיכום הוצאות/הכנסות בהשוואה לשנים קודמות
                                     </label>
                                 </div>
                                 <hr>
-                                <div class="form-group repType">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" ng-model="report.id" ng-value="5">
-                                        הכנסות מול הוצאות עם הסתעפות לסוגים בתת קטגוריה
+                                <div class="form-group repType same-line">
+                                    <input id="cb5" class="form-check-input" type="radio" ng-model="report.id" ng-value="5">
+                                    <label for="cb5" class="checkbox form-check-label">
+                                        פירוט הכנסות מול הוצאות בשנה מסויימת
                                     </label>
                                 </div>
                             </div>
