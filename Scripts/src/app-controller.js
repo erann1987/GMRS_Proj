@@ -815,20 +815,6 @@
 	    }
 
 
-	    //sleep
-	    $scope.sentMS = function () {
-	        $.loader({
-	            className: "blue-with-image-2",
-	            content: ''
-	        });
-	        setTimeout(function () {
-	            $.loader('close');
-	        }, 1000);
-	        setTimeout(function () {
-	            $scope.addAlert('success', 'ההודעה נשלחה!');
-	        }, 2500);
-	    }
-
 
 	    //data-tables configuration
 	    //$scope.dtOptions = DTOptionsBuilder.newOptions()
