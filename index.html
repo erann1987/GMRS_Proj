@@ -105,8 +105,8 @@
         <div style="text-align:center" dismiss-on-timeout="2000" uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>
         <!--start div-->
         <div id="startDiv" style="text-align:center;">
-            <h1 style="color:white" class="display-2">ברוך הבא ל - GMRS !</h1>
-            <h2 style="color:white" class="display-12">(Generic Management Report System)</h2>
+            <h1 style="color:white; font-size: -webkit-xxx-large" class="display-2">ברוך הבא ל - GMRS !</h1>
+            <h2 style="color:white" class="display-12">Generic Management Report System</h2>
             <p style="color:white" class="lead">מערכת לייצור וניהול דו"חות מנהלים אינטראקטיביים</p>
 
             <div dir="ltr" id="clock" style="width: 200px; height:200px; margin: 0 auto;"></div>
@@ -123,7 +123,7 @@
             <div class="form-group">
                 <h6 style="text-align:center; color:aqua">פותח ע"י: ערן נחום וגור אריה יהודה</h6>
                 <button class="btn btn-info btn-xs black-background white" data-toggle="modal" data-target="#ContactInfo">צור קשר <span class="glyphicon glyphicon-phone-alt"></span></button>
-                <button class="btn btn-info btn-xs black-background white">קרא עוד... <span class="glyphicon glyphicon-book"></span></button>
+                <button class="btn btn-info btn-xs black-background white" data-toggle="modal" data-target="#MoreInfo">קרא עוד... <span class="glyphicon glyphicon-book"></span></button>
             </div>
 
         </div>
@@ -531,15 +531,10 @@
                                 <input style="text-align: center;" readonly type="text" class="form-control" id="recipient-name" placeholder="052-458-1157">
                                 <input style="text-align: center;" readonly type="text" class="form-control" id="recipient-name" placeholder="052-597-1523">
                             </div>
-                            <div class="form-group">
-                                <label for="message-text" class="form-control-label">השאר הודעה:</label>
-                                <textarea class="form-control" id="message-text"></textarea>
-                            </div>
                         </form>
                     </div>
-                    <div class="modal-footer">
-                        <button ng-click="addAlert('success', 'ההודעה נשלחה!')" style="float:right" type="button" class="btn btn-warning" data-dismiss="modal">שלח <span class="glyphicon glyphicon-envelope"></span></button>
-                        <button style="float:left" type="button" class="btn btn-danger" data-dismiss="modal">ביטול</button>
+                    <div class="modal-footer" style="text-align:center">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">סגור</button>
                     </div>
                 </div>
             </div>
@@ -558,6 +553,32 @@
                     <div class="modal-footer">
                         <button ng-click="deleteReport()" style="float:right" type="button" class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-ok"></span> כן</button>
                         <button style="float:left" type="button" class="btn btn-danger" data-dismiss="modal"> <span class="glyphicon glyphicon-remove"></span> ביטול</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--more infoModa-->
+        <div id="MoreInfo" class="modal fade " role="dialog">
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span style="float:left" aria-hidden="true">&times;</span>
+                        </button>
+                        <h4>Generic Manager Report System</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            מערכת GMRS הינה מערכת המיועד לכל מנהל ארגון בכל תחומי התעשייה. המערכת, בגרסתה הנוכחית, מאפשרת יצירת דוחות מותאמים אישית מ-5 סוגים, התאמתם לצרכי המנהל, הצגת ופילוח הנתונים בדוחות עפ"י הצורך וע"י כך מתן אפשרות למבט על, על פעילותו של הארגון.
+                            המערכת מאפשרת שמירת דוחות מועדפים לצורך צפייה חוזרת, כאשר בכל צפייה הנתונים מעודכנים בזמן אמת וע"י כך חוסכת זמן רב.
+                            דוחות המערכת מאפשרים הסתכלות עילית מחד וצלילה לתוך המספרים במידת הצורך מנגד.
+                            אנו תקווה כי המערכת תשרת אותך, המנהל, בצורה הטובה ביותר.
+
+                        </p>
+                    </div>
+                    <div class="modal-footer" style="text-align:center">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"> <span class="glyphicon glyphicon-remove"></span> סגור</button>
                     </div>
                 </div>
             </div>

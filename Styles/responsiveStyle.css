@@ -1,0 +1,13 @@
+﻿@media (max-width: 400px) {
+  .title {
+    font-size: 100%;
+  }
+  .primButton{
+      width: 120px;
+      font-size: xx-small;
+      height: 70px;
+  }
+  #clock{
+      height: 100px;
+  }
+}
